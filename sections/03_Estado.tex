@@ -258,20 +258,24 @@ Rellenar con la información de qué ofrece mi producto en comparación con lo q
 
 \section{Desarrollo de Software enfocado en Servicios Web}
 
-El concepto de Servicio Web representa la ``columna vertebral`` de la integración de sistemas modernos. Históricamente, 
-el desarrollo de software se enfrentaba al reto de conectar plataformas heterogéneas que hablaban ``idiomas`` 
-distintos. En este contexto, y siguiendo la línea de investigación planteada por Ortiz y Riestra \cite{evolucionDinamicaSistemasSoftware}, 
-la industria adoptó la Arquitectura Orientada a Servicios (SOA) como el estándar para garantizar la interoperabilidad. 
-Este paradigma permitió que funcionalidades complejas de negocio fueran expuestas a través de la red de manera estandarizada, 
-independientemente del lenguaje de programación o el sistema operativo subyacente.
+Históricamente, el desarrollo de servicios web se fundamentó en la Arquitectura Orientada a Servicios (SOA). Como 
+indicaban Ortiz y Riestra (2009) \cite{evolucionDinamicaSistemasSoftware}, el reto principal era lograr la 
+interoperabilidad entre sistemas heterogéneos mediante protocolos robustos como SOAP y el uso de XML para el 
+intercambio de datos. En aquel momento, el foco estaba en permitir que terminales con capacidades limitadas pudieran
+acceder a lógica de negocio compleja residente en servidores.
 
-La evolución de este campo ha sido drástica. Mientras que en las etapas iniciales predominaban protocolos robustos 
-pero pesados como SOAP (basados en XML) —diseñados para entornos empresariales rígidos—, la necesidad de agilidad 
-impulsada por la web social y los dispositivos móviles forzó un cambio de rumbo. La industria migró hacia arquitecturas
-más ligeras y flexibles, dando lugar a la predominancia del estilo REST y, más recientemente, a consultas dinámicas 
-mediante GraphQL.
+No obstante, en la última década este paradigma ha evolucionado drásticamente. La rigidez de los protocolos basados 
+en XML ha dado paso a la arquitectura REST (Representational State Transfer) y al formato JSON, que se han consolidado
+como el estándar de facto por su ligereza y facilidad de consumo, especialmente en dispositivos móviles.
 
-En el escenario actual, desarrollar servicios web no implica simplemente exponer datos, sino diseñar sistemas capaces 
-de escalar horizontalmente en la nube y responder en milisegundos. Por tanto, para establecer el estado del arte en 
-este dominio, es necesario desglosar los protocolos de comunicación vigentes, los formatos de intercambio de datos y 
-las arquitecturas de despliegue que permiten a estos servicios operar a nivel global.
+En la actualidad, han emergido nuevos paradigmas que complementan y, en muchos casos, sustituyen a las arquitecturas 
+monolíticas tradicionales. Destacan especialmente los microservicios y las arquitecturas orientadas a eventos (
+explicados a continuación), soluciones que han surgido como respuesta a la necesidad de construir sistemas con una 
+mayor escalabilidad, flexibilidad y resiliencia ante grandes volúmenes de datos.
+
+A continuación, se desglosarán los patrones de arquitectura software modernos, formatos de intercambio de datos y  
+servicios web, ecosistemas de desarrollo web, desarrollo de aplicaciones móviles y por último, infraestructura
+y seguridad. Este análisis permitirá examinar de manera detallada cómo han evolucionado los servicios web hasta 
+alcanzar los estándares de eficiencia y robustez contemporáneos.
+
+\subsection{Arquitecturas Software}
