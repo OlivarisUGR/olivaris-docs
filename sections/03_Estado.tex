@@ -279,3 +279,141 @@ y seguridad. Este análisis permitirá examinar de manera detallada cómo han ev
 alcanzar los estándares de eficiencia y robustez contemporáneos.
 
 \subsection{Arquitecturas Software}
+
+La arquitectura de software ha evolucionado progresivamente hasta convertirse en un ecosistema adaptable. El 
+crecimiento exponencial en el desarrollo de servicios web y la necesidad de ofrecer soporte a aplicaciones móviles 
+con alta disponibilidad han impulsado la aparición de nuevos enfoques y modelos arquitectónicos. En este contexto, 
+la transición de sistemas centralizados (arquitecturas monolíticas) hacia sistemas distribuidos ha surgido de manera 
+natural, motivada por la necesidad de desplegar funcionalidades de forma independiente y escalable.
+
+De acuerdo con Richards y Ford \cite{libroArquitecturasSoftware}, las arquitecturas de software se pueden clasificar 
+principalmente en dos categorías: monolíticas y distribuidas.
+
+A continuación, se describen los estilos arquitectónicos más relevantes siguiendo la clasificación propuesta por los 
+autores mencionados.
+
+\subsubsection{Arquitectura Monolítica}
+
+Es un tipo de arquitectura de software caracterizada principalmente por contener el código en una sola unidad de despliegue.
+Dentro de este tipo de arquitectura se pueden encontrar los siguientes tipos:
+
+\begin{itemize}
+    \item \textbf{Arquitectura en capas}
+    \newline
+    Se utiliza como punto de partida ya que es el patrón más común y tradicional en el desarrollo de software. Este
+    tipo de arquitectura se organiza en capas horizontales, donde cada una tiene un rol específico dentro de la 
+    aplicación (por ejemplo, presentación y lógica de negocio). Aunque no hay un número fijo de capas, el estándar
+    suele ser de cuatro:
+
+    \begin{itemize}
+        \item Capa de Presentación: representa la interfaz de usuario con la que se interacciona y es la encargada de
+        manejar las peticiones que son realizadas al servidor.
+        \item Capa de Negocio: contiene las reglas y la lógica del dominio de la aplicación.
+        \item Capa de Persistencia: es la encargada de manejar los datos del sistema (interacción con la base de datos).
+        \item Capa de Base de Datos: corresponde al motor de almacenamiento de datos físico, es decir, la propia base de datos.
+    \end{itemize}
+
+    Una de las características más relevantes de este tipo de arquitectura es que las capas están aisladas. Esto 
+    significa que un cambio en una capa no debería afectar a las demás, siempre que la interfaz (el contrato) entre 
+    ellas se mantenga. En este punto, se puede diferenciar entre capas de tipo ``cerrada``, que sería aquella que solo
+    se puede comunicar con una inmediatamente inferior (tipo de capa por defecto), o de tipo ``abierta'', la cual permite
+    que capas superiores puedan saltársela para acceder directamente a capas inferiores.
+
+    Generalmente, este estilo se implementa como una única unidad de despliegue (monolito), lo que simplifica la gestión 
+    inicial pero dificulta la escalabilidad individual de componentes.
+
+    Valorando las características arquitectónicas se destaca:
+
+    \begin{itemize}
+        \item Costo y simplicidad: es una arquitectura muy fácil de entender y barata de implementar inicialmente.
+        \item Facilidad de desarrollo: al ser un estándar tan conocido, los equipos pueden empezar a trabajar rápidamente.
+        \item Escalabilidad y Elasticidad: esta características es, quizás, su mayor debilidad y esto ocurre porque al ser
+        monolítica, no va a permitir un escalado de las partes específicas del sistema de forma independiente.
+        \item Tolerancia a fallos: esta es otra debilidad que presenta, ya que si se produce un fallo en una de las capas
+        (por ejemplo, base de datos), el fallo va a afectar a toda la aplicación.
+    \end{itemize}
+
+    Como conclusión, se puede destacar que esta arquitectura es ideal para aplicaciones pequeñas y sencillas donde el 
+    presupuesto es limitado y la complejidad no justifica sistemas distribuidos más costosos.
+
+    \item \textbf{Arquitectura Pipeline}
+    \newline
+    Este estilo de arquitectura se basa en el principio de computación de una secuencia de transformaciones. Su estructura
+    es lineal y se compone de dos elementos principales: \textit{pipes} (tuberías) y \textit{filters} (filtros). Por un lado,
+    los \textit{pipes} representan los canales de comunicación entre las etapas de procesamiento, suelen ser unidireccionales 
+    y su función es puramente el transporte de datos de un filtro a otro; mientras que por el otro lado, los \textit{filters}
+    son componentes independientes que realizan una tarea específica de procesamiento o transformación de los datos que reciben 
+    del \textit{pipe}. Además, éstos son autónomos y no deben conocer la existencia de otros filtros en la cadena.
+
+    Continuando con los filtros, éstos se pueden clasificar en distintos tipos según su rol funcional dentro de la topología:
+
+    \begin{itemize}
+        \item \textit{Producer (source)}: es el punto de inicio que genera los datos o los lee.
+        \item \textit{Transformer}: es el encargado de realizar transformaciones de datos.
+        \item \textit{Tester}: valida o filtra los datos baśandose en criterios específicos.
+        \item \textit{Consumer (Sink)}: destino final donde terminan los datos.
+    \end{itemize}
+
+    En cuanto a sus características, esta arquitectura destaca por un alto desacoplamiento, ya que al ser los filtros
+    independientes, es fácil intercambiar, añadir o modificar etapas en el pipeline sin afectar al resto del sistema. 
+    Además, este estilo es ``\textit{stateless}'' entre filtros, es decir, cada filtro procesa lo que recibe y lo pasa 
+    al siguiente sin mantener un estado global complejo.
+
+    Valorando sus características arquitectónicas más relevantes, se clasifican en:
+
+    \begin{itemize}
+        \item Costo y simplicidad: es un estilo relativamente económico y fácil de implementar para los casos de uso 
+        adecuados.
+        \item Facilidad de desarrollo: la separación clara de responsabilidades en filtros independientes facilita 
+        mucho el trabajo de codificación.
+        \item Escalabilidad: al ser generalmente una arquitectura monolítica, es difícil de escalar de forma elástica.
+        \item Tolerancia a fallos: si un filtro o una tubería falla, todo el proceso suele detenerse, lo que lo hace 
+        poco resiliente.
+    \end{itemize}
+
+    Como conclusión, esta arquitectura es ideal para aplicaciones que requieren un procesamiento de datos secuencial y 
+    discreto, como herramientas de procesamiento de texto, compiladores o sistemas de extracción, transformación y 
+    carga (ETL) sencillos.
+
+    \item \textbf{Arquitectura Microkernel}
+    \newline
+    También conocida como \textit{plug-ins}, es un estilo de arquitectura diseñado para productos software que se pueden
+    instalar (como navegadores o IDEs). Su estructura se divide en dos componentes principales: \textit{Core System} 
+    (sistema central), el cual contiene toda la lógica mínima necesaria para que la aplicación funcione, encargándose de 
+    la ejecución básica y la gestión de los plug-ins; y \textit{Plug-in Components}, que son módulos independientes entre sí
+    con lógica adicional, características especiales o adaptadores personalizados para extender el sistema central.
+
+    En cuanto a su funcionamiento, el sistema central necesita saber qué plug-ins están disponibles. Para ello, utiliza  
+    un registro o catálogo que contiene información sobre el plug-in, cómo acceder a él y qué protocolos utiliza. Por
+    parte del \textit{plug-in}, para que este funcione debe cumplir con un contrato (interfaz) estándar definido por 
+    el sistema central. 
+
+    Valorando sus características arquitectónicas más relevantes, se clasifican en:
+
+    \begin{itemize}
+        \item Costo y simplicidad: es relativamente sencillo de implementar y muy eficiente en términos de costo para 
+        productos que requieren extensibilidad.
+        \item Evolutividad: es su mayor fortaleza ya que permite añadir funcionalidades de forma aislada y rápida a través 
+        de plug-ins.
+        \item Facilidad de prueba (testability): los plug-ins se pueden probar de forma aislada del sistema central.
+        \item Escalabilidad y tolerancia a fallos: depende de la implementación, pero al ser frecuentemente monolítico, 
+        no escala tan bien como los sistemas microservicios.
+    \end{itemize}
+
+    Como conclusión, es una arquitectura ideal para aplicaciones que necesitan evolucionar constantemente añadiendo nuevas 
+    funciones o lógica según el cliente o el caso de uso, sin tener que reescribir el núcleo del sistema.
+
+\end{itemize}
+
+\subsubsection{Arquitectura Distribuida}
+
+En esta arquitectura, a diferencia de la monolítica, los componentes van a estar separados y se conectarán a través de 
+protocolos de acceso remoto.
+Entre sus tipos, se pueden destacar los siguientes:
+
+\begin{itemize}
+    \item Arquitectura basada en servicios
+    \item Arquitectura diriga por eventos 
+    \item Arquitectura orientada a servicios
+    \item Arquitectura de microservicios
+\end{itemize}
