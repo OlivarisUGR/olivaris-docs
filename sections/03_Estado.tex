@@ -412,8 +412,207 @@ protocolos de acceso remoto.
 Entre sus tipos, se pueden destacar los siguientes:
 
 \begin{itemize}
-    \item Arquitectura basada en servicios
-    \item Arquitectura diriga por eventos 
-    \item Arquitectura orientada a servicios
-    \item Arquitectura de microservicios
+    \item \textbf{Arquitectura basada en servicios}
+    \newline
+    Este estilo se considera un híbrido que combina aspectos de la arquitectura monolítica y los microservicios, siendo 
+    una opción extremadamente popular para aplicaciones empresariales. 
+
+    A diferencia de los microservicios, este estilo se basa en la creación de servicios de dominio de granularidad gruesa, 
+    refiriéndose a servicios más grandes que los microservicios y menos detallados, que encapsulan una funcionalidad de negocio 
+    más amplia y compleja. En una aplicación típica, suele haber entre 4 y 12 servicios, siendo cada servicio una unidad de 
+    despliegue independiente que contiene toda la lógica necesaria para un dominio de negocio específico. Sin embargo, la base 
+    de datos suele ser centralizada y compartida con todos (aunque si es necesario se puede ``partir''), al igual que la interfaz 
+    de usuario, que hay una y es la que se comunica con los servicios.
+
+    Este estilo es calificado en el libro como uno de los más equilibrados, destacando:
+
+    \begin{itemize}
+        \item Agilidad y desplegabilidad: al tener servicios independientes, es fácil realizar cambios y desplegarlos 
+        rápidamente.
+        \item Facilidad de prueba: los servicios de dominio pueden probarse de forma aislada, lo que mejora la calidad 
+        del software.
+        \item Costo y simplicidad: es mucho menos complejo y costoso de implementar que una arquitectura de microservicios pura.
+        \item Escalabilidad y elasticidad: aunque es mejor que una arquitectura de capas, la base de datos compartida suele actuar 
+        como un cuello de botella que limita el escalado infinito.
+        \item Tolerancia a fallos: el fallo de un servicio no detiene todo el sistema, pero un fallo en la base de datos compartida 
+        uede ser crítico.
+    \end{itemize}
+
+    Como conclusión, este estilo es usado para aplicaciones que necesitan un buen equilibrio entre agilidad, costo y escalabilidad, 
+    especialmente cuando el dominio del negocio tiene un acoplamiento semántico que dificultaría mucho el uso de microservicios.
+
+    \item \textbf{Arquitectura diriga por eventos} 
+    \newline
+    A diferencia del modelo tradicional basado en peticiones (\textit{request-based}), donde un componente solicita datos de forma 
+    determinista, este modelo reacciona a situaciones que ocurren en el sistema (eventos). Se compone de componentes de procesamiento 
+    de eventos desacoplados que operan de manera asíncrona. 
+
+    Se van a distinguir dos formas fundamentales de implementar este estilo:
+
+    \begin{itemize}
+        \item Topología de Broker (intermediario)
+        \newline
+        Esta topología está caracterizada por no tener un orquestador central, siendo el flujo de mensajes distrbuido
+        gracias a un \textit{broker} ligero. Funciona mediante una cadena de eventos: un componente procesa un evento 
+        iniciador, publica lo que hizo como un "evento de procesamiento", y otros componentes interesados reaccionan a él.
+
+        \item Topología de Mediador
+        \newline
+        Esta topología se utiliza cuando se requiere un control sobre el flujo de trabajo. Para ello, se cuenta con un
+        ``Mediador de Eventos'' que será el encargado, conociendo toda la lógica de negocio, de coordinar los pasos 
+        necesarios para procesar un evento inicial.        
+    \end{itemize}
+
+    Este estilo está caracterizado por ser asíncrono, permitiendo de esta manera que el sistema responda al usuario casi 
+    instantáneamente mientras el procesamiento pesado ocurre en segundo plano. Esto evita bloqueos pero requiere del uso
+    de técnicas (como colas de errores) que permitan gestionar fallos sin detener el sistema y que garanticen que los mensajes
+    no se pierdan.
+
+    Según el libro, la calificación general que se da para este estilo es la siguiente:
+
+    \begin{itemize}
+        \item Escalabilidad y rendimiento: son sus mayores fortaleza, ya que al ser asíncrona y desacoplada permite procesar 
+        volúmenes masivos de datos.
+        \item Agilidad y desplegabilidad: al estar desacoplados, los componentes pueden cambiar y desplegarse con facilidad.
+        \item Simplicidad y facilidad de prueba: es un estilo muy complejo de diseñar, implementar y, sobre todo, de probar 
+        debido a su naturaleza no determinista y distribuida.
+    \end{itemize}
+
+    Como conclusión, su uso es recomendado en aplicaciones que necesitan reaccionar en tiempo real a grandes flujos de información, 
+    como en sistemas de procesamiento de datos de telemetría.
+
+    \item \textbf{Arquitectura de microservicios}
+    \newline
+
+    Richards y Ford la definen como la "estrella brillante" del ecosistema actual, diseñada específicamente para abordar los problemas 
+    de escalabilidad y agilidad de los sistemas monolíticos.
+
+    Esta arquitectura se basa en el concepto de desacoplamiento extremo, tanto a nivel técnico como de dominio. A diferencia de otros 
+    estilos, su objetivo principal no es la reutilización (que a menudo se evita para no crear acoplamiento), sino la separación de 
+    intereses para permitir cambios rápidos. Aquí aparece una entidad clave que es el ``microservicio'', siendo una unidad física 
+    separada que se puede desplegar, escalar y actualizar sin afectar a los demás, y cuya funcionalidad será única.
+
+    Para garantizar el desacoplamiento de este estilo, cada microservicio posee sus propios datos. De esta manera, ningún otro servicio 
+    puede acceder directamente a la base de datos de otro; la comunicación debe ser a través de interfaces (APIs).
+
+    Entre sus componentes destacan:
+
+    \begin{itemize}
+        \item \textit{API Gateway}: actúa como punto de entrada para los clientes, manejando tareas como métricas, seguridad y enrutamiento.
+        \item \textit{Sidecars}: componentes adjuntos a los servicios que manejan tareas transversales (comunicación, monitoreo) sin 
+        afectar a la lógica de negocio.
+        \item \textit{Service Mesh}: infraestructura para gestionar la comunicación entre todos los microservicios de forma consistente.
+    \end{itemize}
+
+    Aunque parezcan todo puntos a favor en esta arquitectura, es uno de los estilos más difíciles de implementar debido a la alta necesidad
+    de gestión de los datos entre múltiples servicios y la complejidad de verificar que todo el ecosistema funcione correctamente. Además,
+    requiere de conocimientos en áreas como Devops, automatización y monitoreo.
+
+    Según el libro, su calificación es la siguiente:
+
+    \begin{itemize}
+        \item Escalabilidad y elasticidad: es el mejor estilo para sistemas que necesitan crecer de forma masiva y dinámica.
+        \item Agilidad y desplegabilidad: Permite ciclos de entrega continuos.
+        \item Tolerancia a fallos: el aislamiento asegura que el fallo de un servicio no derribe todo el sistema (siempre 
+        que se implementen patrones de resiliencia).
+        \item Costo y simplicidad: es el estilo más caro y complejo de desarrollar, mantener y operar. No se recomienda 
+        para aplicaciones sencillas.
+    \end{itemize}
+
+    Como solución, la arquitectura de microservicios es muy útil para resolver problemas de gran escala, pero conlleva un "impuesto de 
+    complejidad" que solo debe pagarse si las necesidades de negocio lo justifican.
 \end{itemize}
+
+\subsection{Comunicación y Servicios Web}
+
+La comunicación entre componentes es el elemento que define la eficiencia de una arquitectura distribuida. Mientras que 
+en el pasado la interoperabilidad se buscaba mediante protocolos estrictos basados en estándares corporativos, el
+auge de la web móvil ha impuesto la necesidad de protocolos de baja latencia y formatos de datos ligeros. Según Richards 
+y Ford \cite{libroArquitecturasSoftware}, el éxito de una arquitectura distribuida depende de cómo se gestionen los 
+contratos de comunicación y el ancho de banda disponible.
+
+Esta comunicación entre componentes ha sido posible gracias a las Interfaces de Programación de Aplicaciones (API). Entre
+sus tipos destacan principalmente:
+
+\begin{itemize}
+    \item \textbf{REST \textit{(Representational State Transfer)}}
+    \newline
+    Es consolidado como el estándar de facto para servicios web. REST utiliza métodos HTTP para definir qué acción 
+    se va a realizar sobre los recursos de un sistema. 
+
+    Los métodos (o verbos) HTTP más utilizados son \cite{metodosHttp}:
+
+    \begin{itemize}
+        \item \textit{GET}: solicita una representación de un recurso específico. Las peticiones que usan el método GET 
+        sólo deben recuperar datos. 
+        \item \textit{PUT}: reemplaza todas las representaciones actuales del recurso de destino con la carga útil de 
+        la petición.
+        \item \textit{POST}: se utiliza para enviar una entidad a un recurso en específico, causando a menudo un cambio 
+        en el estado o efectos secundarios en el servidor.
+        \item \textit{DELETE}: borra un recurso en específico.
+        \item \textit{HEAD}: pide una respuesta idéntica a la de una petición GET, pero sin el cuerpo de la respuesta.
+        \item \textit{PATCH}: aplica modificaciones parciales a un recurso.
+        \item \textit{OPTIONS}: utilizado para describir las opciones de comunicación para el recurso de destino.
+        \item \textit{TRACE}: realiza una prueba de bucle de retorno de mensaje a lo largo de la ruta al recurso de destino.
+        \item \textit{CONNECT}: establece un túnel hacia el servidor identificado por el recurso.
+    \end{itemize}
+
+    Para que la acción de estos métodos sobre un recurso pueda ser realizada, se definirá una URL o \textit{endpoint} 
+    por cada acción (que será expuesta por la API) y el cliente, gracias al protocolo HTTP, podrá ejecutar la acción 
+    que desee sin tener conocimiento de cómo está diseñado e implementado el servidor.
+
+    Finalmente, para que un cliente sepa si el resultado de ejecutar la acción ha sido correcto, se utilizarán códigos
+    de estado HTTP, como por ejemplo: 200 \textit{Ok}, 400 (\textit{Bad Request}) Y 500 \textit{Internal Server Error} 
+    (entre otros).
+
+    \item \textbf{GraphQL} \cite{graphql}
+    \newline
+    GraphQL utiliza una sintaxis intuitiva que permite a los clientes enviar una única consulta GraphQL a una API y 
+    recibir exactamente los datos necesarios (en lugar de acceder a endpoints complejos con muchos parámetros). 
+    Esta obtención de datos más eficiente puede mejorar el rendimiento del sistema y la facilidad de uso para los 
+    desarrolladores. 
+
+    Es especialmente útil para crear APIs en entornos complejos con requisitos de interfaz que cambian rápidamente. Ni 
+    las API de REST ni las de GraphQL son inherentemente superiores; son herramientas diferentes que se adaptan a 
+    diferentes tareas.
+
+    \item \textbf{gRPC} \cite{grpc}
+    \newline
+    Es un marco de comunicación de alto rendimiento desarrollado por Google. Utiliza como sistema de comunicación
+    el protocolo RPC (\textit{Remote Procedure Call}) en lugar de texto, lo que lo hace significativamente más rápido 
+    que REST para la comunicación interna entre microservicios.
+
+    \item \textbf{SOAP} \cite{soap}
+    \newline
+    SOAP (anteriormente conocido como Simple Object Access Protocol) es un protocolo ligero para el intercambio de 
+    información en entornos descentralizados y distribuidos. Es un protocolo basado en XML que define tres partes 
+    en todos los mensajes: \textit{sobre}, que define una infraestructura para describir qué hay en un mensaje y 
+    cómo procesarlo; \textit{reglas de codificación}, que expresa instancias de tipos de datos definidos por la 
+    aplicación, y \textit{estilos de comunicación}, que pueden seguir el formato de llamada a procedimiento remoto 
+    (RPC) o el formato orientado a mensajes (Documento). 
+\end{itemize}
+
+En cuanto al intercambio de información, se ha pasado del uso de XML con SOAP (extenso y difícil de procesar en 
+dispositivos con pocos recursos) al dominio absoluto de JSON (JavaScript Object Notation). JSON es un formato 
+de texto ligero, fácil de leer para humanos y sumamente rápido de procesar para los motores de JavaScript y 
+los sistemas operativos actuales.
+
+Además del uso del protocolo HTTP para la comunicación entre sistemas, hay otros protocolos de comunicación que son
+más recomendables de usar cuando se trabaja con servicios que requieren de inmediatez. Entre estos tipos destacan 
+\textit{WebSockets}, proporcionando un canal de comunicación bidireccional constante entre el cliente y el servidor,
+y \textit{Server-Sent Events}, permitiendo que el servidor envíe actualizaciones de forma automática al cliente sin 
+que este tenga que solicitarlas repetidamente.
+
+\subsection{Ecosistema del Desarrollo Web}
+
+Hablar de lenguajes de programación en frontend y backend
+
+\subsection{Sistemas de almacenamiento}
+
+Bases de datos
+
+\subsection{Infraestructura y seguridad}
+
+Hablar sobre despliegue y seguridad: contenedores, orquestacion, despliegue continuo CI/CD, etc
+
+\subsection{Elección de tecnologías}
