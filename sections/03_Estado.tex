@@ -605,7 +605,101 @@ que este tenga que solicitarlas repetidamente.
 
 \subsection{Ecosistema del Desarrollo Web}
 
-Hablar de lenguajes de programación en frontend y backend
+En este apartado se van a comentar las principales tecnologías que se han tenido en cuenta para el desarrollo del
+proyecto de Olivaris.
+
+Van a ser clasificadas en dos campos: las que pertenecen al \textit{frontend} o lado del cliente, y las que pertencen
+al \textit{backend} o lado del servidor.
+
+\subsubsection{Tecnologías para el frontend}
+
+El desarrollo del lado del cliente, o frontend, comprende todo aquello con lo que el usuario interactúa directamente 
+en un navegador web. En la última década, este campo ha pasado de documentos estáticos a \hyperlink{singlePageApplication}{\textit{Single Page Application}} 
+(SPA) y \hyperlink{progressiveWebApps}{\textit{Progressive Web Apps}} (PWA) de gran complejidad. El objetivo actual 
+no es solo mostrar información, sino gestionar estados complejos, asegurar la accesibilidad y optimizar el tiempo de 
+respuesta bajo el paradigma de \hyperlink{clientSideRendering}{\textit{Client-Side Rendering}} (CSR) o enfoques 
+híbridos.
+
+Aunque hoy en día se utilizan muchas herramientas, la base de cualquier interfaz web sigue descansando sobre tres 
+tecnologías core:   
+
+\begin{itemize}
+    \item \textbf{HTML5 (\textit{HyperText Markup Language})} \cite{html}
+    \newline
+    Es el componente más básico de la Web. Define el significado y la estructura del contenido web a través del uso de 
+    ``marcas'' para etiquetar texto, imágenes y otro tipo de contenido, permitiendo que sea mostrado en un navegador.
+
+    \item \textbf{CSS3 (\textit{Cascading Style Sheets})} \cite{css}
+    \newline
+    Es el lenguaje de estilos utilizado para describir la presentación de documentos HTML. Describe cómo debe ser 
+    renderizado el elemento estructurado en la pantalla, definiendo su estilo.
+
+    \item \textbf{JavaScript} \cite{javascript}
+    \newline
+    Si bien es más conocido como un lenguaje de \textit{scripting} para páginas web, y es usado en muchos entornos 
+    fuera del navegador, JavaScript es un lenguaje de programación basada en prototipos, multiparadigma, de un solo 
+    hilo, dinámico, con soporte para programación orientada a objetos, imperativa y declarativa. Gracias a JS, se
+    ha conseguido que la web se convierte en una pieza interactiva y dinámica para el usuario.
+
+    Cabe destacar en este apartado \textbf{TypeScript}. TypeScript es un superset de de JavaScript que añade tipo estático. 
+    Esto significa que permite a los desarrolladores añadir el tipo de dato que se está utilizando. 
+\end{itemize}
+
+El desarrollo ha evolucionado del uso de ``Vanilla JS'' (JS puro), a la utilización de frameworks. Dentro de estos frameworks,
+destacan en el desarrollo web: 
+
+\begin{itemize}
+    \item \textbf{React} \cite{react}
+    \newline
+    React es una librería de JavaScript que permite construir interfaces de usuario a partir de piezas individuales 
+    llamadas componentes. Además, permite crear tus propios componentes y combinarlos para formar pantallas, páginas 
+    y aplicaciones.
+
+    \item \textbf{Angular} \cite{angular}
+    \newline
+    Angular es un framework que usa TypeScript de forma nativa y que permite crear aplicaciones web escalables. Se
+    caracteriza por ser organizado y modular gracias al uso de componentes e inyección de dependencias.
+\end{itemize}
+
+En el lado del desarrollo móvil, los frameworks más utilizados son los siguientes:
+
+\begin{itemize}
+    \item \textbf{Flutter} \cite{flutter}
+    \newline
+    Flutter es un framework de código abierto de Google para crear aplicaciones multiplataforma compiladas de forma 
+    nativa a partir de una única base de código.
+
+    \item \textbf{React Native} \cite{reactNative}
+    \newline
+    React Native es una librería de JavaScript que permite construir aplicaciones nativas para Android e iOS. Proporciona 
+    componentes nativos que se asignan directamente a los bloques de construcción de la interfaz.
+
+    \item \textbf{Kotlin} \cite{kotlin}
+    \newline
+    Kotlin es un lenguaje de programación de tipo estático utilizado para desarrollar aplicaciones móviles en Android.
+
+    \item \textbf{Ionic} \cite{ionic}
+    \newline
+    Ionic es un SDK (kit de desarrollo de software) de código abierto que permite crear aplicaciones multiplataforma 
+    utilizando una única base de código. La aplicación se construye una sola vez con tecnologías web  (como HTML, CSS 
+    y JavaScript), y se despliega en cualquier dispositivo. 
+\end{itemize}
+
+\subsubsection{Tecnologías para el backend}
+
+El backend representa la capa de acceso a datos y lógica de procesamiento que reside en el servidor. El enfoque actual 
+prioriza la escalabilidad, la capacidad de respuesta ante grandes volúmenes de datos y la creación de APIs (Application 
+Programming Interfaces) robustas, generalmente bajo el estándar REST.
+
+Dentro de los lenguajes más utilizados para el desarrollo del backend, se encuentran: 
+
+\begin{itemize}
+    \item Java
+    \item Python
+    \item JavaScript
+    \item PHP
+\end{itemize}
+
 
 \subsection{Sistemas de almacenamiento}
 
