@@ -726,25 +726,79 @@ Dentro de los lenguajes más utilizados para el desarrollo del backend, se encue
     APIs. Destaca por ofrecer funcionalidades como el uso de OpenAPI para la creación de APIs, documentación automática 
     de modelos de datos con JSON Schema e incluir un sistema de inyección de dependencias muy fácil de usar.
 
-    \item \textbf{JavaScript}
+    \item \textbf{Node.js} \cite{nodeJs}
     \newline
+    Node.js es un entorno de tiempo de ejecución de JavaScript, que permite ejecutar código JS en un ordenador como si de
+    una aplicación independiente se tratara. La idea principal de Node.js es usar el modelo de entrada y salida sin 
+    bloqueo y controlado por eventos para seguir siendo liviano y eficiente frente a las aplicaciones en tiempo real 
+    de uso de datos que se ejecutan en los dispositivos, por lo tanto, donde Node.js realmente brilla es en la 
+    creación de aplicaciones de red rápidas, ya que es capaz de manejar una gran cantidad de conexiones simultáneas 
+    con un alto nivel de rendimiento, lo que equivale a una alta escalabilidad.
 
-
-
-    \item \textbf{PHP}
-    \newline
-
-
-    
+    Para su desarrollo web, cuenta con frameworks como Express o NestJs, siendo el primero un framework minimalista
+    donde hay que desarrollar muchas funcionalidades desde cero, y el segundo un framwork más completo que permite 
+    crear aplicaciones bakcend completas con un diseño modular. 
 \end{itemize}
-
 
 \subsection{Sistemas de almacenamiento}
 
-Bases de datos
+El almacenamiento de datos ha evolucionado desde sistemas de archivos planos hacia Sistemas de Gestión de Bases de Datos. 
+En el desarrollo moderno, la elección de una base de datos no solo depende del volumen de datos, sino de su estructura, 
+la velocidad de consulta requerida y la consistencia necesaria. El estado del arte actual se divide principalmente entre 
+el modelo Relacional (SQL) y el No Relacional (NoSQL).
+
+\subsubsection{Bases de Datos Relacionales (SQL) \cite{baseDatosSQL}} 
+
+Las bases de datos relacionales son un tipo de base de datos que almacena y organiza datos con relaciones definidas para 
+un acceso rápido. En una base de datos relacional, los datos se organizan en tablas que contienen información sobre cada 
+entidad y representan categorías predefinidas mediante filas y columnas. La estructuración de los datos de esta manera 
+hace que sea eficaz y flexible el acceso, motivo por el que las bases de datos relacionales son más comunes. Las bases 
+de datos relacionales también se crean para comprender lenguaje de consulta estructurado (SQL), un lenguaje de 
+programación estandarizado que se usa para almacenar, manipular y recuperar datos.
+
+Entre las más destacadas se encuentran: MySQL / MariaDB, PostgreSQL y Microsoft SQL Server.
+
+\subsubsection{Base de Datos NoSQL \cite{baseDatosNoSQL}}
+
+Las bases de datos NoSQL están diseñadas para modelos de datos específicos y almacenan los datos en esquemas flexibles 
+que se escalan con facilidad para aplicaciones modernas. Además, las bases de datos NoSQL son ampliamente reconocidas 
+porque son fáciles de desarrollar, por su funcionalidad y el rendimiento a escala.
+
+Están caracterizadas por permitir un desarrollo más rápido e iterativo (gracias a su flexbilidad), un diseño que permite
+escalar horizontalmente usando clústeres distribuidos, manejar grandes volúmenes de datos y están muy optimizadas para 
+patrones de acceso específicos.
+
+Dentro de las bases de datos NoSQL, se encuentran tipos como: bases de datos orientadas a documentos (MongoDB), clave-valor
+(redis) y las orientadas a grafos (Neo4j).
+
+\subsubsection{Bases de Datos en la Nube \cite{baseDatosNube}}
+
+Las bases de datos en la nube organizan y almacenan datos estructurados, no estructurados y semiestructurados, al igual 
+que las bases de datos locales tradicionales. Sin embargo, también proporcionan muchos de los mismos beneficios de la 
+computación en la nube, incluida la velocidad, la escalabilidad, la agilidad y los costos reducidos.
+
+Entre los tipos que hay, se pueden clasificar en bases de datos relacionales en la nube (por ejemplo SQL Server u Oracle), 
+y bases de datos no relacionales en la nube (como MongoDB o Redis).
 
 \subsection{Infraestructura y seguridad}
 
-Hablar sobre despliegue y seguridad: contenedores, orquestacion, despliegue continuo CI/CD, etc
+La infraestructura moderna se basa en el paradigma de Cloud Computing y la Virtualización. El objetivo es que la aplicación 
+sea escalable, resiliente y que su despliegue sea totalmente automatizado a través de pipelines de CI/CD (Integración Continua 
+y Despliegue Continuo). Entre las principales tecnologías más utilizadas en la actualidad se encuentran:
+
+\begin{itemize}
+    \item Contenedores (Docker)
+    \item Orquestación (Kubernetes)
+    \item Infraestructura como código (Ansible)
+\end{itemize}
+
+Además de esto, el desarrollo de un buen sistema requiere de una seguridad constante que evite el acceso a datos cŕiticos del 
+sistema. Para ello, la autenticación y autorización juegan un papel fundamental en este apartado, destacando principalmente:
+
+HABLAR DE LOS TIPOS DE AUTENTICACIÓN
+
+\begin{itemize}
+    \item 
+\end{itemize}
 
 \subsection{Elección de tecnologías}
