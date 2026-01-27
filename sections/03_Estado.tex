@@ -780,25 +780,114 @@ computación en la nube, incluida la velocidad, la escalabilidad, la agilidad y 
 Entre los tipos que hay, se pueden clasificar en bases de datos relacionales en la nube (por ejemplo SQL Server u Oracle), 
 y bases de datos no relacionales en la nube (como MongoDB o Redis).
 
-\subsection{Infraestructura y seguridad}
+\subsection{Despliegue y estrategias}
 
-La infraestructura moderna se basa en el paradigma de Cloud Computing y la Virtualización. El objetivo es que la aplicación 
-sea escalable, resiliente y que su despliegue sea totalmente automatizado a través de pipelines de CI/CD (Integración Continua 
-y Despliegue Continuo). Entre las principales tecnologías más utilizadas en la actualidad se encuentran:
-
-\begin{itemize}
-    \item Contenedores (Docker)
-    \item Orquestación (Kubernetes)
-    \item Infraestructura como código (Ansible)
-\end{itemize}
-
-Además de esto, el desarrollo de un buen sistema requiere de una seguridad constante que evite el acceso a datos cŕiticos del 
-sistema. Para ello, la autenticación y autorización juegan un papel fundamental en este apartado, destacando principalmente:
-
-HABLAR DE LOS TIPOS DE AUTENTICACIÓN
+El despliegue de software (\textit{deployment}) es el proceso crítico que transforma el código fuente desarrollado en 
+un entorno local en una aplicación funcional y accesible para los usuarios finales. En la actualidad, el despliegue es 
+un ciclo continuo y automatizado que garantiza la disponibilidad y estabilidad del sistema. Las partes que engloban a este
+proceso son las siguientes: 
 
 \begin{itemize}
-    \item 
+    \item \textbf{Integración Continua (CI):} es la fase donde el código se compila, se valida y se somete a pruebas automáticas 
+    cada vez que un desarrollador realiza un cambio.
+    \item \textbf{Entrega/Despliegue continuo (CD):} una vez que el código está validado, se realiza un envío automático a los 
+    entornos de prueba o producción.
+    \item \textbf{Aprovisionamiento de infraestructura:} consiste en la La creación y configuración de los recursos (servidores, 
+    bases de datos, redes) donde residirá la aplicación.
+    \item \textbf{Monitorización y \textit{feedback}:} cuando aplicación está desplegada, esta debe ser vigilada para detectar 
+    errores en tiempo real y permitir un \textit{rollback} (vuelta atrás) si algo falla.
 \end{itemize}
+
+Un aspecto fundamental es decidir que estrategia de despliegue se va a llevar a cabo cuando se realiza una aplicación 
+y cómo se libera a los usuarios. Los tipos de estrategia pueden variar según las necesidades de la infraestructura y 
+según la estrategia que se quiera seguir. 
+
+Según la infraestructura, el despliegue se puede realizar en servidores físicos propios (\textit{on-premise}), a través 
+de proveedores en la nube (como \textit{AWS}), o ejecutándose solo cuando sea necesario (\textit{serverless}). Por otro 
+lado, según la estrategia que se siga, se encuentran los siguientes tipos: \cite{tiposDespliegue} 
+
+\begin{itemize}
+    \item \textit{Rolling upgrade}
+    \newline
+    Se realiza una actualización secuencial del servicio, actualizando uno a uno los componentes. Este tipo de despliegue 
+    tiende a ser lento tanto en su ejecución como en su capacidad de volver atrás (rollback) y generalmente se emplea en 
+    combinación con otras estrategias.
+
+    \item \textit{Blue/Green}
+    \newline
+    Estrategia muy común que implica el uso de dos versiones del servicio: la versión nueva (blue) y la versión estable 
+    existente (green). Los usuarios continúan utilizando la versión verde mientras se prueba y evalúa la versión azul. Cuando se considera lista, los usuarios cambian a la versión azul. Si se detecta algún problema, es posible regresar a la versión verde.
+
+    \item \textit{ Red/Black}
+    \newline
+    Similar a la estrategia blue/green, con la diferencia de que se desvía una pequeña porción del tráfico desde la 
+    versión negra (estable) hacia la nueva versión. Luego de evaluar su rendimiento, se realiza un desvío aún más grande 
+    del tráfico y, finalmente, se redirecciona todo el tráfico hacia la nueva versión. Se mantiene la versión negra en 
+    línea para permitir un rollback rápido si es necesario.
+
+    \item \textit{Dark Launcher}
+    \newline
+    Se implementa una nueva versión en paralelo a la versión estable existente. La particularidad aquí es que se duplica 
+    una parte del tráfico para observar cómo se comporta la nueva versión bajo una carga duplicada. Luego, se realiza un 
+    redireccionamiento parcial del tráfico hacia la nueva versión.
+
+    \item \textit{Canary Release}
+    \newline
+    Esta estrategia implica un despliegue parcial basado en el tiempo y el rendimiento de la nueva versión, consiguiendo
+    de esta manera una implementación gradual y controlada.
+\end{itemize}
+
+En cuanto a las tecnologías y herramientas que se pueden utilizar para realizar el despliegue y gestionar una aplicación,
+se pueden clasificar en:
+
+\begin{itemize}
+    \item Herramientas de contenerización, siendo las más utilizadas son Dokcer y Kubernetes. Por un lado, Docker 
+    \cite{docker} empaqueta software en unidades estandarizadas llamadas contenedores que incluyen todo lo necesario 
+    para que el software se ejecute, incluidas bibliotecas y herramientas de sistema, pudiendo ejecutar aplicaciones 
+    en cualquier entorno. Por otro lado, Kuberntes \cite{kubernetes} facilita la automatización y la configuración 
+    declarativa, además de administrar contenedores, orquestando la infraestructura de cómputo, redes y almacenamiento 
+    para que las cargas de trabajo de los usuarios no tengan que hacerlo.
+    \item Herramientas de automatización, como GitHub Actions y Jenkins.
+    \item Herramientas que permiten la definición de la infraestructura desde un archivo, como Terraform.
+\end{itemize}
+
+\subsection{Autenticación y autorización}
+
+La seguridad es un apartado es crítico a la hora de desarrollar un sistema, siendo una responsabilidad transversal que 
+utiliza protocolos estandarizados para permitir la interoperabilidad entre sistemas.
+
+La autenticación (\textit{AuthN}) debe definirse como el proceso técnico de verificar que un usuario es quien dice ser, 
+siendo la puerta de entrada a cualquier sistema seguro. Algunos de los mecanismos más utilizados para la autenticación 
+son los siguientes:
+
+\begin{itemize}
+    \item Basada en sesiones (formularios + cookies)
+    \newline
+    Es el método más común donde el usuario envía sus credenciales mediante un formulario. Si son correctas, el servidor
+    podrá crear una sesión y enviar al navegador una cookie. Cada petición que se haga a continuación al servidor, se 
+    enviará la cookie desde el cliente y el servidor validará el id de la sesión que hay en la cookie. 
+
+    Es un método que destaca por ser muy seguro para aplicaciones web simples.
+
+    \item Basada en tokens (JWT)
+    \newline
+    Es el estándar más utilizado en aplicaciones modernas. El cliente va a enviar sus credenciales tras rellenar un 
+    formulario al servidor, encargándose este de generar un token (JSON Web Token) firmado digitalmente y devolviéndoselo 
+    al cliente. El cliente lo guardará para enviarlo en la cabecera de cada petición que quiera hacer al servidor.
+
+    Entre sus ventajas, destaca por una escalabilidad total y compatibilidad nativa con aplicaciones móviles.
+
+    \item OAuth 2.1 y OpenID Connect
+    \newline
+    OAuth 2.1 es un framework que permite a una aplicación acceder a datos de otra sin pedir la contraseña (acceso delegado), 
+    mientras que OpenID Connect es una capa de identidad sobre OAuth 2.0 que permite el \hyperlink{singleSignOn}{\textit{Single Sign-on}}
+
+    \item Multifactor
+    \newline
+    Se trata de un mecanismo que combina varios factores de autenticación (``algo que sabes'' como un PIN, ``algo que 
+    tienes'' como un móvil, y ``algo que eres'' como una huella digital).
+
+\end{itemize}
+
 
 \subsection{Elección de tecnologías}
