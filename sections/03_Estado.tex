@@ -247,9 +247,6 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
     información centralizada y disponible para el cliente a través de una interfaz sencilla e intuitiva. A través de ella,
     la empresa podrá llevar un control de la contabilidad, control del stock del almacén, facturación y liquidaciones, gestión
     de salidas de aceite, gestión de rendimiento de laboratorio (entre otras más).
-
-    
-    \item \textbf{FACTOR DIFERENCIAL - Conexión gestoría automatizada, software libre}
 \end{itemize}
 
 \section{Comparativa con el estado del arte}
@@ -525,22 +522,21 @@ Entre sus tipos, se pueden destacar los siguientes:
 
 \subsection{Comunicación y Servicios Web}
 
-La comunicación entre componentes es el elemento que define la eficiencia de una arquitectura distribuida. Mientras que 
-en el pasado la interoperabilidad se buscaba mediante protocolos estrictos basados en estándares corporativos, el
-auge de la web móvil ha impuesto la necesidad de protocolos de baja latencia y formatos de datos ligeros. Según Richards 
-y Ford \cite{libroArquitecturasSoftware}, el éxito de una arquitectura distribuida depende de cómo se gestionen los 
-contratos de comunicación y el ancho de banda disponible.
+La comunicación entre componentes es el elemento que define la eficiencia de una arquitectura distribuida. Mientras que en el pasado 
+la interoperabilidad se buscaba mediante protocolos estrictos basados en estándares corporativos, el auge de la web móvil ha impuesto 
+la necesidad de protocolos de baja latencia y formatos de datos ligeros. Según Richards y Ford \cite{libroArquitecturasSoftware}, el 
+éxito de una arquitectura distribuida depende de la gestión de los contratos de comunicación y el ancho de banda disponible.
 
-Esta comunicación entre componentes ha sido posible gracias a las Interfaces de Programación de Aplicaciones (API). Entre
-sus tipos destacan principalmente:
+Esta interacción es posible gracias a las Interfaces de Programación de Aplicaciones (\hyperlink{api}{API}). Entre sus tipos principales 
+destacan:
 
 \begin{itemize}
     \item \textbf{REST \textit{(Representational State Transfer)}}
     \newline
-    Es consolidado como el estándar de facto para servicios web. REST utiliza métodos HTTP para definir qué acción 
-    se va a realizar sobre los recursos de un sistema. 
+    Consolidado como el estándar de facto para servicios web. REST utiliza los métodos del protocolo HTTP para definir acciones sobre 
+    los recursos del sistema a través de \textit{endpoints} (URLs).
 
-    Los métodos (o verbos) HTTP más utilizados son \cite{metodosHttp}:
+    Los principales verbos HTTP y su propósito son: \cite{metodosHttp}
 
     \begin{itemize}
         \item \textit{GET}: solicita una representación de un recurso específico. Las peticiones que usan el método GET 
@@ -557,13 +553,8 @@ sus tipos destacan principalmente:
         \item \textit{CONNECT}: establece un túnel hacia el servidor identificado por el recurso.
     \end{itemize}
 
-    Para que la acción de estos métodos sobre un recurso pueda ser realizada, se definirá una URL o \textit{endpoint} 
-    por cada acción (que será expuesta por la API) y el cliente, gracias al protocolo HTTP, podrá ejecutar la acción 
-    que desee sin tener conocimiento de cómo está diseñado e implementado el servidor.
-
-    Finalmente, para que un cliente sepa si el resultado de ejecutar la acción ha sido correcto, se utilizarán códigos
-    de estado HTTP, como por ejemplo: 200 \textit{Ok}, 400 (\textit{Bad Request}) Y 500 \textit{Internal Server Error} 
-    (entre otros).
+    Para confirmar el resultado de estas acciones, el servidor devuelve códigos de estado HTTP, tales como: \texttt{200 OK} (éxito), 
+    \texttt{400 Bad Request} (error del cliente) o \texttt{500 Internal Server Error} (error del servidor).
 
     \item \textbf{GraphQL} \cite{graphql}
     \newline
@@ -592,82 +583,74 @@ sus tipos destacan principalmente:
     (RPC) o el formato orientado a mensajes (Documento). 
 \end{itemize}
 
-En cuanto al intercambio de información, se ha pasado del uso de XML con SOAP (extenso y difícil de procesar en 
-dispositivos con pocos recursos) al dominio absoluto de JSON (JavaScript Object Notation). JSON es un formato 
-de texto ligero, fácil de leer para humanos y sumamente rápido de procesar para los motores de JavaScript y 
-los sistemas operativos actuales.
+En cuanto al formato de intercambio de datos, Se ha producido una transición del uso de XML (extenso y costoso de 
+procesar) al dominio absoluto de JSON (JavaScript Object Notation). JSON es un formato de texto ligero, fácil de 
+leer para humanos y sumamente rápido de procesar por los motores modernos.
 
-Además del uso del protocolo HTTP para la comunicación entre sistemas, hay otros protocolos de comunicación que son
-más recomendables de usar cuando se trabaja con servicios que requieren de inmediatez. Entre estos tipos destacan 
-\textit{WebSockets}, proporcionando un canal de comunicación bidireccional constante entre el cliente y el servidor,
-y \textit{Server-Sent Events}, permitiendo que el servidor envíe actualizaciones de forma automática al cliente sin 
-que este tenga que solicitarlas repetidamente.
+Finalmente, la comunicación entre sistemas va más allá del modelo tradicional de petición-respuesta de HTTP, existiendo 
+otros protocolos para servicios que requieren inmediatez como \textbf{WebSockets}, proporcionando un canal de comunicación 
+bidireccional constante entre el cliente y el servidor, y \textbf{Server-Sent Events}, permitiendo que el servidor envíe 
+actualizaciones de forma automática al cliente sin que este tenga que solicitarlas repetidamente.
 
 \subsection{Ecosistema del Desarrollo Web}
 
-En este apartado se van a comentar las principales tecnologías que se han tenido en cuenta para el desarrollo del
-proyecto de Olivaris.
-
-Van a ser clasificadas en dos campos: las que pertenecen al \textit{frontend} o lado del cliente, y las que pertencen
-al \textit{backend} o lado del servidor.
+En este apartado se describen las principales tecnologías consideradas para el desarrollo del proyecto Olivaris. 
+Estas se clasifican en dos grandes áreas: el Frontend (lado del cliente) y el Backend (lado del servidor).
 
 \subsubsection{Tecnologías para el frontend}
 
-El desarrollo del lado del cliente, o frontend, comprende todo aquello con lo que el usuario interactúa directamente 
-en un navegador web. En la última década, este campo ha pasado de documentos estáticos a \hyperlink{singlePageApplication}{\textit{Single Page Application}} 
-(SPA) y \hyperlink{progressiveWebApps}{\textit{Progressive Web Apps}} (PWA) de gran complejidad. El objetivo actual 
-no es solo mostrar información, sino gestionar estados complejos, asegurar la accesibilidad y optimizar el tiempo de 
-respuesta bajo el paradigma de \hyperlink{clientSideRendering}{\textit{Client-Side Rendering}} (CSR) o enfoques 
-híbridos.
+El frontend comprende todo aquello con lo que el usuario interactúa directamente. En la última década, este campo ha 
+evolucionado desde documentos estáticos hacia \hyperlink{singlePageApplication}{\textit{Single Page Application}} y 
+\hyperlink{progressiveWebApps}{\textit{Progressive Web Apps}} de gran complejidad. El objetivo actual es gestionar 
+estados complejos, asegurar la accesibilidad y optimizar el rendimiento bajo el paradigma de \hyperlink{clientSideRendering}{\textit{Client-Side Rendering}}  
+(CSR) o enfoques híbridos.
 
-Aunque hoy en día se utilizan muchas herramientas, la base de cualquier interfaz web sigue descansando sobre tres 
-tecnologías core:   
+Aunque hoy en día se utilizan muchas herramientas, la base de cualquier interfaz web descansa sobre tres pilares:
 
 \begin{itemize}
     \item \textbf{HTML5 (\textit{HyperText Markup Language})} \cite{html}
     \newline
-    Es el componente más básico de la Web. Define el significado y la estructura del contenido web a través del uso de 
-    ``marcas'' para etiquetar texto, imágenes y otro tipo de contenido, permitiendo que sea mostrado en un navegador.
+    Es el componente más básico de la Web. Define la estructura y el significado del contenido mediante etiquetas 
+    (marcas), permitiendo que el navegador interprete textos, imágenes y multimedia.
 
     \item \textbf{CSS3 (\textit{Cascading Style Sheets})} \cite{css}
     \newline
-    Es el lenguaje de estilos utilizado para describir la presentación de documentos HTML. Describe cómo debe ser 
-    renderizado el elemento estructurado en la pantalla, definiendo su estilo.
+    Lenguaje de estilos encargado de la presentación visual. Define cómo se renderizan los elementos en pantalla 
+    (diseño, colores, tipografías y adaptabilidad).
 
     \item \textbf{JavaScript} \cite{javascript}
     \newline
     Si bien es más conocido como un lenguaje de \textit{scripting} para páginas web, y es usado en muchos entornos 
     fuera del navegador, JavaScript es un lenguaje de programación basada en prototipos, multiparadigma, de un solo 
-    hilo, dinámico, con soporte para programación orientada a objetos, imperativa y declarativa. Gracias a JS, se
-    ha conseguido que la web se convierte en una pieza interactiva y dinámica para el usuario.
+    hilo, dinámico, con soporte para programación orientada a objetos, imperativa y declarativa. Gracias a JavaScript, se
+    ha conseguido que la web se convierta en una pieza interactiva y dinámica para el usuario.
 
-    Cabe destacar en este apartado \textbf{TypeScript}. TypeScript es un superset de de JavaScript que añade tipo estático. 
-    Esto significa que permite a los desarrolladores añadir el tipo de dato que se está utilizando. 
+    Mención especial merece \textbf{TypeScript}, como un superset de JavaScript que añade tipado estático. Su uso 
+    mejora la detección de errores en tiempo de desarrollo y facilita el mantenimiento de bases de código extensas.
 \end{itemize}
 
-El desarrollo ha evolucionado del uso de ``Vanilla JS'' (JS puro), a la utilización de frameworks. Dentro de estos frameworks,
-destacan en el desarrollo web: 
+El desarrollo ha evolucionado del uso de "Vanilla JS" (JS puro) hacia marcos de trabajo (\textit{\hyperlink{marcosTrabajo}{frameworks}}) 
+que aumentan la eficiencia:
 
 \begin{itemize}
     \item \textbf{React} \cite{react}
     \newline
-    React es una librería de JavaScript que permite construir interfaces de usuario a partir de piezas individuales 
-    llamadas componentes. Además, permite crear tus propios componentes y combinarlos para formar pantallas, páginas 
-    y aplicaciones.
+    Librería basada en componentes reutilizables. Destaca por su flexibilidad y su capacidad para manejar interfaces 
+    de usuario altamente dinámicas mediante un DOM virtual.
 
     \item \textbf{Angular} \cite{angular}
     \newline
-    Angular es un framework que usa TypeScript de forma nativa y que permite crear aplicaciones web escalables. Se
-    caracteriza por ser organizado y modular gracias al uso de componentes e inyección de dependencias.
+    Angular es un framework integral que utiliza TypeScript de forma nativa. Su arquitectura modular y su sistema de 
+    inyección de dependencias lo hacen ideal para aplicaciones empresariales escalables.
 \end{itemize}
 
-En el lado del desarrollo móvil, los frameworks más utilizados son los siguientes:
+Para el ecosistema móvil, se han evaluado diversas estrategias que permiten alcanzar a usuarios de Android e iOS:
 
 \begin{itemize}
     \item \textbf{Flutter} \cite{flutter}
     \newline
     Flutter es un framework de código abierto de Google para crear aplicaciones multiplataforma compiladas de forma 
-    nativa a partir de una única base de código.
+    nativa a partir de una única base de código, ofreciendo un alto rendimiento y una interfaz consistente.
 
     \item \textbf{React Native} \cite{reactNative}
     \newline
@@ -676,126 +659,126 @@ En el lado del desarrollo móvil, los frameworks más utilizados son los siguien
 
     \item \textbf{Kotlin} \cite{kotlin}
     \newline
-    Kotlin es un lenguaje de programación de tipo estático utilizado para desarrollar aplicaciones móviles en Android.
+    Kotlin es un lenguaje de programación de tipo estático utilizado para desarrollar aplicaciones móviles en Android,
+    destacando por su seguridad y concisión.
 
     \item \textbf{Ionic} \cite{ionic}
     \newline
     Ionic es un SDK (kit de desarrollo de software) de código abierto que permite crear aplicaciones multiplataforma 
-    utilizando una única base de código. La aplicación se construye una sola vez con tecnologías web  (como HTML, CSS 
+    utilizando una única base de código. La aplicación se construye una sola vez con tecnologías web (como HTML, CSS 
     y JavaScript), y se despliega en cualquier dispositivo. 
 \end{itemize}
 
 \subsubsection{Tecnologías para el backend}
 
-El backend representa la capa de acceso a datos y lógica de procesamiento que reside en el servidor. El enfoque actual 
-prioriza la escalabilidad, la capacidad de respuesta ante grandes volúmenes de datos y la creación de APIs (Application 
-Programming Interfaces) robustas, generalmente bajo el estándar REST.
+El backend representa la capa de lógica de procesamiento y acceso a datos que reside en el servidor. El enfoque actual 
+prioriza la escalabilidad, la capacidad de respuesta ante grandes volúmenes de datos y la exposición de servicios 
+mediante APIs (\textit{Application Programming Interfaces}) robustas, generalmente bajo el estándar REST o GraphQL.
 
 Dentro de los lenguajes más utilizados para el desarrollo del backend, se encuentran: 
 
 \begin{itemize}
     \item \textbf{Java} 
     \newline
-    Java sigue siendo el pilar de los sistemas críticos debido a su robustez, tipado fuerte y excelente gestión de la 
-    memoria a través de la JVM (\textit{Java Virtual Machine}).
+    Java se mantiene como un pilar en sistemas empresariales críticos debido a su robustez, tipado fuerte y excelente 
+    gestión de memoria a través de la JVM (\textit{Java Virtual Machine}).
 
-    Uno de los frameworks de Java más utilizados es Spring Boot \cite{springBoot}. Spring Boot es una herramienta de 
-    código abierto que facilita el uso de \hyperlink{marcosTrabajo}{marcos} basados en Java para crear microservicios 
-    y aplicaciones web.
+    Uno de los frameworks de Java más utilizados es Spring Boot \cite{springBoot}, siendo el framework de código abierto 
+    líder, que facilita el uso de marcos de trabajo basados en Java para crear microservicios y aplicaciones web autónomas.
 
-    Entre sus características destacan los servidores integrados y la configuración automática de librerías. Además,
-    ofrece complementos y herramientas que facilitan el desarrollo, aumentan la productividad y permiten crear entornos
-    de pruebas.
+    En cuanto a sus ventajas, proporciona configuración automática de librerías, servidores embebidos (como Tomcat) y un 
+    ecosistema maduro para la creación de entornos de pruebas. Además, Aumenta drásticamente la productividad al eliminar 
+    la configuración manual repetitiva.
 
     \item \textbf{Python}
     \newline
-    Es el lenguaje con mayor crecimiento debido a su sintaxis limpia y su dominio en campos como la Inteligencia Artificial 
-    y la Ciencia de Datos, lo que facilita integrar modelos de ML en el backend.
+    Es el lenguaje con mayor crecimiento actual debido a su sintaxis limpia y su dominio en Inteligencia Artificial y Ciencia 
+    de Datos, lo que facilita la integración de modelos de \textit{Machine Learning} en el backend.
 
     Python también puede ser útil para el desarrollo web, ofreciendo una amplia gama de frameworks como Djano, Flask o
     FastApi.
 
-    En cuanto a Django \cite{django}, es un framework para desarrollo de aplicaciones de forma rápida y eficiente. 
-    Facilita el trabajo al agrupar las diferentes funciones en una gran colección de módulos reutilizables, llamadas 
-    marco de aplicación web. Los desarrolladores utilizan el marco web de Django para organizar y escribir su código 
-    de manera más eficiente y reducir significativamente el tiempo de desarrollo web. Entre sus características, 
-    destaca por la velocidad de desarrollo, ser de código abierto y ser muy popular (aplicaciones como Instagram lo 
-    utilizan).
+    En cuanto a Django \cite{django}, es un framework para desarrollo de aplicaciones "con todo incluido" diseñado para el 
+    desarrollo rápido. Utiliza una arquitectura basada en módulos reutilizables, lo que reduce significativamente el tiempo 
+    de salida al mercado (\textit{Time-to-Market}). Es la base de plataformas de gran escala como Instagram.
 
-    Por otro lado, FastApi \cite{fastapi} es un framework web de Python moderno y de alto rendimiento para construir 
-    APIs. Destaca por ofrecer funcionalidades como el uso de OpenAPI para la creación de APIs, documentación automática 
-    de modelos de datos con JSON Schema e incluir un sistema de inyección de dependencias muy fácil de usar.
+    Por otro lado, FastApi \cite{fastapi}, siendo una opción moderna y de alto rendimiento basada en el tipado de Python. 
+    Destaca por la generación automática de documentación técnica (OpenAPI/Swagger) y su soporte nativo para programación 
+    asíncrona, lo que lo hace ideal para APIs de baja latencia.
 
     \item \textbf{Node.js} \cite{nodeJs}
     \newline
-    Node.js es un entorno de tiempo de ejecución de JavaScript, que permite ejecutar código JS en un ordenador como si de
-    una aplicación independiente se tratara. La idea principal de Node.js es usar el modelo de entrada y salida sin 
-    bloqueo y controlado por eventos para seguir siendo liviano y eficiente frente a las aplicaciones en tiempo real 
-    de uso de datos que se ejecutan en los dispositivos, por lo tanto, donde Node.js realmente brilla es en la 
-    creación de aplicaciones de red rápidas, ya que es capaz de manejar una gran cantidad de conexiones simultáneas 
-    con un alto nivel de rendimiento, lo que equivale a una alta escalabilidad.
+    Node.js no es un lenguaje en sí, sino un entorno de ejecución que permite ejecutar JavaScript en el servidor. Su 
+    arquitectura está basada en un modelo de E/S (entrada/salida) sin bloqueo y orientado a eventos. Es extremadamente 
+    eficiente para aplicaciones en tiempo real y servicios que manejan una gran cantidad de conexiones simultáneas, 
+    ofreciendo una alta escalabilidad horizontal.
 
-    Para su desarrollo web, cuenta con frameworks como Express o NestJs, siendo el primero un framework minimalista
-    donde hay que desarrollar muchas funcionalidades desde cero, y el segundo un framwork más completo que permite 
-    crear aplicaciones bakcend completas con un diseño modular. 
+    Para su desarrollo web, cuenta con frameworks como \textbf{Express}, siendo un framework minimalista y flexible que 
+    ofrece libertad total al desarrollador, \textbf{NestJs}, que destaca por ser progresivo y modular (inspirado en Angular) 
+    que utiliza TypeScript por defecto, ideal para construir aplicaciones backend escalables y fáciles de mantener.
 \end{itemize}
 
 \subsection{Sistemas de almacenamiento}
 
-El almacenamiento de datos ha evolucionado desde sistemas de archivos planos hacia Sistemas de Gestión de Bases de Datos. 
-En el desarrollo moderno, la elección de una base de datos no solo depende del volumen de datos, sino de su estructura, 
-la velocidad de consulta requerida y la consistencia necesaria. El estado del arte actual se divide principalmente entre 
-el modelo Relacional (SQL) y el No Relacional (NoSQL).
+El almacenamiento de datos ha evolucionado desde sistemas de archivos planos hacia Sistemas de Gestión de Bases de 
+Datos (SGBD). En el desarrollo moderno, la elección de una base de datos no depende solo del volumen de información, 
+sino de su estructura, la velocidad de consulta y el nivel de consistencia requerido. El estado del arte actual se 
+divide principalmente en los modelos Relacionales (SQL) y No Relacionales (NoSQL).
 
 \subsubsection{Bases de Datos Relacionales (SQL) \cite{baseDatosSQL}} 
 
-Las bases de datos relacionales son un tipo de base de datos que almacena y organiza datos con relaciones definidas para 
-un acceso rápido. En una base de datos relacional, los datos se organizan en tablas que contienen información sobre cada 
-entidad y representan categorías predefinidas mediante filas y columnas. La estructuración de los datos de esta manera 
-hace que sea eficaz y flexible el acceso, motivo por el que las bases de datos relacionales son más comunes. Las bases 
-de datos relacionales también se crean para comprender lenguaje de consulta estructurado (SQL), un lenguaje de 
-programación estandarizado que se usa para almacenar, manipular y recuperar datos.
+Este modelo organiza los datos en tablas con relaciones predefinidas. Cada tabla representa una entidad, estructurando 
+la información en filas (registros) y columnas (atributos). Su principal fortaleza es la integridad referencial y el 
+uso del lenguaje estandarizado SQL (\textit{Structured Query Language}) para la manipulación de datos.
+
+Estas bases de datos destacan por tener un esquema rígido (es necesario definir la estructura antes de insertar datos) 
+y cumplimiento de las propiedades ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad).
 
 Entre las más destacadas se encuentran: MySQL / MariaDB, PostgreSQL y Microsoft SQL Server.
 
 \subsubsection{Base de Datos NoSQL \cite{baseDatosNoSQL}}
 
-Las bases de datos NoSQL están diseñadas para modelos de datos específicos y almacenan los datos en esquemas flexibles 
-que se escalan con facilidad para aplicaciones modernas. Además, las bases de datos NoSQL son ampliamente reconocidas 
-porque son fáciles de desarrollar, por su funcionalidad y el rendimiento a escala.
+Diseñadas para modelos de datos específicos, las bases de datos NoSQL ofrecen esquemas flexibles que permiten una alta 
+escalabilidad horizontal. Son ideales para aplicaciones modernas que requieren un desarrollo rápido e iterativo.
 
-Están caracterizadas por permitir un desarrollo más rápido e iterativo (gracias a su flexbilidad), un diseño que permite
-escalar horizontalmente usando clústeres distribuidos, manejar grandes volúmenes de datos y están muy optimizadas para 
-patrones de acceso específicos.
+Se clasifican según su forma de almacenar la información:
 
-Dentro de las bases de datos NoSQL, se encuentran tipos como: bases de datos orientadas a documentos (MongoDB), clave-valor
-(redis) y las orientadas a grafos (Neo4j).
+\begin{itemize}
+    \item Orientadas a documentos: almacenan datos en formatos similares a JSON (como MongoDB).
+    \item Clave - Valor: optimizadas para lecturas muy rápidas mediante una clave única (Redis).
+    \item Orientadas a grafos: enfocadas en la relación entre nodos (como Neo4j).
+\end{itemize}
+
+Están caracterizadas por ofrecer escalabilidad horizontal mediante clústeres distribuidos y manejo 
+eficiente de grandes volúmenes de datos no estructurados.
 
 \subsubsection{Bases de Datos en la Nube \cite{baseDatosNube}}
 
-Las bases de datos en la nube organizan y almacenan datos estructurados, no estructurados y semiestructurados, al igual 
-que las bases de datos locales tradicionales. Sin embargo, también proporcionan muchos de los mismos beneficios de la 
-computación en la nube, incluida la velocidad, la escalabilidad, la agilidad y los costos reducidos.
+Representan la evolución del almacenamiento hacia el modelo \textit{as-a-service}. Aunque pueden ser relacionales o NoSQL, 
+se diferencian de las locales por aprovechar los beneficios de la computación en la nube:
 
-Entre los tipos que hay, se pueden clasificar en bases de datos relacionales en la nube (por ejemplo SQL Server u Oracle), 
-y bases de datos no relacionales en la nube (como MongoDB o Redis).
+\begin{itemize}
+    \item Escalabilidad y Agilidad: permiten aumentar los recursos de forma elástica según la demanda.
+    \item Reducción de costes: eliminan la necesidad de gestionar hardware físico y mantenimiento de infraestructura.
+    \item Alta disponibilidad: ofrecen réplicas automáticas y copias de seguridad gestionadas por el proveedor (como AWS 
+    RDS o Azure SQL).
+\end{itemize}
 
 \subsection{Despliegue y estrategias}
 
-El despliegue de software (\textit{deployment}) es el proceso crítico que transforma el código fuente desarrollado en 
-un entorno local en una aplicación funcional y accesible para los usuarios finales. En la actualidad, el despliegue es 
-un ciclo continuo y automatizado que garantiza la disponibilidad y estabilidad del sistema. Las partes que engloban a este
-proceso son las siguientes: 
+El despliegue de software (\textit{deployment}) es el proceso crítico que transforma el código fuente en una aplicación funcional 
+y accesible para los usuarios finales. En la actualidad, se concibe como un ciclo continuo y automatizado que garantiza 
+la disponibilidad y estabilidad del sistema. Este proceso se compone de las siguientes etapas fundamentales:
 
 \begin{itemize}
-    \item \textbf{Integración Continua (CI):} es la fase donde el código se compila, se valida y se somete a pruebas automáticas 
-    cada vez que un desarrollador realiza un cambio.
-    \item \textbf{Entrega/Despliegue continuo (CD):} una vez que el código está validado, se realiza un envío automático a los 
-    entornos de prueba o producción.
-    \item \textbf{Aprovisionamiento de infraestructura:} consiste en la La creación y configuración de los recursos (servidores, 
-    bases de datos, redes) donde residirá la aplicación.
-    \item \textbf{Monitorización y \textit{feedback}:} cuando aplicación está desplegada, esta debe ser vigilada para detectar 
-    errores en tiempo real y permitir un \textit{rollback} (vuelta atrás) si algo falla.
+    \item \textbf{Integración Continua (CI):} es la fase donde el código se compila, valida y somete a pruebas automáticas cada 
+    vez que un desarrollador realiza un cambio, asegurando la integridad de la base de código.
+    \item \textbf{Entrega/Despliegue continuo (CD):} una vez validado el código, se realiza el envío automático a los entornos 
+    de prueba o producción.
+    \item \textbf{Aprovisionamiento de infraestructura:} consiste en la creación y configuración de los recursos (servidores, 
+    bases de datos, redes) donde residirá la aplicación, idealmente mediante Infraestructura como Código (IaC).
+    \item \textbf{Monitorización y \textit{feedback}:} una vez en producción, la aplicación es vigilada para detectar errores en 
+    tiempo real, permitiendo un \textit{rollback} (vuelta atrás) inmediato si se detectan anomalías.
 \end{itemize}
 
 Un aspecto fundamental es decidir que estrategia de despliegue se va a llevar a cabo cuando se realiza una aplicación 
@@ -803,27 +786,30 @@ y cómo se libera a los usuarios. Los tipos de estrategia pueden variar según l
 según la estrategia que se quiera seguir. 
 
 Según la infraestructura, el despliegue se puede realizar en servidores físicos propios (\textit{on-premise}), a través 
-de proveedores en la nube (como \textit{AWS}), o ejecutándose solo cuando sea necesario (\textit{serverless}). Por otro 
-lado, según la estrategia que se siga, se encuentran los siguientes tipos: \cite{tiposDespliegue} 
+de proveedores en la nube (como \textit{AWS}), o ejecutándose a través de eventos, sin gestión directa de servidores 
+(\textit{serverless}). Por otro lado, según la estrategia de liberación que se siga, se encuentran los siguientes 
+tipos: \cite{tiposDespliegue} 
 
 \begin{itemize}
     \item \textit{Rolling upgrade}
     \newline
     Se realiza una actualización secuencial del servicio, actualizando uno a uno los componentes. Este tipo de despliegue 
-    tiende a ser lento tanto en su ejecución como en su capacidad de volver atrás (rollback) y generalmente se emplea en 
+    tiende a ser lento tanto en su ejecución como en su capacidad de volver atrás (\textit{rollback}) y generalmente se emplea en 
     combinación con otras estrategias.
 
     \item \textit{Blue/Green}
     \newline
-    Estrategia muy común que implica el uso de dos versiones del servicio: la versión nueva (blue) y la versión estable 
-    existente (green). Los usuarios continúan utilizando la versión verde mientras se prueba y evalúa la versión azul. Cuando se considera lista, los usuarios cambian a la versión azul. Si se detecta algún problema, es posible regresar a la versión verde.
+    Estrategia muy común que implica el uso de dos versiones del servicio: la versión nueva (\textit{blue}) y la versión estable 
+    existente (\textit{green}). Los usuarios continúan utilizando la versión verde mientras se prueba y evalúa la versión azul. 
+    Cuando se considera lista, los usuarios cambian a la versión azul. Si se detecta algún problema, es posible regresar a la 
+    versión verde.
 
     \item \textit{ Red/Black}
     \newline
     Similar a la estrategia blue/green, con la diferencia de que se desvía una pequeña porción del tráfico desde la 
     versión negra (estable) hacia la nueva versión. Luego de evaluar su rendimiento, se realiza un desvío aún más grande 
     del tráfico y, finalmente, se redirecciona todo el tráfico hacia la nueva versión. Se mantiene la versión negra en 
-    línea para permitir un rollback rápido si es necesario.
+    línea para permitir un \textit{rollback} rápido si es necesario.
 
     \item \textit{Dark Launcher}
     \newline
@@ -847,47 +833,115 @@ se pueden clasificar en:
     en cualquier entorno. Por otro lado, Kuberntes \cite{kubernetes} facilita la automatización y la configuración 
     declarativa, además de administrar contenedores, orquestando la infraestructura de cómputo, redes y almacenamiento 
     para que las cargas de trabajo de los usuarios no tengan que hacerlo.
-    \item Herramientas de automatización, como GitHub Actions y Jenkins.
-    \item Herramientas que permiten la definición de la infraestructura desde un archivo, como Terraform.
+    \item Herramientas de automatización, como GitHub Actions o Jenkins que ejecutan los flujos de trabajo de forma automática.
+    \item Herramientas que permiten la definición de la infraestructura como código (IaC), como Terraform, que permiten 
+    definir y gestionar la infraestructura mediante archivos de configuración, facilitando la replicabilidad.
 \end{itemize}
 
 \subsection{Autenticación y autorización}
 
-La seguridad es un apartado es crítico a la hora de desarrollar un sistema, siendo una responsabilidad transversal que 
-utiliza protocolos estandarizados para permitir la interoperabilidad entre sistemas.
+La seguridad es un apartado crítico en el desarrollo de cualquier sistema; es una responsabilidad transversal que se 
+apoya en protocolos estandarizados para garantizar la interoperabilidad.
 
-La autenticación (\textit{AuthN}) debe definirse como el proceso técnico de verificar que un usuario es quien dice ser, 
-siendo la puerta de entrada a cualquier sistema seguro. Algunos de los mecanismos más utilizados para la autenticación 
-son los siguientes:
+La autenticación (\textit{AuthN}) se define como el proceso técnico de verificar que un usuario es quien dice ser, 
+constituyendo la primera barrera de defensa. A continuación, se detallan los mecanismos más utilizados:
 
 \begin{itemize}
-    \item Basada en sesiones (formularios + cookies)
+    \item \textbf{Basada en sesiones (formularios + cookies) \cite{authCookies}}
     \newline
-    Es el método más común donde el usuario envía sus credenciales mediante un formulario. Si son correctas, el servidor
-    podrá crear una sesión y enviar al navegador una cookie. Cada petición que se haga a continuación al servidor, se 
-    enviará la cookie desde el cliente y el servidor validará el id de la sesión que hay en la cookie. 
+    Es el método tradicional donde el usuario envía sus credenciales y, tras la validación, el servidor crea una sesión 
+    y devuelve una cookie al navegador. En cada petición posterior, el cliente envía dicha cookie para que el servidor 
+    valide el ID de sesión.
 
-    Es un método que destaca por ser muy seguro para aplicaciones web simples.
+    Es un método que destaca su alta seguridad en aplicaciones web simples y capacidad de revocación instantánea del 
+    acceso; sin embargo, presenta dificultades para escalar (debido al estado en el servidor).
 
-    \item Basada en tokens (JWT)
+    \item \textbf{Basada en tokens (JWT) \cite{authJWT}}
     \newline
-    Es el estándar más utilizado en aplicaciones modernas. El cliente va a enviar sus credenciales tras rellenar un 
-    formulario al servidor, encargándose este de generar un token (JSON Web Token) firmado digitalmente y devolviéndoselo 
-    al cliente. El cliente lo guardará para enviarlo en la cabecera de cada petición que quiera hacer al servidor.
+    Es el estándar predominante en aplicaciones modernas y arquitecturas desacopladas. Tras la validación, el servidor 
+    genera un JSON Web Token (\hyperlink{jwt}{JWT}) firmado digitalmente. El cliente lo almacena y lo incluye en la cabecera de cada 
+    petición para acceder a recursos protegidos.
 
-    Entre sus ventajas, destaca por una escalabilidad total y compatibilidad nativa con aplicaciones móviles.
+    Entre sus ventajas, destaca por una escalabilidad total (stateless) y compatibilidad nativa con aplicaciones móviles;
+    sin embargo, presenta un riesgo de seguridad si el token es interceptado, ya que el acceso es válido hasta su 
+    expiración (difícil de revocar antes de tiempo).
 
-    \item OAuth 2.1 y OpenID Connect
+    \item \textbf{OAuth 2.1 y OpenID Connect \cite{oauth}}
     \newline
-    OAuth 2.1 es un framework que permite a una aplicación acceder a datos de otra sin pedir la contraseña (acceso delegado), 
-    mientras que OpenID Connect es una capa de identidad sobre OAuth 2.0 que permite el \hyperlink{singleSignOn}{\textit{Single Sign-on}}
+    OAuth 2.1 es un framework que permite el acceso delegado (una aplicación accede a datos de otra sin compartir contraseñas), 
+    mientras que OpenID Connect (OIDC) es una capa de identidad sobre OAuth que habilita el \hyperlink{singleSignOn}{\textit{Single Sign-on}}.
 
-    \item Multifactor
+    Este sistema de autenticación destaca por su gran escalabilidad e integración con múltiples proveedores (Google, GitHub, etc.);
+    sin embargo, presenta una mayor complejidad técnica en su implementación inicial.
+
+    \item \textbf{Multifactor \cite{multifactor}}
     \newline
-    Se trata de un mecanismo que combina varios factores de autenticación (``algo que sabes'' como un PIN, ``algo que 
-    tienes'' como un móvil, y ``algo que eres'' como una huella digital).
+    Se trata de un mecanismo que combina diversos factores de verificación: conocimiento (PIN/contraseña), posesión (dispositivo 
+    móvil) e inherencia (biometría).
 
+    Como ventaja destaca por mitigar riesgos de robo de credenciales o tokens; aunque un atacante obtenga el JWT, carecería del 
+    segundo factor; sin embargo, Puede degradar la experiencia de usuario (UX) al añadir fricción y lentitud al proceso de entrada.
 \end{itemize}
 
-
 \subsection{Elección de tecnologías}
+
+Tras el análisis de las opciones disponibles, se han seleccionado las siguientes tecnologías para el desarrollo del proyecto Olivaris, 
+buscando un equilibrio entre rendimiento, seguridad y mantenibilidad.
+
+\begin{itemize}
+    \item \textbf{Frontend: React Native}
+    \newline
+    El acceso a la plataforma será principalmente a través de dispositivos móviles, dada la naturaleza del trabajo agrícola. La movilidad 
+    y disponibilidad inmediata que ofrece un smartphone son claves para que los agricultores interactúen con el sistema a pie de campo.
+
+    Las razones de la elección han sido:
+
+    \begin{itemize}
+        \item Utiliza JavaScript/TypeScript, uno de los lenguajes con mayor comunidad y demanda laboral, superando actualmente el ecosistema 
+        de Flutter en oportunidades regionales.
+        \item A diferencia de las soluciones híbridas, React Native utiliza componentes nativos reales de iOS y Android, respetando las guías 
+        de diseño y ofreciendo una experiencia de usuario fluida.
+        \item El uso de Expo facilita la configuración del entorno (evitando dependencias complejas de Android Studio) y permite actualizaciones 
+        \textit{Over-The-Air} (OTA), permitiendo corregir errores sin que el usuario tenga que descargar una nueva versión de las tiendas oficiales.
+        \item El ecosistema de librerías es muy amplio. Si se necesita integrar un SDK de terceros (pagos, mapas, analíticas), es muy probable que ya exista
+        un paquete oficial o muy probado para React Native.
+    \end{itemize}
+
+    \item \textbf{Backend: Java con SpringBoot}
+    \newline
+    Para la lógica de servidor se ha optado por el ecosistema de Java, priorizando la robustez y la seguridad del sistema. Las razones por las que se ha elegido
+    son las siguientes:
+
+    \begin{itemize}
+        \item El tipado estático de Java permite detectar la mayoría de los errores en tiempo de compilación. Esto ofrece una seguridad que lenguajes dinámicos 
+        como Python o JavaScript no pueden garantizar en la misma medida.
+        \item Java maneja hilos de ejecución de forma eficiente, siendo superior en tareas que requieren un uso intensivo de CPU o procesamiento paralelo.
+        \item Spring Boot ofrece una estructura de proyecto coherente y estandarizada. La gestión de acceso a datos y seguridad se realiza bajo patrones conocidos, 
+        facilitando que cualquier desarrollador se integre rápidamente en cualquier proyecto.
+        \item Cuenta con \textit{Spring Security}, uno de los marcos de seguridad más avanzados y granulares del mercado.
+        \item El sistema está preparado para manejar transacciones ACID complejas. Además, la facilidad de Java para generar reportes en PDF y su compatibilidad 
+        con sensores IoT aseguran que el proyecto pueda crecer sin limitaciones técnicas.
+    \end{itemize}
+
+    Teniendo en cuenta lo anterior, aunque inicialmente la carga de procesamiento no sea muy alta, SpringBoot permite manejar las transacciones ACID de forma
+    impecable y este proyecto, con una sola acción se van a desencadenar diferentes acciones ``por debajo''. Además, Java cuenta con librerías muy potentes
+    para generar PDFs y si en un futuro se deciden añadir funcionalidades extras, la escalabilidad es muy buena (integración con sensore IoT).
+
+    También lo he decidido así porque Java con SpringBoot es una tecnología muy demandada en el mercado laboral actualmente, por lo que considero que es un buen
+    punto para empezar a aprenderlo.
+
+    \item \textbf{Base de datos: PostgreSQL}
+    \newline
+    Se ha optado por un modelo relacional (SQL) debido a la complejidad de las asociaciones y dependencias jerárquicas entre las entidades del dominio de Olivaris.
+
+    El uso de PostgreSQL en lugar de MySQL o MariaDB se debe a las siguientes razones:
+
+    \begin{itemize}
+        \item Existen relaciones jerárquicas, por lo que un modelo relacional es el más eficiente para garantizar la integridad de los datos cuando existen múltiples 
+        tablas interconectadas.
+        \item PostgreSQL destaca sobre otros motores SQL por su soporte avanzado de tipos no estructurados (\hyperlink{jsonb}{JSONB}), permitiendo lo mejor de los dos 
+        mundos: la rigidez del SQL y la flexibilidad de NoSQL en campos específicos.
+        \item Su estricto cumplimiento de los principios ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad) garantiza que la información nunca se corrompa, 
+        incluso ante fallos del sistema.
+    \end{itemize}
+\end{itemize}
