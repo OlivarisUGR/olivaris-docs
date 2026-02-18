@@ -1,7 +1,6 @@
 # Historias de Usuario
 
-Después de la reunión que se ha tenido con Pepe, de la información extraída se han elaborado las siguientes historias
-de usuario:
+Las historias de usuario que se han elaborado teniendo en cuenta la información extraída de las distintas reuniones son las siguientes: 
 
 | HU | Descripción |
 | --- | --- | 
