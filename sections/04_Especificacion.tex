@@ -98,9 +98,9 @@ de correo electrónico con el personal adecuado.
         \item \textbf{Jefe de Seguridad de los Servicios Informáticos de la UGR}: se contactó con el Jefe de Seguridad
         para comentarle qué situación había, qué se quería realizar y cómo es el tipo de certificado digital que se 
         necesita para poder acceder a esta API. Se comentó las partes que deben incluir el certificado: parte pública 
-        en formato .PEM, \textit{TLS Web Client Authentiacion} (clientAuth) y el subdominio de la entidad o el CIF/NIF 
-        (el de la UGR en este caso), con la finalidad de saber si la UGR puede gestionar un certificado con estas 
-        características y de esta forma poder acceder al sistema.
+        en formato .PEM,\hyperlink{certificadoTls}{\textit{TLS Web Client Authentiacion}} (clientAuth) y el 
+        subdominio de la entidad o el CIF/NIF (el de la UGR en este caso), con la finalidad de saber si la UGR puede 
+        gestionar un certificado con estas características y de esta forma poder acceder al sistema.
     \end{itemize}
 
     La funcionalidad del CUE digital es muy interesante pero ha tenido un problema: el proceso para extraer la información 
@@ -133,3 +133,64 @@ necesidades de la aplicación.
 \end{figure}
 
 \section{Escenarios}
+
+Una vez que han sido planteadas las personas, se pasa a describir los escenarios. Los escenarios son una descripción de
+como el usuario utiliza el sistema para realizar una determinada tarea y lograr su objetivo. A través de esta técnica se
+consigue ver de una forma más clara y cercana cómo debe de funcionar el sistema, pudiendo ayudar a encontrar y definir
+requisitos funcionales.
+
+Los escenarios planteados para las personas creadas en el apartado anterior son los siguientes:
+
+\begin{itemize}
+    \item \textbf{Primer escenario: Andrés Ramírez González (Agricultor)}
+    \newline
+    Andrés se encuentra realizando su jornada laboral en una de sus fincas y utiliza su móvil como herramienta principal 
+    ya que necesita rapidez y se está moviendo constantemente.
+
+    Andrés abre la aplicación móvil y esta muestra un mapa con la geolocalización actual y las parcelas de su finca bien
+    delimitadas. Procede a pulsar en una parcela y el sistema muestra información básica sobre la finca y un botón que le
+    permite crear una actividad nueva asociada a esa parcela. Andrés selecciona esta opción y el sistema le envía a una 
+    página que muestra un sencillo e intuitivo formulario que debe rellenar indicando el tipo de actividad que va a crear.
+
+    Una vez guardada la información en el sistema, se muestra un mensaje de confirmación y se asocia automáticamente a la 
+    parcela, pudiendo resivar Andrés el historial de actividades de esa finca en cualquier momento y controlando todo el 
+    trabajo realizado en cualquier momento sin necesidad de papel.
+
+    \begin{itemize}
+        \item \textbf{Valor añadido}: identificación rápida de la parcela, creación de actividades de forma ágil y control
+        centralizado de todas las tareas.
+    \end{itemize}
+
+    \item \textbf{Segundo escenario: María Díaz Mendoza (Administradora de Cooperativa)}
+    \newline
+    María se encuentra la oficina durante su jornada laboral, utilizando el teléfono móvil para gestionar de forma rápida y 
+    eficiente tanto las fincas como actividades de los agricultores.
+
+    María accede a la aplicación móvil con su perfil de administradora de cooperativa y el sistema le muestra una lista con 
+    todos los agricultores asociados que han autorizado la gestión de sus fincas, por lo que procede a seleccionar uno de ellos
+    y el sistema le muestra una vista con un mapa que contiene todas las parcelas asociadas a ese agricultor.
+
+    María encuentra la parcela sobre la que va a crear una nueva actividad, la selecciona y pulsa sobre el botón. A continuación
+    se le presenta un formulario que debe de rellenar según la actividad a realizar.
+
+    Una vez rellenado y guardado, el sistema la almacena automáticamente y la asocia a la parcela, quedando registrada para una
+    consulta posterior tanto por María como por un agricultor. Este proceso se podrá repetir tantas veces como sea necesario con 
+    distintos agricultores, asegurando una gestión centralizada y organizada.
+
+    \begin{itemize}
+        \item \textbf{Valor añadido}: gestión remota de varias fincas autorizadas, acceso rápido a las fincas y actividades y
+        mejorade la coordinación y trazabilidad entre cooperativa y agricultores. 
+    \end{itemize}
+\end{itemize}
+
+\section{Historias de Usuario}
+
+Una \textbf{Historia de Usuario} \cite{historiaUsuario} es una descripción general e informal de una función de software escrita 
+desde la persepectiva del usuario final o cliente. Su propósito es describir cómo un elemento de trabajo aporta un valor 
+particular al cliente.
+
+Son redactadas con un lenguaje sencillo y no técnico y consiguen con pocas palabras describir el resultado deseado. A partir de 
+ellas se pueden establacer los requisitos funcionales del sistema y son añadidas a las iteraciones o \textit{sprints} dentro de 
+la metodología ágil \hyperlink{scrum}{Scrum}.
+
+Son importantes por ....
