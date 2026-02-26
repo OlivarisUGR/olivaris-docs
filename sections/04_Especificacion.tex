@@ -1,26 +1,26 @@
 \chapter{Especificación de requisitos}\label{cap:especificación}
 
 Antes de empezar con el desarrollo e implementación del sistema es necesario realizar una fase previa correspondiente
-al análisis. En esta fase se van a realizar actividades que permitan extraer requisitos que va a tener el sistema con
-la finalidad de tener desde el inicio un planteamiento adecuado de las funcionalidades que se tendrán. A continuación
-se va a desarrollar como ha sido la fase de análisis y obtención de requisitos para el sistema
+al análisis. En esta fase se van a extraer los requisitos que va a tener el sistema, conociendo de esta forma las 
+funcionalidades que tendrá. A continuación se va a desarrollar como ha sido la fase de análisis y obtención de 
+requisitos.
 
 \section{Recopilación de información}
 
 Para recopilar información se ha recurrido a la realización de entrevistas, análisis de documentos y consultas a través
-de correo electrónico con el personal adecuado para el fin a realizar.
+de correo electrónico con el personal adecuado.
 
 \begin{itemize}
     \item \textbf{Entrevistas}
     \newline
     Se han realizado varias entrevistas con la finalidad de ajustar el sistema lo máximo posible a lo que se necesita
-    o sería interesante que hubiese en el sector laboral.
+    o sería interesante que hubiese en el sector agrícola.
 
     \begin{itemize}
         \item \textbf{José (APELLIDOS) - Agricultor de (NOMBRE COOPERATIVA/EMPRESA)}
         \newline
         Con esta reunión se pudo ver cómo es el día a día de un agricultor que tiene varias fincas y cómo las gestiona.
-        José mostró las distintas tablas que tiene creadas en Excel a través de las cuáles podía llevar un control exacto
+        José mostró las distintas tablas que tiene creadas en Excel a través de las cuáles puede llevar un control exacto
         de qué actividad ha realizado en cada campaña y sobre qué finca en particular.
         Fueron varios los puntos planteados durante la reunión sobre qué podría tener la aplicación Olivaris. Entre
         ellos se destacaron:
@@ -31,11 +31,12 @@ de correo electrónico con el personal adecuado para el fin a realizar.
             que será comentado a continuación.
             \item Funcionalidad sobre control de costes y gastos, además de los pagos realizados a los empleados contratados.
             \item Funcionalidad sobre gestionar parcelas y las actividades realizadas en cada una de ellas, de manera que 
-            se tenga una vista de todas las parcelas que son de su propiedad y que se puedan gestionar sus actividades. 
+            se tenga una vista de todas las parcelas que son de su propiedad y se puedan gestionar las actividades de cada una
+            de ellas. 
         \end{itemize}
 
-        Gracias a este reunión se pudo obtener una aproximación de qué tipo de tablas se tendrían en la base de datos y
-        como se podrían relacionar entre ellas.
+        Gracias a este reunión se pudo obtener una aproximación de qué tipo de tablas se tendrían en la base de datos,
+        cómo se podrían relacionar entre ellas y que funcionalidades tendría la aplicación.
 
         \item \textbf{Juan Luis Jiménez Laredo - Profesor titular de la ETSIIT y Director del presente TFG}
         \newline
@@ -44,7 +45,7 @@ de correo electrónico con el personal adecuado para el fin a realizar.
         Además, contando también con experiencia en el sector de la oliva, ha podido dar una visión del sistema más precisa,
         siendo esto de gran ayuda para definir cuáles son las funcionalidades más relevantes de la aplicación.
 
-        Con la información extraída de la reunión realizada con Jose sobre el cuaderno de campo y con las conversaciones
+        Con la información extraída de la reunión realizada con José sobre el cuaderno de campo y con las conversaciones
         mantenidas con Juan Luis, se exploró la opción de introducir la funcionalidad del cuaderno de campo digital. 
         
         El \textbf{cuaderno de campo \cite{cuadernoCampo}} es una especie de cuaderno de bitácora que registra el uso 
@@ -52,12 +53,12 @@ de correo electrónico con el personal adecuado para el fin a realizar.
         posible contaminación que pueda surgir derivada del abuso de estos productos. Este concepto está muy relacionado
         con el \textbf{Cuaderno Digital de Explotación Agrícola (CUE)}.
 
-        Según la Conserjería de Agricultura, Pesca, Agua y Desarrollo Rural, el Cuaderno Digital de Explotación Agrícola
-        (o CUE digital), es la herramienta que se va a utilizar en España para anotar las actividades que se realizan 
-        en una explotación agrícola, recogiendo las actividades fitosanitarias, de fertilización o riegos aplicados.
-        Para poder cumplimentar este CUE digital, es necesario que la explotación este previamente inscrita en REAFA
-        (Registro Autonómico de Explotaciones Agrarias en Andalucía), ya que esta será la fuente que proporcione la 
-        información de las parcelas y cultivos existentes.
+        Según la Conserjería de Agricultura, Pesca, Agua y Desarrollo Rural \cite{cueDigital}, el Cuaderno Digital de 
+        Explotación Agrícola (o CUE digital), es la herramienta que se va a utilizar en España para anotar las 
+        actividades que se realizan en una explotación agrícola, recogiendo las actividades fitosanitarias, de 
+        fertilización o riegos aplicados. Para poder cumplimentar este CUE digital, es necesario que la explotación este
+        previamente inscrita en REAFA (Registro Autonómico de Explotaciones Agrarias en Andalucía), ya que esta será la 
+        fuente que proporcione la información de las parcelas y cultivos existentes.
 
         Este CUE digital, a diferencia del CUE de papel, obliga a que sea tratado desde medios electrónicos y que la
         información que lo cumplimente sea con los datos que la Administración tenga disponibles, procedentes del 
@@ -68,17 +69,67 @@ de correo electrónico con el personal adecuado para el fin a realizar.
         
         A partir de este punto, se ha realizado una búsqueda de cómo acceder a la API que proporciona la Junta de 
         Andalucía para obtener los datos de una explotación y poder exportarlos al CUE digital. Para ello, primero es
-        necesario dar de alta la "empresa" que va a desarrollar este proyecto en un portal junto con su certificado
+        necesario dar de alta la ``empresa'' que va a desarrollar este proyecto en un portal junto con su certificado
         digital, estando aquí el primer problema: actualmente no hay constituida una empresa de desarrollo de software 
         particular, por lo que no hay certificado digital que se pueda utilizar para darse de alta y poder acceder a la
         API.
 
         Las soluciones buscadas han conllevado el envío de correos electrónicos a entidades que puedan suplir este problema
-        y hacer de "empresa de desarrollo". Los correos enviados se van a comentar a continuación.
+        y hacer de ``empresa de desarrollo''. Los correos enviados se van a comentar a continuación.
     \end{itemize}
 
     \item \textbf{Correos electrónicos}
     \newline
+    Se han enviado correos electrónicos a las siguientes entidades, con la finalidad de buscar ayuda para dar de alta
+    una empresa en el sistema y poder obtener el certificado digital que permita acceder a la API.
 
+    \begin{itemize}
+        \item \textbf{Nomia Energy}: empresa de Granada con la que se ha contactado para darla de alta en el registro
+        como empresa desarrolladora del Cuaderno Digital de Explotación comercial. Con su certificado digital se podría
+        acceder a la API pero finalmente no se llegó a un acuerdo y esta opción se descartó.
 
+        \item \textbf{Trabajador de la Junta de Andalucía}: se mantuvieron conversaciones con Juan Carlos Martín Fuentes,
+        trabajador de la Junta de Andalucía, para recoger qué requisitos son necesarios para registrarse como empresa de 
+        desarrollo y sobre cómo tiene que ser el certificado digital, ya que se contempló la opción de trabajar con un 
+        certificado ``autofirmado'' en el entorno de prepoducción (por no tener una empresa que proporcione el certificado), 
+        pero finalmente esta opción se descartó porque no admiten certificados autofirmados, debido a la poca fiabilidad que
+        tienen.        
+
+        \item \textbf{Jefe de Seguridad de los Servicios Informáticos de la UGR}: se contactó con el Jefe de Seguridad
+        para comentarle qué situación había, qué se quería realizar y cómo es el tipo de certificado digital que se 
+        necesita para poder acceder a esta API. Se comentó las partes que deben incluir el certificado: parte pública 
+        en formato .PEM, \textit{TLS Web Client Authentiacion} (clientAuth) y el subdominio de la entidad o el CIF/NIF 
+        (el de la UGR en este caso), con la finalidad de saber si la UGR puede gestionar un certificado con estas 
+        características y de esta forma poder acceder al sistema.
+    \end{itemize}
+
+    La funcionalidad del CUE digital es muy interesante pero ha tenido un problema: el proceso para extraer la información 
+    es largo y lento (muchos correos electrónicos y tiempos de espera entre ellos), así como problemas derivados del uso de 
+    un certificado digital que no se tiene, por lo que esta funcionalidad ha pasado a un segundo plano y se ha profundizado
+    en aquellas que la aplicación va tener con alta probabilidad.
 \end{itemize}
+
+\section{Personas}
+
+Una parte muy importante durante el análisis de un sistema son los usuarios finales que lo utilizan. Por ello, se han creado
+personas ficticias que puedan representar al usuario que utiliza la aplicación, consiguiendo saber de esta manera cuáles son 
+sus inquietudes y qué necesitan para poder realizar sus tareas correctamente.
+
+En las imágenes \ref{fig:persona_1} y \ref{fig:persona_2} se muestran los tipos de usuarios que se han elaborado según las 
+necesidades de la aplicación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/03_persona1.png}
+    \caption{Persona 1: Agricultor}
+    \label{fig:persona_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/03_persona2.png}
+    \caption{Persona 2: Administradora de la Cooperativa}
+    \label{fig:persona_2}
+\end{figure}
+
+\section{Escenarios}

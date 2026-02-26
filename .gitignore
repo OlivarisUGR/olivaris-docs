@@ -138,5 +138,8 @@ Thumbs.db
 *.swo
 *~
 
+# Folder with compilation files
+%OUTDIR%/
+
 # PDF output (optional - uncomment if you don't want to track the compiled PDF)
 # project.pdf
