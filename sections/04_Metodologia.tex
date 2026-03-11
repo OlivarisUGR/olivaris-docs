@@ -114,7 +114,22 @@ Entre los eventos de Scrum, se encuentran los siguientes:
 
 \subsection{¿Por qué usar la metodología Scrum?}
 
+La elección de la metodología Scrum ha sido por sus valores y por todas las ventajas que tiene, siendo una de las 
+metodologías más usadas actualmente por los equipos de trabajo. 
 
+Para empezar, el hecho de trabajar en equipo hace que cada uno de los miembros tenga un papel importante que desarrollar
+para alcanzar la meta establecida, haciendo que cada uno se sienta importante y sepa que está aportando valor al producto.
+Además, la alta comunicación que hay en esta metodología y el hecho de que sea iterativa, hace que siempre se busque la 
+autocrítica en el equipo y la mejora de este de cara a la próximas iteraciones, permitiendo de esta manera que el producto
+vaya mejorando y adecuándose a lo que el cliente quiere.
+
+Añadiendo a lo anterior, Scrum tiene una alta flexibilidad y adaptación ya que permite realizar cambios en la estructura
+cuando son necesarios, además de permitir realizar entregas del producto software a las partes interesadas en periodos cortos
+de tiempo, lo que ayuda a saber si el camino hacia el objetivo es el adecuado o hay que realizar modificaciones.
+
+Con respecto al presente proyecto, hay que destacar que los roles, artefactos y reuniones han sido adaptadas, ya que el equipo
+de desarrollo ha sido compuesto por un solo individuo y muchas decisiones han sido tomadas en conjunto con el tutor del TFG.
+Sin embargo, se han seguido todos los principios y la teoría Scrum de la mejor forma posible.
 
 \subsection{Adapatación de la metodología Scrum al proyecto}
 
@@ -130,12 +145,22 @@ vistas (cada una corresponde a un sprint) y asignar tareas del backlog a estas v
 Tanto el Product Backlog como la planificación de cada uno de los sprints han sido llevados a cabo por el autor del proyecto, 
 añadiendo toda la información (historias de usuario y tareas) que ha considerado necesaria para desarrollar el software 
 junto con las recomendaciones del tutor del TFG (Dr. Juan Luis Jiménez Laredo) cuando ha sido requerido. Asimismo, la 
-ejecución de cada sprint ha sido realizada por el autor del proyecto. En las imágenes ... se puede ver un ejemplo de cómo es
-una historia de usurio y de cómo sería una sprint:
+ejecución de cada sprint ha sido realizada por el autor del proyecto. En las imágenes \ref{fig:ejemplo_hu} y 
+\ref{fig:sprint1_tablero} se puede ver un ejemplo de cómo es una historia de usurio y de cómo sería una sprint:
 
-INSERTAR IMAGEN DE HISTORIA USUARIO
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ejemplo_hu.png}
+    \caption{Ejemplo de una Historia de Usuario}
+    \label{fig:ejemplo_hu}
+\end{figure}
 
-INSERTAR IMAGEN DE SPRINT 1
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/sprint1_tablero.png}
+    \caption{Ejemplo del tablero para el sprint 1}
+    \label{fig:sprint1_tablero}
+\end{figure}
 
 En cuanto a las reuniones realizadas durante todo el desarrollo del sistema, han sido tratas de la siguiente forma:
 
@@ -155,6 +180,38 @@ En cuanto a las reuniones realizadas durante todo el desarrollo del sistema, han
 
 \subsection{Sprints realizados}
 
-Hablar de cada uno de los sprints realizados y del cronograma
+Para alcanzar el objetivo fijado y desarrollar este software, se han realizado distintos sprints o iteraciones, cada uno agrupando
+una funcionalidad nueva que se iba integrando en el sistema. Los sprint han sido los siguientes:
+
+\begin{itemize}
+    \item \textbf{Sprint 1}: en este sprint se ha empezado implementando en el backend el sistema de autenticación y autorización 
+    de usuarios, así como el desarrollo de la base de datos inicial (luego se han ido añadiendo tablas sobre esta), englobando los
+    servicios relacionados con el registro de usuarios, inicio de sesión, confirmación del registro a través de notificaciones enviadas
+    por correo electrónico y creación de JSON Web Tokens para garantizar seguridad en los posteriores accesos al servidor.
+
+    La duración de este sprint ha sido de 1 semana.
+    
+    \item \textbf{Sprint 2}: este sprint ha sido una continuación del anterior, ya que se le ha agregado a la base de datos y al sistema
+    la interacción de los usuarios con una ``entidad habilitada'' (puede ser una cooperativa, empresa, etc). Esta interacción se basa
+    en los permisos que un usuario puede darle a una entidad para manipular sus datos, teniendo cada usuario que pertence a la entidad 
+    unos roles determinados (administrador o agricultor).
+
+    Para desarrollar este sprint se ha tenido que investigar sobre qué tipo de usuarios hay en un CUE comercial, y qué permisos puede 
+    delegar un usuario sobre sus datos a una entidad \cite{anexosSIEX}. Además, en este sprint se han introducido \textbf{test unitarios y de
+    integración}, por lo que se ha tenido que investigar como hacerlo en SpringBoot y también se ha creado un \textbf{\textit{workflow}} en 
+    \hyperlink{githubActions}{GitHub Actions}, para que cada vez que se suba un cambio a la rama de trabajo, se pasen los tests realizados
+    y construya el prorgrama.
+
+    La duración del sprint ha sido de 1 semana.
+
+    \item \textbf{Sprint 3}:
+
+
+
+\end{itemize}
+
+A continuación se puede ver el cronograma a través de un Diagrama de Gantt que se ha obtenido como resultado de todos los sprints:
+
+INSERTAR IMAGEN DEL DIAGRAMA DE GANTT DEL PROYECTO
 
 \section{Presupuesto del proyecto}
