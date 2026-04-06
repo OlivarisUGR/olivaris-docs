@@ -197,5 +197,444 @@ Las historias de usuario son importantes ya que ayudan a los equipos de trabajo 
 usuarios reales, a que piensen de forma crítica y creativa sobre cómo lograr una meta de forma eficaz y ayudan a 
 motivar al equipo ya que su resolución implica pequeños retos y victorias.
 
+Para la realización de las Historias de Usuario del presente proyecto, la estructura utilizada ha sido la siguiente:
+
+\textit{\textbf{Como} [tipo de usuario que realiza la acción], \textbf{quiero} [la acción que se quiere realizar] \textbf{para} 
+[resultado obtenido].}
+
+Además de la historia de usuario, se ha añadido el identificador de esa historia de usuario y un título identificativo.
+
 Según los análisis realizados y la información obtenida, se han establecido las siguientes historias de usuario:
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-1 & \textbf{Nombre} & Inicio de sesión \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como usuario, quiero iniciar sesión en la aplicación para acceder de forma segura a mis datos.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-1}
+    \label{tab:hu_1}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-2 & \textbf{Nombre} & Sesión segura \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como usuario, quiero que mi sesión sea segura para evitar accesos no autorizados.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-2}
+    \label{tab:hu_2}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-3 & \textbf{Nombre} & Asignación de roles \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como administrador, quiero asignar roles a los usuarios para controlar qué puede hacer cada uno.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-3}
+    \label{tab:hu_3}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-4 & \textbf{Nombre} & Control de funcionalidad según rol \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como administrador, quiero que el sistema controle el acceso a cada funcionalidad según el rol para evitar manipulación indeseada de datos.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-4}
+    \label{tab:hu_4}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-5 & \textbf{Nombre} & Registro de entidades habilitadas \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como usuario quiero registrar una entidad en el sistema para que se puedan gestionar los datos de los usuarios que pertenezcan a ella.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-5}
+    \label{tab:hu_5}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-6 & \textbf{Nombre} & Control de actividades \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como entidad habilitada, quiero gestionar las fincas y sus actividades para que el agricultor no tenga que realizar estas tareas.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-6}
+    \label{tab:hu_6}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-7 & \textbf{Nombre} & Gestión de parcelas \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero registrar una parcela con sus datos para poder gestionarla correctamente.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-7}
+    \label{tab:hu_7}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-8 & \textbf{Nombre} & Registro de actividades \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero registrar una actividad diaria para llevar un control centralizado.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-8}
+    \label{tab:hu_8}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-9 & \textbf{Nombre} & Registro de actividad fitosanitaria \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero registrar un tratamiento fitosanitario para cumplir la normativa.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-9}
+    \label{tab:hu_9}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-10 & \textbf{Nombre} & Registro de actividad futura o planificada \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero planificar actividades futuras para organizar el trabajo de la campaña.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-10}
+    \label{tab:hu_10}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-11 & \textbf{Nombre} & Modificación de actividad \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero modificar una actividad almacenada para corregir datos o marcarla como realizada.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-11}
+    \label{tab:hu_11}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-12 & \textbf{Nombre} & Eliminación de actividad \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero eliminar una actividad para no tenerla guardada en el sistema.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-12}
+    \label{tab:hu_12}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-13 & \textbf{Nombre} & Control de usuarios \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como administrador, quiero obtener los usuarios registrados en el sistema para llevar un control de quien está registrado.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-13}
+    \label{tab:hu_13}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-14 & \textbf{Nombre} & Consulta de parcela \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero consultar mis parcelas, para obtener información sobre ellas.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-14}
+    \label{tab:hu_14}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-15 & \textbf{Nombre} & Consulta de actividades \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero consultar el historial de actividades de un usuario para saber todo lo que ha realizado.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-15}
+    \label{tab:hu_15}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-16 & \textbf{Nombre} & Visualización de parcelas en un mapa \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero visualizar mis parcelas en un mapa para conocer rápidamente el estado de las tareas.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-16}
+    \label{tab:hu_16}
+\end{table}
+
+\section{Criterios de aceptación}
+
+Las historias de usuario definidas tienen unos criterios de aceptación asociados que establecen cuando una historia de usuario ha sido
+completada. Los criterios de aceptación para cada historia de usuario son los siguientes:
+
+\begin{itemize}
+    \item \textbf{HU-01}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-02}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-03}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-04}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-05}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-06}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-07}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-08}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-09}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-10}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-11}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-12}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-13}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-14}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-15}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-16}
+    \begin{itemize}
+        \item 
+    \end{itemize}
+\end{itemize}
+
+\section{Requisitos funcionales}
+
+A partir de estas historias de usuario se han extraído los siguientes requisitos funcionales agrupados por áreas. La estructura va a ser del tipo \textit{RF-[ID de HU].XX}.
+
+\subsection{Autenticación y autorización}
+
+\begin{itemize}
+    \item \textbf{RF-01.1)} El sistema debe permitir autenticación mediante usuario/email y contraseña.
+    \item \textbf{RF-01.2)} El sistema debe validar las credenciales contra la base de datos.
+    \item \textbf{RF-01.3)} El sistema debe iniciar una sesión de usuario tras autenticación correcta.
+    \item \textbf{RF-01.4)} El sistema debe impedir el acceso a usuarios no autenticados.
+    \item \textbf{RF-02.1)} El sistema debe gestionar expiración de sesiones o tokens.
+    \item \textbf{RF-02.2)} El sistema debe invalidar sesiones antiguas automáticamente.
+    \item \textbf{RF-02.3)} El sistema debe proteger endpoints con autenticación obligatoria.
+    \item \textbf{RF-03.1)} El sistema debe soportar al menos los roles: administrador, entidad habilitada (cooperativa), agricultor.
+    \item \textbf{RF-03.2)} El sistema debe evaluar permisos en función del rol del usuario.
+    \item \textbf{RF-03.3)} El sistema debe ocultar o deshabilitar funcionalidades no autorizadas.
+    \item \textbf{RF-04.1)} El sistema debe validar permisos antes de ejecutar cualquier acción.
+    \item \textbf{RF-04.2)} El sistema debe impedir operaciones no autorizadas a nivel de backend.
+\end{itemize}
+
+\subsection{Entidades habilitadas}
+
+\begin{itemize}
+    \item \textbf{RF-05.1)} El sistema debe permitir registrar una entidad habilitada en el sistema si los campos son correctos.
+    \item \textbf{RF-05.2)} El sistema debe impedir el registro de una entidad a un usuario con rol distinto de administrador.
+    \item \textbf{RF-06.1)} Se crea una relación entre el usuario y la entidad habilitada con un rol y los permisos que cede a la entidad.
+    \item \textbf{RF-06.2)} Los roles posibles dentro de una entidad son: agricultor (farmer) y admin (administrador).
+    \item \textbf{RF-06.3)} Las actividades pueden ser manipuladas por el usuario que tenga el rol admin dentro de la entidad y sobre los
+    usuarios que pertenezcan a esa entidad.
+    \item \textbf{RF-06.4)} Si usuario agricultor es vinculado con una entidad, cede directamente todos sus permisos a la entidad. 
+\end{itemize}
+
+\subsection{Parcelas y recintos}
+
+\begin{itemize}
+    \item \textbf{RF-07.1)} El sistema debe permitir al usuario registrar parcelas.
+    \item \textbf{RF-07.2)} El sistema debe validar que los campos obligatorios de la parcela sean correctos antes de su creación.
+    \item \textbf{RF-07.3)} El sistema debe mostrar un error si la validación de la parcela falla.
+    \item \textbf{RF-07.4)} El sistema debe consumir la API de SIGPAC para obtener los datos de parcelas y recintos (códigos y geometrías/polígonos).
+    \item \textbf{RF-07.5)} El sistema debe almacenar la parcela en la base de datos.
+    \item \textbf{RF-07.6)} El sistema debe almacenar los recintos asociados a una parcela, en caso de que existan.
+    \item \textbf{RF-07.7)} El sistema debe vincular los recintos con su parcela correspondiente.
+    \item \textbf{RF-14.1)} El sistema debe devolver la información de una parcela vinculada a un usuario específico.
+    \item \textbf{RF-16.1)} El sistema debe devolver una lista con la información de una parcela junto con la geometría para el propio usuario.
+    \item \textbf{RF-16.2)} El sistema debe validar que el usuario existe.
+\end{itemize}
+
+\subsection{Actividades}
+
+\begin{itemize}
+    \item \textbf{RF-08.1)} El sistema debe permitir registrar actividades.
+    \item \textbf{RF-08.2)} El sistema debe permitir registrar actividades con estado “Planificada” o "Completada".
+    \item \textbf{RF-08.3)} El sistema debe impedir registrar actividades con fecha futura si el estado es “Realizada”.
+    \item \textbf{RF-08.4)} El sistema debe validar que la parcela o recinto asociado exista.
+    \item \textbf{RF-08.5)} El sistema debe validar que la actividad esté asociada a una campaña.
+    \item \textbf{RF-08.6)} El sistema debe validar que el tipo de actividad pertenezca al catálogo permitido.
+    \item \textbf{RF-08.7)} El sistema debe validar que los campos obligatorios (fecha, parcela/recinto, campaña, tipo de actividad) estén presentes.
+    \item \textbf{RF-08.8)} El sistema debe impedir guardar la actividad si falla alguna validación.
+    \item \textbf{RF-08.9)} El sistema debe almacenar la actividad en el sistema actualizando automáticamente las tablas específicas según el tipo de actividad.
+    \item \textbf{RF-08.10)} El sistema debe gestionar permisos según el rol del usuario:
+    \begin{itemize}
+        \item \textbf{RF-08.10.1)} Un usuario que pertenece a una entidad con rol ``admin de entidad'' puede registrar actividades para sí mismo o para otros 
+        usuarios de su entidad con permisos.
+        \item \textbf{RF-08.10.2)} Un usuario que pertenece a una entidad con rol ``agricultor'' solo puede registrar actividades para sí mismo, salvo que 
+        pertenezca a una entidad con permisos delegados, en cuyo caso esta función la hará un admin de la entidad.
+        \item \textbf{RF-08.10.3)} Un usuario con rol de ``administrador'' podrá registrar actividades para sí mismo.
+    \end{itemize}
+    \item \textbf{RF-09.1)} El sistema debe permitir registrar actividades de tipo ``Fitosanitaria''.
+    \item \textbf{RF-09.2)} El sistema debe solicitar los campos específicos: producto, cantidad, nif del usuario que lo realiza y tipo cultivo.
+    \item \textbf{RF-09.3)} El sistema debe impedir guardar la actividad si falta alguno de los campos obligatorios.
+    \item \textbf{RF-09.4)} El sistema debe mostrar un mensaje de error cuando la validación falle.
+    \item \textbf{RF-09.5)} El sistema debe registrar la actividad en la tabla general de actividades.
+    \item \textbf{RF-09.6)} El sistema debe registrar el tratamiento en la tabla específica de tratamientos.
+    \item \textbf{RF-09.7)} El sistema debe vincular el tratamiento con la actividad correspondiente.
+    \item \textbf{RF-10.1)} El sistema debe permitir registrar actividades en estado “Planificada”.
+    \item \textbf{RF-10.2)} El sistema debe validar que la fecha de una actividad planificada es futura.
+    \item \textbf{RF-10.3)} El sistema debe validar que la actividad esté asociada a una campaña.
+    \item \textbf{RF-10.4)} El sistema debe validar que los campos obligatorios (fecha, campaña, parcela/recinto, tipo de actividad) estén presentes.
+    \item \textbf{RF-10.5)} El sistema debe almacenar la actividad planificada en el sistema.
+    \item \textbf{RF-11.1)} El sistema debe permitir modificar actividades existentes.
+    \item \textbf{RF-11.2)} El sistema debe validar que la actividad exista antes de permitir su modificación.
+    \item \textbf{RF-11.3)} El sistema debe impedir guardar cambios si alguna validación falla.
+    \item \textbf{RF-11.4)} El sistema debe actualizar los datos de la actividad al guardar los cambios.
+    \item \textbf{RF-11.5)} El sistema debe impedir establecer el estado ``Completada'' con una fecha futura.
+    \item \textbf{RF-11.6)} El sistema debe actualizar las tablas específicas cuando se modifiquen datos relevantes del tipo de actividad.
+    \item \textbf{RF-11.7)} El sistema debe mantener la consistencia entre la tabla de actividades y las tablas específicas.
+    \item \textbf{RF-12.1)} El sistema tiene que validar que la actividad existe.
+    \item \textbf{RF-12.2)} El sistema debe permitir eliminar una actividad dado su id.
+    \item \textbf{RF-12.3)} El sistema debe eliminar los registros de la tabla de actividades y actividades fitosanitarias relacionadas.
+\end{itemize}
+
+\subsection{Usuarios}
+
+\begin{itemize}
+    \item \textbf{RF-13.1)} El sistema debe impedir el acceso a los usuarios que no tenga rol administrador.
+    \item \textbf{RF-13.2)} El sistema debe mostrar una lista de los usuarios registrados con la información más relevante.
+    \item \textbf{RF-15.1)} El sistema debe mostrar las actividades realizadas por un usuario dado su id.
+    \item \textbf{RF-15.2)} El sistema debe validar que el usuario exista.
+    \item \textbf{RF-15.3)} El sistema mostrará las actividades propias de un usuario o las de otros usuarios en caso de 
+    que estén asignadas a una entidad y el usuario tenga rol de admin dentro de la entidad.
+    \item \textbf{RF-15.4)} Si el año de la campaña es pasado, el sistema filtrará las actividades de la campaña especificada.
+\end{itemize}
+
+\section{Requisitos no funcionales}
+
+\section{Requisitos de información}
