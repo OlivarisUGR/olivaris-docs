@@ -5,3 +5,29 @@ la \textbf{arquitectura} desarrollada, los \textbf{modelos de datos} utilizados,
 
 \section{Arquitectura de alto nivel}
 
+En esta sección se va a explicar cómo es la arquitectura del sistema, de qué componentes consta y cómo se comunican entre ellos. Además, se van a comentar las tecnologías utilizadas y se 
+justificará su uso.
+
+\subsection{Arquitectura monolítica}
+
+Para el diseño del sistema se ha elegido una \textbf{arquitectura monolítica} por la siguientes razones:
+\begin{itemize}
+    \item \textbf{Alto acoplamiento} entre las distintas entidades (actividades, parcelas, recintos, usuarios), causando que la lógica de negocio y validaciones sean más sencillas de gestionar estando centralizadas
+    en un único punto, ayudando a reducir posibles errores de coherencia de datos.
+    \item \textbf{Simplicidad de desarrollo} ya que todos los componentes están en el mismo servidor, permitiendo un único despliegue más directo y evitando la necesidad de gestionar comunicación entre servicios 
+    mediante eventos.
+    \item Las \textbf{transacciones} sobre la base de datos son más rápidas y sencillas de gestionar, al igual que la \textbf{evolución} del sistema, ya que permite modificar funcionalidades de forma más ágil sin
+    romper contratos entre los servicios.
+\end{itemize} 
+
+Elegir otro tipo de arquitectura como una basada en microservicios, implicaría dividir servicios que están altamente relacionados, introduciendo una ``frontera'' entre ellos. Esto provocaría 
+posibles fallos distribuidos, llamadas entre servicios a través de APIs, autenticación entre servicios, despliegues independientes y una mayor complejidad al realizar operaciones entre entidades. 
+
+Por ejemplo, al crear una actividad es necesario tener en cuenta su relación con un recinto, la parcela a la pertenece dicho recinto, el usuario que la realiza y la entidad a la que pertenece (en caso de existir),
+además de aplicar validaciones según los roles del usuario. Esta situación, en una arquitectura basada en microservicios, sería mucho más costosa de gestionar, mientras que en un monolito resulta más sencilla al
+disponer de acceso directo a todos los componentes del sistema.
+
+\subsection{Componentes principales}
+
+\subsection{Comunicación entre los componentes}
+
