@@ -422,118 +422,163 @@ completada. Los criterios de aceptación para cada historia de usuario son los s
 \begin{itemize}
     \item \textbf{HU-01}
     \begin{itemize}
-        \item 
+        \item Dado que introduzco usuario/email y contraseña correctos, cuando inicio sesión, entonces accedo a la aplicación.
+        \item Dado que no he confirmado mi registro, cuando inicio sesión, el sistema no me lo permite.
+        \item Dado que introduzco credenciales incorrectas, cuando intento iniciar sesión, entonces el sistema muestra un mensaje de error.
+        \item Dado que no estoy autenticado, cuando intento acceder a una funcionalidad protegida, el sistema no me lo permite.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-02}
     \begin{itemize}
-        \item 
+        \item Dado que inicio sesión, cuando pasa el tiempo de inactividad configurado, entonces la sesión expira.
+        \item Dado que la sesión expira, cuando intento continuar, entonces debo volver a autenticarme.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-03}
     \begin{itemize}
-        \item 
+        \item Dado que un usuario tiene un rol asignado, cuando accede al sistema, entonces solo puede realizar lo permitido.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-04}
     \begin{itemize}
-        \item 
+        \item Dado que intento realizar una acción no permitida en base a mi rol, entonces el sistema lo bloquea.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-05}
     \begin{itemize}
-        \item 
+        \item Un usuario con rol de administrador puede crear una entidad habilitada en el sistema.
+        \item El sistema impedirá que un usuario con otro rol quiera registrar una entidad.
+        \item Los campos de nombre, NIF y correo electrónico son obligatorios; sin ellos no se podrá crear la entidad.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-06}
     \begin{itemize}
-        \item 
+        \item El sistema no permite que un usuario con rol administrador dentro de una entidad pueda manipular datos de usuarios que no le han dado permiso.
+        \item El sistema no permite que un usuario pueda gestionar datos o usuarios de otras entidades a las que no pertenece.
+        \item Un usuario que pertenece a una entidad con rol administrador podrá gestionar las actividades de otro usuario que haya otorgado permisos dentro 
+        de la misma entidad.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-07}
     \begin{itemize}
-        \item 
+        \item Dado que introduzco los datos válidos de una parcela, cuando la guardo, entonces la parcela queda registrada en el sistema.
+        \item Dado que la parcela tiene recintos, cuando se guarda la parcela, entonces los recintos quedan almacenados y vinculados a la parcela.
+        \item Dado que faltan datos obligatorios de la parcela, cuando intento guardarla, entonces el sistema muestra un error indicando los campos inválidos.
+        \item Dado que existen recintos con datos inválidos o incompletos, cuando intento guardar la parcela, entonces el sistema muestra un error.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-08}
     \begin{itemize}
-        \item 
+        \item Dado que introduzco datos válidos de una actividad, cuando la guardo, entonces la actividad queda registrada en el sistema.
+        \item Dado que la actividad tiene estado ``Completada'', cuando introduzco una fecha futura, entonces el sistema muestra un error.
+        \item Dado que falta alguno de los campos obligatorios (fecha, campaña, parcela/recinto o tipo de actividad), cuando intento guardar, entonces el 
+        sistema muestra un error indicando los campos inválidos.
+        \item Dado que la parcela o recinto no existe, cuando intento registrar la actividad, entonces el sistema muestra un error.
+        \item Dado que el usuario es admin dentro de una entidad, cuando registra una actividad para otro usuario de su entidad con permisos, entonces la 
+        actividad se guarda correctamente.
+        \item Dado que el usuario es ``agricultor'' o ``administrador'' y no pertenecen a ninguna entidad con rol ``agricultor'', cuando registra una actividad, 
+        entonces solo puede hacerlo para sí mismo.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-09}
     \begin{itemize}
-        \item 
+        \item Dado que selecciono el tipo de actividad ``fitosanitaria'', cuando accedo al formulario de registro, entonces el sistema solicita los campos 
+        necesarios como dosis, NIF del aplicador, fecha y tipo de cultivo.
+        \item Dado que introduzco todos los datos válidos de un tratamiento fitosanitario, cuando guardo la actividad, entonces el tratamiento queda registrado 
+        en el sistema y asociado a la actividad.
+        \item Dado que falta alguno de los campos obligatorios cuando intento guardar, entonces el sistema muestra un error indicando los campos inválidos.
+        \item Dado que registro un tratamiento fitosanitario válido, cuando se guarda la actividad, entonces se almacena en la tabla de actividades y en la 
+        tabla específica de tratamientos.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-10}
     \begin{itemize}
-        \item 
+        \item Dado que introduzco los datos válidos de una actividad con fecha futura, cuando la guardo, entonces la actividad queda registrada en el sistema 
+        como ``Planificada''.
+        \item Dado que intento registrar una actividad planificada, cuando introduzco una fecha pasada, entonces el sistema muestra un error.
+        \item Dado que no se ha insertado una campaña, cuando intento guardar la actividad, entonces el sistema muestra un error. 
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-11}
     \begin{itemize}
-        \item 
+        \item Dado que existe una actividad registrada, cuando modifico sus datos con valores válidos y guardo, entonces la actividad se actualiza correctamente 
+        en el sistema.
+        \item Dado que falta algún campo obligatorio tras la modificación, cuando intento guardar los cambios, entonces el sistema muestra un error.
+        \item Dado que se modifica el estado de una actividad ``completada'' a ``planificada'', el sistema muestra un error. 
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-12}
     \begin{itemize}
-        \item 
+        \item Dado que elimino una actividad, si esta existe, entonces desaparece.
+        \item Dado que la actividad contenía datos en tablas específicas, entonces los datos asociados se eliminan o recalculan.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-13}
     \begin{itemize}
-        \item 
+        \item Dado que el usuario tiene rol ``administrador'', cuando accede al listado de usuarios, entonces el sistema muestra 
+        todos los usuarios registrados.
+        \item Dado que el usuario no tiene rol ``administrador'', cuando intenta acceder al listado de usuarios, entonces el 
+        sistema deniega el acceso.
+        \item Dado que accedo al listado de usuarios, cuando se muestran los resultados, entonces veo los datos básicos de 
+        cada usuario (nombre, email, rol y estado).
+        \item Dado que existen muchos usuarios registrados, cuando accedo al listado, entonces los resultados se muestran de 
+        forma paginada. \textbf{REVISAR EN EL CÓDIGO}
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-14}
     \begin{itemize}
-        \item 
+        \item Dado que el usuario existe en el sistema, puede acceder a la información de sus parcelas.
+        \item Dado que el usuario tiene la parcela asignada, entonces se muestra la información de ella.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-15}
     \begin{itemize}
-        \item 
+        \item Dado que el historial de actividades es de un usuario distinto del que las quiere obtener, 
+        en caso de no tener rol de administrador dentro de la misma entidad el sistema lo impedirá.
     \end{itemize}
 \end{itemize}
 
 \begin{itemize}
     \item \textbf{HU-16}
     \begin{itemize}
-        \item 
+        \item Dado que el usuario existe, el sistema obtiene las parcelas asignadas a el y las dibuja 
+        sobre un mapa.
     \end{itemize}
 \end{itemize}
 
 \section{Requisitos funcionales}
 
-A partir de estas historias de usuario se han extraído los siguientes requisitos funcionales agrupados por áreas. La estructura va a ser del tipo \textit{RF-[ID de HU].XX}.
+Los requisitos funcionales sirven para indicar qué funciones tiene el sistema y qué debe hacer. A partir 
+de las historias de usuario se han extraído los siguientes requisitos funcionales agrupados por áreas. 
+La estructura es del tipo \textit{RF-[ID de HU].XX}.
 
 \subsection{Autenticación y autorización}
 
@@ -637,4 +682,40 @@ A partir de estas historias de usuario se han extraído los siguientes requisito
 
 \section{Requisitos no funcionales}
 
-\section{Requisitos de información}
+Este tipo de requisitos se basan en cómo debe comportarse el sistema en cuanto a rendimiento, seguridad, usabilidad, 
+escalabilidad, etc. Los requisitos no funcionales planteados son los siguientes:
+
+\subsection{Usabilidad}
+
+\begin{itemize}
+    \item \textbf{RNF1.1)} Interfaz de usuario fácil de manejar, con accesos rápidos a las funciones más importantes y con 
+    una navegación justa.
+    \item \textbf{RNF1.2)} El sistema tiene que ser compatible con cualquier dispositivo móvil, independientemente del 
+    sistema operativo utilizado (Android o iOS).
+\end{itemize}
+
+\subsection{Seguridad}
+
+\begin{itemize}
+    \item \textbf{RNF2.1)} El sistema tiene un control de autenticación a través de JWT. Gracias a un token que obtiene el 
+    usuario al inicar sesión, puede realizar peticiones al servidor.
+    \item \textbf{RNF2.2)} El sistema controla la autorización y permisos que tiene el usuario sobre las distintas 
+    funcionalidades de la aplicación. Para ello se ha recurrido un sistema basado en roles tanto a nivel de aplicacón global
+    como a nivel de rol dentro de una entidad.
+    \item \textbf{RNF2.3)} El sistema permite cifrar información y datos sensibles de los usuarios como la contraseña por 
+    motivos de seguridad. 
+\end{itemize}
+
+\subsection{Mantenibilidad}
+
+\begin{itemize}
+    \item \textbf{RNF3.1)} El sistema debe estar diseñado de forma que pueda facilitar la escalabilidad añadiendo nuevas
+    funcionalidades, su mantenimiento y actualización de los datos.
+    \item \textbf{RNF3.2)} El sistema debe estar documentado de forma adecuada y suficiente, de manera que pueda permitir
+    a otros usuarios entender el código.
+    \item \textbf{RNF3.3)} El sistema está sometido a pruebas y test (unitarios, integración, etc), que permiten validar
+    su correcto funcionamiento.
+\end{itemize}
+
+\subsection{\textbf{DISPONIBILIDAD Y RENDIMIENTO ?????}}
+
