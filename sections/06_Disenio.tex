@@ -5,12 +5,12 @@ la \textbf{arquitectura} desarrollada, los \textbf{modelos de datos} utilizados,
 
 \section{Arquitectura de alto nivel}
 
-En esta sección se va a explicar cómo es la arquitectura del sistema, de qué componentes consta y cómo se comunican entre ellos. Además, se van a comentar las tecnologías utilizadas y se 
-justificará su uso.
+En esta sección se va a explicar cómo es la arquitectura del sistema, de qué componentes consta y cómo se comunican entre ellos.
 
 \subsection{Arquitectura monolítica}
 
 Para el diseño del sistema se ha elegido una \textbf{arquitectura monolítica} por la siguientes razones:
+
 \begin{itemize}
     \item \textbf{Alto acoplamiento} entre las distintas entidades (actividades, parcelas, recintos, usuarios), causando que la lógica de negocio y validaciones sean más sencillas de gestionar estando centralizadas
     en un único punto, ayudando a reducir posibles errores de coherencia de datos.
@@ -29,5 +29,59 @@ disponer de acceso directo a todos los componentes del sistema.
 
 \subsection{Componentes principales}
 
+Los componentes principales de la arquitectura son:
+
+\begin{itemize}
+    \item \textbf{Servidor}
+    \newline
+    Es el encargado de procesar los datos y donde reside la lógica de negocio. Para la organización del código se ha seguido el patrón de diseño \textit{\textbf{MVC (Modelo-Vista-Controlador)}}, con el objetivo de separar 
+    responsabilidades y mejorar la mantenibilidad. Se ha definido una estructura jerárquica basada en las siguientes capas:
+
+    \begin{itemize}
+        \item \textbf{Controlador:} capa encargada de exponer los puntos de acceso (URLs) que permiten a los sistemas externos comunicarse con el servidor. Define la interfaz de la API y gestiona las peticiones entrantes.
+        \item \textbf{Lógica de negocio:} capa donde se procesan los datos antes de ser almacenados o enviados a sistemas externos. Aquí se aplican las reglas y validaciones del sistema. 
+        \item \textbf{Persistencia:} capa responsable de la comunicación directa con la base de datos, encargándose de ejecutar las operaciones SQL necesarias.
+    \end{itemize}
+
+    El servidor es de tipo RESTful, lo que significa que expone recursos manipulables a través de métodos HTTP. Por ello, la ``Vista'' del patrón MVC queda delegada casi por completo en el lado del cliente. La única excepción 
+    es el envío de correos electrónicos de registro, donde el servidor sí genera el archivo HTML que recibe el usuario.
+
+    \item \textbf{Cliente}
+    \newline
+    Es el componente que define y contiene toda la \textbf{interfaz de usuario}. Su código también está organizado en capas para separar las distintas responsabilidades: la definición del cliente de la API, los componentes visuales, la 
+    lógica de datos de cada vista y la navegación entre pantallas.
+
+    \item \textbf{Base de datos}
+    \newline
+    Es el sistema encargado de almacenar toda la información de la aplicación. Su función es suministrar datos al cliente cuando se solicitan y persistir los resultados de las operaciones procesadas por el servidor.
+\end{itemize}
+
 \subsection{Comunicación entre los componentes}
+
+La comunicación entre el servidor y el cliente sigue un modelo \textbf{Cliente-Servidor}. Este enfoque permite distribuir e intercambiar información a través de la red de forma eficiente: el cliente inicia la interacción mediante una petición a 
+la API del servidor; este, a su vez, recibe los datos, los procesa y se comunica con la base de datos para consultarlos o almacenarlos. Gracias a esta estructura, se consigue una mayor escalabilidad y una mejor organización de la 
+información.
+
+Por otro lado, la comunicación entre el servidor y la base de datos se realiza mediante un \hyperlink{orm}{\textbf{ORM \textit{(Object-Relational Mapping)}}}, una herramienta estándar en el desarrollo actual. En este caso, se han utilizado JPA e 
+Hibernate integrados con Spring Boot. Estas herramientas permiten gestionar las entidades, sus relaciones y las operaciones SQL de forma automática y transparente, lo que agiliza el desarrollo, reduce errores y optimiza el trabajo con la base de datos.
+
+\textbf{INSERTAR IMAGEN DEL ESQUEMA DE LA ARTQUITECTURA A ALTO NIVEL}
+
+Esta separación clara entre componentes garantiza la total independencia entre ellos. El servidor no necesita conocer los detalles de implementación del frontend; simplemente expone la manipulación de recursos a cualquier cliente, sin importar su 
+lenguaje de programación o plataforma utilizada (web, móvil o aplicaciones de terceros).
+
+A través de este enfoque se consiguen ventajas significativas en el sistema como los siguientes:
+
+\begin{itemize}
+    \item \textbf{Reusabilidad y flexibilidad:} permite que diferentes equipos trabajen en el cliente y el servidor de forma simultánea, agilizando el ciclo de desarrollo.
+    \item \textbf{Arquitectura sin estado (\textit{stateless}):} el servidor no almacena información de la sesión del usuario entre peticiones. Cada consulta contiene toda la información necesaria para ser procesada, lo que facilita el escalado y mejora la fiabilidad.
+    \item \textbf{Intercambio de datos:} la comunicación se realiza de forma ligera y estandarizada mediante objetos \textbf{JSON}, que es el formato de intercambio de datos más extendido.
+\end{itemize}
+
+\section{Modelos de datos}
+
+
+\section{Diseño de la interfaz}
+
+\section{Diseño de la API}
 
