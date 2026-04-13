@@ -80,6 +80,42 @@ A través de este enfoque se consiguen ventajas significativas en el sistema com
 
 \section{Modelos de datos}
 
+El modelo de datos se representará principalmente mediante dos esquemas: el \textbf{esquema de base de datos} y el \textbf{diagrama de clases}. El primero es una representación gráfica de las entidades y sus relaciones dentro de la base de datos; el segundo ofrece una 
+visión de las clases del sistema, detallando sus atributos, métodos y las conexiones entre ellas.
+
+\subsection{Esquema de Base de Datos}
+
+El esquema de bases de datos del sistema es el siguiente:
+
+\textbf{INSERTAR IMAGEN DEL ESQUEMA}
+
+\begin{itemize}
+    \item \textbf{Usuario:} es la entidad que representa un usuario en el sistema. Cuenta con atributos principales como el nombre, correo electrónico y número de teléfono.
+    \item \textbf{Roles del sistema:} entidad que representa los roles que un usuario tiene en el sistema. Se pueden distinguir dos tipos: \textit{rol admin}, que es el 
+    usuario que tiene un control total sobre la aplicación, pudiendo gestionar todos los usuarios que pertenecen al sistema; y \textit{rol básico}, que es el rol que adquiere
+    cualquier usuario que ser registra en el sistema.
+    \item \textbf{Usuario - Rol:} relación entre un usuario y los roles que tiene en el sistema. En cuanto al diseño, se ha considerado que un usuario puede tener varios roles,
+    formando una jerarquía: el usuario admin tiene rol admin y rol básico.
+    \item \textbf{Entidad habilitada:} entidad que representa a una entidad habilitada (por ejemplo: una cooperativa), siendo la que tiene una relación directa con el agricultor
+    y que podrá utilizar el CUE comercial (sistema desarrollado). Se ha fijado este nombre de acuerdo al \textit{Anexo X para el Registro de Autorizaciones para el Uso de 
+    Aplicaciones Comerciales}.
+    \item \textbf{Rol de la entidad:} entidad que representa el rol que tiene un usuario vinculado a una entidad habilitada. El rol puede ser: \textit{admin}, que correspone con
+    el usuario administrador de una entidad, siendo el encargado de poder gestionar los datos de los agricultores que pertenecen a la misma entidad, y \textit{farmer} (agricultor),
+    siendo el usuario vinculado con una entidad que delega permisos a los administradores para poder gestionar sus datos (leer y crear actividades).
+    \item \textbf{Usuario - Entidad - Rol entidad:} relación entre la tabla usuario, entidad y rol de la entidad. Cuando un usuario es vinculado con una entidad, se le añade un rol
+    dentro de la entidad, siendo esta relación la que almacena la información.
+    \item \textbf{Parcela:}
+    \item \textbf{Recinto:}
+    \item \textbf{Actividad:}
+    \item \textbf{Actividad fitosanitaria:}
+    
+\end{itemize}
+
+\subsection{Diagrama de clases}
+
+El diagrama de clases del sistema es el siguiente:
+
+\textbf{INSERTAR IMAGEN DEL ESQUEMA}
 
 \section{Diseño de la interfaz}
 
