@@ -91,23 +91,69 @@ El esquema de bases de datos del sistema es el siguiente:
 
 \begin{itemize}
     \item \textbf{Usuario:} es la entidad que representa un usuario en el sistema. Cuenta con atributos principales como el nombre, correo electrónico y número de teléfono.
+    
     \item \textbf{Roles del sistema:} entidad que representa los roles que un usuario tiene en el sistema. Se pueden distinguir dos tipos: \textit{rol admin}, que es el 
     usuario que tiene un control total sobre la aplicación, pudiendo gestionar todos los usuarios que pertenecen al sistema; y \textit{rol básico}, que es el rol que adquiere
     cualquier usuario que ser registra en el sistema.
+    
     \item \textbf{Usuario - Rol:} relación entre un usuario y los roles que tiene en el sistema. En cuanto al diseño, se ha considerado que un usuario puede tener varios roles,
     formando una jerarquía: el usuario admin tiene rol admin y rol básico.
+    
     \item \textbf{Entidad habilitada:} entidad que representa a una entidad habilitada (por ejemplo: una cooperativa), siendo la que tiene una relación directa con el agricultor
     y que podrá utilizar el CUE comercial (sistema desarrollado). Se ha fijado este nombre de acuerdo al \textit{Anexo X para el Registro de Autorizaciones para el Uso de 
     Aplicaciones Comerciales}.
+    
     \item \textbf{Rol de la entidad:} entidad que representa el rol que tiene un usuario vinculado a una entidad habilitada. El rol puede ser: \textit{admin}, que correspone con
     el usuario administrador de una entidad, siendo el encargado de poder gestionar los datos de los agricultores que pertenecen a la misma entidad, y \textit{farmer} (agricultor),
     siendo el usuario vinculado con una entidad que delega permisos a los administradores para poder gestionar sus datos (leer y crear actividades).
+    
     \item \textbf{Usuario - Entidad - Rol entidad:} relación entre la tabla usuario, entidad y rol de la entidad. Cuando un usuario es vinculado con una entidad, se le añade un rol
     dentro de la entidad, siendo esta relación la que almacena la información.
-    \item \textbf{Parcela:}
-    \item \textbf{Recinto:}
-    \item \textbf{Actividad:}
-    \item \textbf{Actividad fitosanitaria:}
+
+    Los permisos que un usuario da a la entidad para manipular los datos es representado a través de los campos \textit{write} y \textit{read} (cue y rea). Si un usuario es vinculado
+    a la entidad con el rol admin, todos los permisos están a ``null'', ya que este usuario es el encargado de gestionar datos a los agricultores; mientras que si el usuario es vinculado
+    con rol farmer, todos los permisos serán puestos a ``true'', de manera que los admin dentro de la entidad ya saben si el usuario ha dado permisos o no. Aunque ahora mismos todos los 
+    campos tengan el valor ``true'' si el usuario es farmer, este diseño permite dar solo ciertos tipos de permisos a la entidad si el sistema crece en un futuro o si hay que modificar
+    el tipo de permisos.
+
+    Los tipos de \textbf{permisos} se han creado siguiendo el \textit{Anexo X} para la elaboración de un CUE comercial. Este anexo explica que un usuario titular de una explotación podrá 
+    grabar sus datos en el CUE comercial, lo que equivale a gestionar sus propios datos relativos a una actividad dentro del sistema, o delegar esta función a una entidad habilitada,
+    siendo esta la encargada de gestionar sus actividades, utilizando el CUE comercial (sistema actual) para almacenar los datos.
+    
+    \item \textbf{Parcela:} entidad que representa una parcela del sistema. Está compuesta por todos los datos necesarios que la representan así como la información proporcionada por el
+    \textbf{Visor SIGPAC} \cite{visorSigpac}, como son: código de provincia y municipio (donde se ubica la parcela), código de polígono, número de parcela, geometría que representa la 
+    parcela en el mapa, entre otros.
+
+    El Visor SIGPAC de Andalucía es una aplicación web que permite obtener información gráfica y alfanumérica de las parcelas agrícolas de Andalucía. El Visor ofrece información , a nivel
+    de recinto, del año en curso y del anterior. Entre la datos que ofrece destacan: uso del recinto, superficie del recinto, pendiente media, coeficiente de regadío y región (entre otras).
+
+    \item \textbf{Recinto:} entidad que representa un recinto dentro de la parcela. Este recinto está relacionado con una parcela a través de una clave foránea y además, almacena la geomtría
+    del polígono que representa el recnto así como su uso.
+
+    Para almacenar los datos del recinto y de la parcela que no dependen del usuario (no dados por el), se ha recurrido a utilizar la \textbf{API} \cite{apiSgipac} que ofrece el servicio de
+    \textbf{SIGPAC}. Los endpoints utilizados y su uso será explicado en el último apartado de esta sección.
+    
+    \item \textbf{Usuario - Parcela:} entida que relaciona un usuario con una parcela. A través de esta relación se puede saber qué usuario se ha asignado una parcela para poder posteriormente 
+    mostrarla en un mapa. El usuario puede tener múltiples parcelas y una parcela está relacionada con múltiples usuarios, ya que la API es pública y todas las parcelas, pertenezcan
+    en la realidad a un usuario o no, pueden ser accedidas por cualquier usuario. En un futuro, se tendría que utilizar otro sistema que permita validar si la parcela que el usuario 
+    se ha asignado es realmente suya.
+
+    Esta relación es una entidad como tal ya que, además de tener las claves foráneas, cuenta con un atributo propio de la relación que es el nombre que el usuario le pone a la parcela.
+
+    \item \textbf{Actividad:} entidad que representa una actividad realizada por un usuario. Esta tabla relaciona un usuario con un recinto a través de sus ids como claves foráneas, consiguiendo
+    de esta manera saber qué usuario ha realizado una actividad en un recinto dentro de una parcela. Además de estos datos, también se almacena el tipo de actividad realizada con un dato de tipo
+    \textit{enum}. Este diseño permite que la base de datos pueda esccalar, de manera que en esta tabla se almacenan los datos que identifican a una actividad en general y en otra tabla, se 
+    almacenerán los datos específicos del tipo de actividad que se realiza (fitosanitaria, riego, poda, etc.), pudiendo tener la información sin repetir y mejor gestionada.
+    
+    \item \textbf{Actividad fitosanitaria:} entidad que representa una actividad del tipo fitosanitaria. La tabla almacena datos específicos para este tipo de actividad como son: fecha en la
+    que se aplica, producto utilizado, dosis y cantidad, tipo de cultivo y persona que aplica el producto (entre otros). Esta tabla está totalmente relacionada con la tabla actividad, ya que en
+    la realidad es vista la información de ambas tablas como un ``todo'', pero en el diseño la información está separada.
+
+    La tabla también recoge información de un producto fitosanitario a través de una clave foránea. Esta información se almacena en una tabla a parte, de manera que se evita duplicar información
+    y el sistema escala mejor.
+
+    \item \textbf{Producto fitosanitario:} entidad que representa un producto fitosanitario en el sistema. Almacena información como el registro oficial, siendo un identificador del producto, 
+    además del nombre o tipo de producto.
     
 \end{itemize}
 
@@ -120,4 +166,6 @@ El diagrama de clases del sistema es el siguiente:
 \section{Diseño de la interfaz}
 
 \section{Diseño de la API}
+
+Explicar API SIGPAC (endpoints utilizados, parametros pasados y JSON devuelto).
 

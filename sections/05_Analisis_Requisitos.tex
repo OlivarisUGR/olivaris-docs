@@ -109,6 +109,24 @@ de correo electrónico con el personal adecuado.
     en aquellas que la aplicación va tener con alta probabilidad.
 \end{itemize}
 
+\section{CUE comercial}
+
+Durante esta fase de análisis, viendo la necesidad que va a haber a partir de enero del próximo año 2027 en facilitar un CUE comercial 
+(aplicación software) a los titulares de una explotación, se ha orientado el desarrollo del sistema hacia este ámbito. Esta 
+decisión ha causado que el sistema evolucione de un ERP clásico que se iba a desarrollar en un principio, a acotar el sistema 
+a un diario de actividades que permita registrar su información en un CUE digital utilizando los datos suministrados por el usuario
+y por la REA.
+
+A partir de este punto, el sistema a desarrollar debe poder acceder a la API o interfaz que suministran NOMBREE para consumir sus
+endpoints, permitiendo obtener datos de la REA y exportar datos al CUE digital. Sin embargo, este proceso empezó siendo lento y tedioso,
+ya que requería un certificado que como se ha comentado antes, ha sido difícil de conseguir, por lo que se tomó la decisión de elaborar
+un sistema con una base de datos propia, que tenga las entidades necesarias para almacenar la información que podrían rellenar los datos 
+del CUE digital. De esta manera, el sistema también estaría adaptado a una posible integración futura de la API, ya que sería añadir
+el cliente de esta y que los datos sean enviados directamente a los servidores del REA y CUE que maneja el ministerio en vez de 
+almacenarlos en las tablas.
+
+\textbf{METO MÁS INFO AQUÍ ???}
+
 \section{Personas}
 
 Una parte muy importante durante el análisis de un sistema son los usuarios finales que lo utilizan. Por ello, se han creado
