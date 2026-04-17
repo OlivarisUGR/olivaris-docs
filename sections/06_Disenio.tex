@@ -167,5 +167,185 @@ El diagrama de clases del sistema es el siguiente:
 
 \section{Diseño de la API}
 
-Explicar API SIGPAC (endpoints utilizados, parametros pasados y JSON devuelto).
+Hablar de como he diseñado la API (controladores y endpoints)
+
+
+
+
+\subsection{API del Visor SIGPAC}
+
+SIGPAC ofrece un amplio catálogo de servicios entre los cuales, se puede acceder a información como:
+
+\begin{itemize}
+    \item Los códigos utilizados por SIGPAC para identificar las provincias, municipios y parcelas.
+    \item Geometrías y propiedades de las capas de los recintos, cultivos y elementos del paisaje.
+    \item Información relacionada con la infraestructura del Visor SIGPAC en formato JSON o \hyperlink{geoJson}{GeoJson}.
+\end{itemize} 
+
+Dentro de estos servicios, los que se han utilizado para recoger los datos y almacenarlos en el sistema 
+han sido: \textbf{Listas de Códigos SIGPAC} y \textbf{Servicio de Consultas de SIGPAC}.
+
+En \textit{Listas de códigos SIGPAC} se encuentran distintos endpoints o URL a las que se pueden acceder para obtener 
+distintos listados que ofrecen los códigos de las provincias, códigos de municipios y código de uso sigpac (cítricos,
+corrientes y superficies de agua, etc), entre otros.
+
+Para el desarrollo del sistema, se han utilizado los siguientes endpoints dentro de este grupo:
+
+\begin{itemize}
+    \item \textbf{Listado de códigos de provincias}
+    \newline
+    A través de la URL que ofrecen, se puede obtener un listado con todos los códigos asociados a cada provincia.
+    La URL que ofrecen es la siguiente:
+    
+    \textit{https://sigpac-hubcloud.es/codigossigpac/provincia.json}
+
+    A través de esta URL, se obtiene como respuesta un archivo JSON con la siguiente estructura:
+
+    \begin{lstlisting}[language=json,caption={Listado de provincias SIGPAC}]
+    {
+        "nombre": "provincia",
+        "descripcion": "Lista de codigos de Provincia SIGPAC",
+        "codigos": [
+            {
+                "codigo": 1,
+                "descripcion": "ALAVA"
+            },
+            {
+                "codigo": 2,
+                "descripcion": "ALBACETE"
+            },
+            {
+                "codigo": 3,
+                "descripcion": "ALICANTE"
+            },
+            ...
+        ]
+    }
+    \end{lstlisting}
+
+    Gracias a esta respuesta, se puede realizar una búsqueda por el campo ``descripcion'', y obtener el valor del 
+    campo ``código'', con el que s identificará la provincia.
+
+    \item \textbf{Listado de códigos de municipios}
+    \newline
+    A través de la URL que ofrecen, se puede obtener un listado con todos los códigos de cada municipio asociado
+    a una provincia.
+    La URL que ofrecen es la siguiente:
+    
+    \textit{https://sigpac-hubcloud.es/codigossigpac/municipio[cod\_prov].json}. 
+  
+    La variable de la url ``cod\_prov'', es el código de la provincia (el que se muestra en el listado anterior).
+
+    Al realizar una llamada a este endpoint con el código de municipio 4 (por ejemplo), se obtiene como respuesta un 
+    archivo JSON con la siguiente estructura:
+
+    \begin{lstlisting}[language=json,caption={Listado de municipios SIGPAC}]
+    {
+        "nombre": "municipio4",
+        "descripcion": "Lista de codigos de la provincia 4",
+        "codigos": [
+            {
+                "codigo": 1,
+                "descripcion": "Abla"
+            },
+            {
+                "codigo": 2,
+                "descripcion": "Abrucena"
+            },
+            {
+                "codigo": 3,
+                "descripcion": "Adra"
+            },
+            ...
+        ]
+    }
+    \end{lstlisting}
+
+    Gracias a esta respuesta, se puede realizar una búsqueda por el campo ``descripcion'', y obtener el valor del 
+    campo ``código'', con el que se identificará el municipio.
+\end{itemize}
+
+Por otra parte, está el \textit{Servicio de Consultas SIGPAC}. Con este servicio se puede obtener la información 
+SIGPAC en formato GeoJson de un recinto específico o de todos los recintos asociados a una parcela.
+
+Para el desarrollo del sistema, se han utilizado los siguientes endpoints:
+
+\begin{itemize}
+    \item \textbf{Propiedades de recinto por código SIGPAC}
+    \newline
+    Con esta consulta, se puede obtener las propiedades de todos los recintos de una parcela, dados los códigos
+    SIGPAC de una parcela específica.
+    La URL que ofrecen es la siguiente:
+
+    \textit{https://sigpac-hubcloud.es/servicioconsultassigpac/query/recinfoparc/[pr]/[mu]/
+    [ag]/[zo]/[po]/[pa].geojson}.
+    
+    La variable ``pr'' representa el código de la provincia, ``mu'' representa el código del municipio, ``ag'' 
+    representa el código de agregado (por defecto toma el valor 0), ``zo'' representa el código de la zona (por
+    defecto toma el valor 0), ``po'' representa el código del polígono y ``pa'' representa el código de la parcela.
+    Para poder consultar los dos últimos códigos, gracias a la aplicación \textit{Visor SIGPAC} se puede acceder
+    a esta información.
+
+    Si es ejecutada una llamada a este endpoint, la respuesta será un archivo en formato .GeoJson con la siguiente
+    estructura:
+    
+    \begin{lstlisting}[language=json,caption={Propiedades de los recintos de una parcela}]
+    [
+        {
+            "provincia": "31",
+            "municipio": 192,
+            "agregado": 0,
+            "zona": 0,
+            "poligono": 5,
+            "parcela": 83,
+            "recinto": 1,
+            "superficie": 9.4722,
+            "pendiente_media": 11.4,
+            "coef_regadio": 0
+            "admisibilidad": 0,
+            "incidencias": null,
+            "uso_sigpac": FO,
+            "region": null,
+            "wkt": "POLYGON(...)",
+            "srid": 4258
+        },
+        ...
+    ]
+    \end{lstlisting}
+
+    La respuesta es una lista con elementos que representan cada recinto. Por cada elemento, las propiedades del 
+    recinto significan lo siguiente:
+
+    \begin{itemize}
+        \item provincia: código de la provincia.
+        \item municipio: código del municipio SIGPAC.
+        \item agregado: código del agregado.
+        \item zona: código de la zona.
+        \item poligono: número del polígono.
+        \item parcela: número de la parcela.
+        \item recinto: código del recinto SIGPAC.
+        \item superficie: superficie del recinto expresado en hectáreas.
+        \item pendiente\_media: pendiente media del recinto.
+        \item coef\_regadio: coeficiente de regadío del recinto.
+        \item admisibilidad: porcentaje de admisibilidad de aplicación en los recintos de pastos
+        \item incidencias: códigos de las incidencias del recinto separados por comas.
+        \item uso\_sigpac: código de uso del recinto.
+        \item region: código de la región asignada al recinto.
+        \item wkt: coordenadas que definen el recinto en formato WKT.
+        \item srid: srid o código EPSG en el que están expresadas las coordenadas del recinto definido en el campo wkt.
+    \end{itemize}
+
+    La propiedad principal es el valor que hay en el campo ``wkt''. En este campo viene un lista de objetos con cada una
+    de los puntos que forman el polígono del recinto. Estos puntos son representados con valores de latitud y longitud.
+    Teniendo todos los puntos, se puede crear un objeto de tipo ``polígono'' que posteriormente pueda ser dibujado sobre
+    un mapa.
+
+    Si se combinan los códigos obtenidos al ejecutar las llamadas anteriores (provincia y municipio), con esta URL,
+    se pueden obtener todos los recintos de la parcela en cuestión.
+\end{itemize}
+
+
+
+
+
 

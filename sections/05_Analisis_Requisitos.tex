@@ -432,6 +432,32 @@ Según los análisis realizados y la información obtenida, se han establecido l
     \label{tab:hu_16}
 \end{table}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-17 & \textbf{Nombre} & Cierre de sesión \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como usuario, quiero cerrar sesión para proteger mis datos cuando dejo de usar la aplicación.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-17}
+    \label{tab:hu_17}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{2cm}|p{4cm}|p{2cm}|p{4cm}|}
+        \hline
+        \textbf{ID} & HU-18 & \textbf{Nombre} & Registro de actividades \\
+        \hline
+        \multicolumn{2}{|p{6cm}|}{\textbf{Descripción}} & \multicolumn{2}{p{6cm}|}{Como agricultor, quiero registrar una actividad directamente desde el mapa para agilizar el trabajo en campo.} \\
+        \hline
+    \end{tabular}
+    \caption{Historia de usuario HU-18}
+    \label{tab:hu_18}
+\end{table}
+
 \section{Criterios de aceptación}
 
 Las historias de usuario definidas tienen unos criterios de aceptación asociados que establecen cuando una historia de usuario ha sido
@@ -563,8 +589,6 @@ completada. Los criterios de aceptación para cada historia de usuario son los s
         sistema deniega el acceso.
         \item Dado que accedo al listado de usuarios, cuando se muestran los resultados, entonces veo los datos básicos de 
         cada usuario (nombre, email, rol y estado).
-        \item Dado que existen muchos usuarios registrados, cuando accedo al listado, entonces los resultados se muestran de 
-        forma paginada. \textbf{REVISAR EN EL CÓDIGO}
     \end{itemize}
 \end{itemize}
 
@@ -592,6 +616,24 @@ completada. Los criterios de aceptación para cada historia de usuario son los s
     \end{itemize}
 \end{itemize}
 
+\begin{itemize}
+    \item \textbf{HU-17}
+    \begin{itemize}
+        \item Dado que he iniciado sesión en el sistema, cuando cierro sesión, los tokens que me permiten
+        el acceso son eliminados y no puedo acceder al sistema.
+        \item Dado que la sesión ha sido cerrada, hay que iniciar sesión de nuevo para poder acceder al sistema.
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{HU-18}
+    \begin{itemize}
+        \item Dado que la parcela y el recinto aparece dibujado en el mapa, cuando el usuario clicka en ella,
+        aparece un enlace al formulario de registro.
+        \item Dado que se registra correctamente la actividad, queda almacenada en las tablas del sistema.
+    \end{itemize}
+\end{itemize}
+
 \section{Requisitos funcionales}
 
 Los requisitos funcionales sirven para indicar qué funciones tiene el sistema y qué debe hacer. A partir 
@@ -613,6 +655,8 @@ La estructura es del tipo \textit{RF-[ID de HU].XX}.
     \item \textbf{RF-03.3)} El sistema debe ocultar o deshabilitar funcionalidades no autorizadas.
     \item \textbf{RF-04.1)} El sistema debe validar permisos antes de ejecutar cualquier acción.
     \item \textbf{RF-04.2)} El sistema debe impedir operaciones no autorizadas a nivel de backend.
+    \item \textbf{RF-17.1)} El sistema debe eliminar los tokens guardados del usuario para evitar futuras peticiones.
+    \item \textbf{RF-17.2)} El sistema debe mostrar la página de inicio de sesión en caso de haber cerrido la sesión.
 \end{itemize}
 
 \subsection{Entidades habilitadas}
@@ -640,6 +684,7 @@ La estructura es del tipo \textit{RF-[ID de HU].XX}.
     \item \textbf{RF-14.1)} El sistema debe devolver la información de una parcela vinculada a un usuario específico.
     \item \textbf{RF-16.1)} El sistema debe devolver una lista con la información de una parcela junto con la geometría para el propio usuario.
     \item \textbf{RF-16.2)} El sistema debe validar que el usuario existe.
+    \item \textbf{RF-18.1)} El sistema debe mostrar un enlace que lleve al formulario de crear una actividad al clickar sobre un recinto del mapa.
 \end{itemize}
 
 \subsection{Actividades}
@@ -695,7 +740,6 @@ La estructura es del tipo \textit{RF-[ID de HU].XX}.
     \item \textbf{RF-15.2)} El sistema debe validar que el usuario exista.
     \item \textbf{RF-15.3)} El sistema mostrará las actividades propias de un usuario o las de otros usuarios en caso de 
     que estén asignadas a una entidad y el usuario tenga rol de admin dentro de la entidad.
-    \item \textbf{RF-15.4)} Si el año de la campaña es pasado, el sistema filtrará las actividades de la campaña especificada.
 \end{itemize}
 
 \section{Requisitos no funcionales}
