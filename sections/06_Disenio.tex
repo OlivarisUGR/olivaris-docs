@@ -167,10 +167,104 @@ El diagrama de clases del sistema es el siguiente:
 
 \section{Diseño de la API}
 
-Hablar de como he diseñado la API (controladores y endpoints)
+Para el desarrollo de este sistema se ha implementado una API que permite la comunicación entre un cliente (en este caso será una aplicación móvil) y el backend, proporcionando acceso seguro
+a la gestión de usuarios, actividades, parcelas y otras operaciones de negocio.
+
+La API diseñada es de tipo \textbf{REST} \cite{apiRest} (explicado en el apartado de \textit{Comunicación y Servicios Web} del estado del arte).
+
+La decisión de implementar una API REST ha sido tomada debido a su simplicidad y facilidad de integrar con cualquier tipo de cliente, ya sea una página web con contenido .html o una 
+aplicación móvil. La estructura que se ha seguido es del tipo \textbf{Cliente - Servidor}, ya que permite desacoplar y separar responsabilidades, teniendo en una parte el cliente, que muestra
+la interfaz de la aplicación al usuario y no sabe cómo trabaja el servidor con los datos; y por otra parte el servidor, encargándose de la lógica de negocio y de cómo se interactua con 
+la base de datos, sin necesidad de saber cómo es mostrada la información al usuario. Esto permite que ambos trabajen de manera independiente, cada uno con sus funciones, y que se puedan comunicar
+en cualquier momento aunque la lógica del cliente sea modificada.
+
+Un aspecto muy importante de una API REST es que no guarda ningún estado en el servidor, siendo la comunicación \textbf{\textit{stateless}}. Esto permite que cada petición que es realizada, 
+contiene toda la información necesaria para ser procesada, permitiendo una mejora en la escalabilidad e independencia entre cada petición.
+
+En cuanto al formato de las respuestas, pueden ser de varios tipos como se ha comentado anteriormente, pero en el desarrollo de este sistema se ha optado por devolver archivos en formato JSON, 
+siendo este tipo de archivos muy común, faćil de leer y de procesar. Para poder devolver este archivo  generado desde el servidor, primero hay que recibir una petición desde el cliente y esto se
+hace a través de los métodos HTTP (explicados en el apartado \textit{Comunicación y Servicios Web} del estado del arte). Gracias a estos métodos, el cliente y servidor se pueden comunicar de forma
+segura.
+
+\subsection{Tecnología utilizada y diseño de endpoints}
+
+La API se ha implementado en \textbf{Java} utilizando \textbf{Spring Boot}, en coherencia con la tecnología seleccionada para el backend del sistema. Esta elección facilita el mantenimiento del proyecto,
+ya que permite reutilizar el mismo ecosistema de herramientas, librerías y patrones de desarrollo en toda la aplicación.
+
+Spring Boot, mediante anotaciones y su contenedor de \hyperlink{inversionControl}{inversión de control}, permite registrar y gestionar automáticamente los componentes de la aplicación (controladores, servicios y repositorios).
+De este modo, se reduce el código repetitivo, se simplifica la inyección de dependencias y se mejora la organización de la lógica de negocio.
+
+En cuanto al diseño de endpoints, se ha seguido un enfoque REST orientado a recursos, con rutas claras y consistentes, uso de métodos HTTP según la operación (\texttt{GET}, \texttt{POST}, \texttt{PUT}/
+\texttt{PATCH} y \texttt{DELETE}) y códigos de estado adecuados para cada respuesta. Este criterio favorece una API fácil de documentar e integrar desde clientes móviles o web.
+
+Se han implementado varios controladores de acuerdo al recurso que manipulan. Estos controladores han sido los siguientes:
+
+\begin{itemize}
+    \item \textbf{ActivityController}
+    \newline
+    Este controlador manipula los recursos relacionados con las actividades. Los endpoints desarrollados son los sguientes:
 
 
+    \item \textbf{AdminController}
+    \newline
+    Este controlador establece aquellos endpoints que solo van a ser ejecutados por un usuario con rol administrador dentro del sistema. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{POST - /api/admin/user} \newline
+        Descripción: crea un usuario del sistema sin necesidad de enviar email y esperar confirmación. \newline
+        Datos enviados a través de un JSON: 
+        \begin{lstlisting}[language=json,caption={Creación de usuario}]
+        {
+            "firstname" (string): "",
+            "lastname" (string): "",
+            "email" (string): "",
+            "password" (string): "",
+            "phone" (string | null): "",
+            "nif" (string): "",
+            "entityNif" (string | null): "" 
+            "roles" (RoleTypes | null): [ ... ]
+        }
+        \end{lstlisting}
+
+        ``RoleTypes'' es un dato de tipo ENUM que define los tipos de roles que pueden haber en el sistema: ROLE\_ADMIN y ROLE\_BASIC. Si no se pasa ningún rol durante la creación del usuario, 
+        este será creado con ROLE\_BASIC por defecto.
+        El NIF de la entidad solo es necesario si el usuario que se va a crear se quiere vincular directamente con una entidad específica.
+
+        Respuesta: se devuelve un JSON con la información del usuario creado.
+    \end{itemize}
+
+    \item \textbf{AuthController}
+    \newline
+    Este controlador expone las rutas que van a permitir acceder a la aplicación a través de un registro inicial o iniciando sesión. Va a contener las URLs que generan los tokens para que los usuarios puedan
+    ejecutar el resto de endpoints expuestos por la API una vez hayan iniciado sesión. Los endpoints desarrollados son los siguientes:
+
+
+    \item \textbf{EntityController}
+    \newline
+    Este controlador manipula los recursos relacionados con una entidad habilitada. Los endpoints desarrollados son los siguientes:
+
+
+    \item \textbf{PhytoProductController}
+    \newline
+    Este controlador manipula los recursos relacionados con los productos fitosanitarios. Los endpoints desarrollados son los siguientes:
+
+    \item \textbf{PlotController}
+    \newline
+    Este controlador manipula los recursos relacionados con una parcela y sus recintos. Los endpoints desarrollados son los siguientes:
+
+    \item \textbf{UserController}
+    \newline
+    Este controlador manipula los recursos relacionados con un usuario del sistema. Los endpoints desarrollados son los siguientes:
+
+
+\end{itemize}
+
+Hay un controlador más llamado \textbf{ErrorResponseHandler} que es el encargado de manejar las excepciones que se lanzan durante la ejecución del programa, bien por un error en la validación de los datos o
+por un error generado durante el procesamiento de la lógica de negocio.
+
+\subsection{Autenticación y autorización}
+
+\subsection{Documentación generada con Postman}
 
 \subsection{API del Visor SIGPAC}
 
