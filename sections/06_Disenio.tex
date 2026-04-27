@@ -202,8 +202,22 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
 \begin{itemize}
     \item \textbf{ActivityController}
     \newline
-    Este controlador manipula los recursos relacionados con las actividades. Los endpoints desarrollados son los sguientes:
+    Este controlador manipula los recursos relacionados con las actividades. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{POST - /api/activity/user/{userId}/enclosure/{enclosureId}} \newline
+        Descripción: crea una actividad asociada a un recinto para un usuario específico. El ID del usuario y del recinto es pasado como variable de la URL. Además, se podrá pasar el ID de la entidad como 
+        parámmetro de la petición si la actividad es realizada perteneciendo a una entidad.\newline
+        
+        Datos enviados a través del JSON:
+
+
+        \item \textbf{POST - /api/activity/{activityId}} \newline
+        \item \textbf{DELETE - /api/activity/{id}} \newline
+        \item \textbf{PUT - /api/activity/{activityId}} \newline
+        \item \textbf{GET - /api/activity/user/{userId}/enclosure/{enclosureId}} \newline
+        \item \textbf{GET - /api/activity/user/{userId}} \newline
+    \end{itemize}
 
     \item \textbf{AdminController}
     \newline
@@ -211,7 +225,8 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
 
     \begin{itemize}
         \item \textbf{POST - /api/admin/user} \newline
-        Descripción: crea un usuario del sistema sin necesidad de enviar email y esperar confirmación. \newline
+        Descripción: crea un usuario del sistema sin necesidad de enviar email y esperar confirmación. 
+        
         Datos enviados a través de un JSON: 
         \begin{lstlisting}[language=json,caption={Creación de usuario}]
         {
@@ -231,6 +246,11 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
         El NIF de la entidad solo es necesario si el usuario que se va a crear se quiere vincular directamente con una entidad específica.
 
         Respuesta: se devuelve un JSON con la información del usuario creado.
+
+        \item \textbf{DELETE - /api/admin/user/{id}} \newline
+        Descripción: elimina un usuario del sistema a partir del ID con el que está almacenado en la base de datos. El ID es pasado como variable de la URL.
+        
+        Respuesta: se devuelve una respuesta sin contenido con código 204.
     \end{itemize}
 
     \item \textbf{AuthController}
@@ -238,25 +258,268 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
     Este controlador expone las rutas que van a permitir acceder a la aplicación a través de un registro inicial o iniciando sesión. Va a contener las URLs que generan los tokens para que los usuarios puedan
     ejecutar el resto de endpoints expuestos por la API una vez hayan iniciado sesión. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{POST - /api/auth/register} \newline
+        Descripción: registra un usuario en el sistema. En este caso, el usuario deberá de confirmar su registro a través del correo que se le enviará por correo electrónico (a diferencia de la creación 
+        de usuario que hace el admin). 
+        
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Registro de usuario}]
+        {
+            "firstname" (string): "",
+            "lastname" (string): "",
+            "email" (string): "",
+            "password" (string): "",
+            "phone" (string | null): "",
+            "nif" (string): "",
+            "entityNif" (string | null): "" 
+            "roles" (RoleTypes | null): [ ... ]
+        }
+        \end{lstlisting}
+
+        Es el mismo JSON que se utiliza para crear un usuario. Por defecto, el usuario que se crea a través del registro no se vincula de manera inicial a ninguna entidad, por lo que el nif de la entidad no
+        se pasará, al igual que ocurre con el rol (por defecto tendrá rol básico del sistema).
+
+        Respuesta: se devuelve un JSON con la información del usuario creado.
+
+        \item \textbf{POST - /api/auth/register/entityAdmin} \newline
+        Descripción: registro de un usuario en el sistema y vinculación con una entidad específica con rol de administrador. 
+        
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Registro de usuario administrador de entidad}]
+        {
+            "firstname" (string): "",
+            "lastname" (string): "",
+            "email" (string): "",
+            "password" (string): "",
+            "phone" (string | null): "",
+            "nif" (string): "",
+            "entityNif" (string | null): "" 
+            "roles" (RoleTypes | null): [ ... ]
+        }
+        \end{lstlisting}
+
+        En este caso, el nif de la entidad será enviado para que se pueda vincular el usuario registrado con la entidad específica. El rol será básico en el sistema en caso de no ser pasado en el cuerpo del 
+        JSON.
+
+        Respuesta: se devuelve un JSON con la información del usuario creado.
+
+        \item \textbf{GET - /api/auth/confirm} \newline
+        Descripción: confirmación del usuario registrado. Cuando un usuario pulse el botón del email que se le ha enviado, se ejecutará esta funcionalidad que permite confirmar su registro. 
+        
+        Respuesta: se devuelve un JSON con la información del usuario confirmado.
+
+        \item \textbf{POST - /api/auth/login} \newline
+        Descripción: inicio de sesión de un usuario en el sistema. 
+        
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Inicio de sesión}]
+        {
+            "email" (string): "",
+            "password" (string): ""
+        }
+        \end{lstlisting}
+
+        Respuesta: se devuelve un JSON con el token de acceso y el token de refresco. El token de acceso contiene información cifrada del usuario que permite identificarlo, sabiendo de esta forma si está 
+        autorizado a acceder a la información que solicita.
+
+        \item \textbf{POST - /api/auth/refresh} \newline
+        Descripción: creación de nuevo token de acceso y token de refresco.
+
+        Datos enviados: token en la cabecera (headers) de la petición.
+
+        Resuesta: se devuelve un JSSON con un nuevo token de acceso y token de refresco.
+    \end{itemize}
 
     \item \textbf{EntityController}
     \newline
     Este controlador manipula los recursos relacionados con una entidad habilitada. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{POST - /api/entity/} \newline
+        Descripción: creación de una entidad habilitada en el sistema. 
+        
+        Datos enviados a través del JSON:
+        \begin{lstlisting}[language=json,caption={Creación de entidad habilitada}]
+        {
+            "name" (string): "",
+            "nif" (string): "",
+            "email" (string): "",
+            "phone" (string | null): ""
+        }
+        \end{lstlisting}
+
+        Respuesta: devuelve un JSON con la información del entidad creada.
+
+        \item \textbf{POST - /api/entity/{entityId}} \newline
+        Descripción: creación de un vínculo de un usuario con una entidad. La entidad es identificada a través de su ID que es pasado
+        como variable de la URL. 
+        
+        Datos enviados a través del JSON:
+        \begin{lstlisting}[language=json,caption={Creación de usuario vinculado a entidad}]
+        {
+            "email" (string): "",
+            "entityRole" (EntityRoleTypes): "",
+            "writeCue" (Boolean | null): true | false,
+            "writeRea" (Boolean | null): true | false,
+            "readCue" (Boolean | null): true | false,
+            "readRea" (Boolean | null): true | false,
+        }
+        \end{lstlisting}
+
+        El ``email'' corresponde al del usuario, el valor ``EntityRoleTypes'' identifica los tipos de roles que tiene un usuario dentro 
+        de una entidad, pudiendo ser: administrador o agricultor (\textit{farmer}).
+
+        \item \textbf{PUT - /api/entity/{entityId}/user/{userId}} \newline
+        Descripción: actualización de los permisos y/o roles de un usuario asignado a una entidad. Tanto el ID de la entidad como el ID
+        del usuario son pasados como variables de la URL. 
+        
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Actualización de datos de un usuario vinculado a una entidad}]
+        {
+            "entityRole" (EntityRoleTypes | null): "",
+            "writeCue" (Boolean | null): true | false,
+            "writeRea" (Boolean | null): true | false,
+            "readCue" (Boolean | null): true | false,
+            "readRea" (Boolean | null): true | false,
+        }
+        \end{lstlisting}
+
+        Respuesta: se duelve un JSON con la información del usuario vinculado a la entidad (roles y permisos dados).
+
+        \item \textbf{DELETE - /api/entity/{entityId}/user/{userId}} \newline
+        Descripción: eliminación del vinculo de un usuario con una entidad específica. Tanto el ID del usuario como el ID de la entidad 
+        son pasados como variables de la URL. 
+
+        Respuesta: se envía una respuesta sin contenido con código 204.
+
+        \item \textbf{GET - /api/entity/user/{userId}} \newline
+        Descripción: obtiene todas las entidades de un usuario específico. El ID del usuario es pasado como variable de la URL. 
+        
+        Respuesta: se devuelve un JSON que contiene una lista con la información de la asignación del usuario con cada entidad 
+        (roles y permisos).
+    \end{itemize}
 
     \item \textbf{PhytoProductController}
     \newline
     Este controlador manipula los recursos relacionados con los productos fitosanitarios. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{POST - /api/phytoProduct/} \newline
+        Descripción: creación de un producto fitosanitario. 
+
+        Datos enviados a través del JSON:
+        \begin{lstlisting}[language=json,caption={Creación de producto fitosanitario}]
+        {
+            "name" (string): "",
+            "oficialRegister" (string): "",
+            "activeSubstance" (string): "",
+            "type" (string): ""
+        }
+        \end{lstlisting}
+
+        El campo ``oficialRegister'' se refiere al número de registro que identifica al producto, ``activeSubstance'' es la materia activa del 
+        producto (componentes químicos o biológicos) y ``type'' se refiere al tipo de producto (insecticida, fertilizante, etc).
+
+        Respuesta: se devuelve un JSON con la información del producto fitosanitario creado.
+
+        \item \textbf{GET - /api/phytoProduct/all} \newline
+        Descripción: consulta de todos los productos fitosanitarios. 
+
+        Respuesta: se devuelve un JSON que contiene una lista con la información de cada producto fitosanitario.
+    \end{itemize}
+
     \item \textbf{PlotController}
     \newline
     Este controlador manipula los recursos relacionados con una parcela y sus recintos. Los endpoints desarrollados son los siguientes:
+
+    \begin{itemize}
+        \item \textbf{POST - /api/plot/user/{userId}} \newline
+        Descripción: crea una asignación entre un usuario y una parcela. El ID del usuario sobre el que se asigna la parcela es pasado como 
+        variable de la URL. 
+
+        Datos enviados a través del JSON:
+        \begin{lstlisting}[language=json,caption={Creación de asignación entre usuario y parcela}]
+        {
+            "name" (string): "",
+            "province" (string): "",
+            "city" (string): "",
+            "polygonCode" (string): "",
+            "plotNum" (string): "",
+            "landRegister" (string): ""
+        }
+        \end{lstlisting}
+
+        Los campos pasados se refieren al nombre le va a asignar el usuario a la parcela, el nombre de la provincia y municipio en la que se 
+        encuentra, el código del polígono y número de la parcela (se pueden consultar en la aplicación de \textit{Visor SIGPAC}), y la
+        referencia catastral.
+
+        Respuesta: se devuelve un JSON que contiene la información de la parcela creada junto con sus recintos.
+
+        \item \textbf{DELETE - /api/plot/{id}} \newline
+        Descripción: elimina una parcela del sistema. El ID de la parcela es enviado como variable de la URL. 
+
+        Respuesta: se devuelve una respuesta sin contenido con código 204.
+
+        \item \textbf{DELETE - /api/plot/{plotId}/user/{userId}} \newline
+        Descripción: elimina la asignación entre un usuario y una parcela. El ID del usuario y de la parcela son pasados como variables de la
+        URL. 
+
+        Respuesta: devuelve una respuesta sin contenido con código 204.
+
+        \item \textbf{GET - /api/plot/{plotId}} \newline
+        Descripción: obtiene la información de una parcela específica. El ID es pasado como variable de la URL. 
+        
+        Respuesta: devuelve un JSON con la información de la parcela solicitada.
+
+        \item \textbf{GET - /api/plot/{plotId}/enclosures} \newline
+        Descripción: obtiene todos los recintos de una parcela específica. El ID de la parcela es pasado como variable de la URL.
+        
+        Respuesta: devuelve un JSON con la información de la parcela y de todos los recintos que la componen.
+
+        \item \textbf{GET - /api/plot/user/{userId}} \newline
+        Descripción: obtiene todas las parcelas que pertenecen a un usuario. El ID del usuario es pasado como variable de la URL.
+        
+        Respuesta: devuelve un JSON con una lista que contiene todas las parcelas (junto con sus recintos), que pertenecen al usuario.
+
+        \item \textbf{GET - /api/plot} \newline
+        Descripción: obtiene el id de un recinto específico dentro de una parcela asignada a un usuario. Para ejecutar este endpoint también 
+        se deben de pasar de manera obligatoria los parámetros: \textit{plotName}, \textit{enclosureName}, \textit{userId}.
+
+        Respuesta: se devuelve un JSON con el id del recinto almacenado en la base de datos.
+    \end{itemize}
 
     \item \textbf{UserController}
     \newline
     Este controlador manipula los recursos relacionados con un usuario del sistema. Los endpoints desarrollados son los siguientes:
 
+    \begin{itemize}
+        \item \textbf{GET - /api/user/me} \newline
+        Descripción: obtiene la información del usuario que lo ejecuta.
 
+        Respuesta: devuelve un JSON con la información del usuario que lo ha ejecutado.
+
+        \item \textbf{GET - /api/user/{id}} \newline
+        Descripción: obtiene la información de un usuario específico. El ID del usuario es pasado como variable de la URL.
+
+        Respuesta: devuelve un JSON con la información del usuario específico.
+
+        \item \textbf{GET - /api/user} \newline
+        Descripción: es necesario ejecutar el endpoint pasando el ``email'' como parámetro de la URL. Obtiene un usuario a partir de su correo
+        electrónico.
+
+        Respuesta: devuelve un JSON con la información del usuario específico.
+
+        \item \textbf{GET - /api/user/all/entity/{entityId}} \newline
+        Descripción: obtiene todoos los usuarios que pertenecen a una entidad. El ID de la entidad es pasado como variable de la URL.
+
+        Respuesta: devuelve un JSON con una lista que contiene la información de cada usuario que pertenece a la entidad.
+
+        \item \textbf{GET - /api/user/all} \newline
+        Descripción: obtiene todos los usuarios del sistema.
+
+        Respuesta: devuelve un JSON que contiene una lista con la información de cada usuario guardado en el sistema.
+    \end{itemize}
 \end{itemize}
 
 Hay un controlador más llamado \textbf{ErrorResponseHandler} que es el encargado de manejar las excepciones que se lanzan durante la ejecución del programa, bien por un error en la validación de los datos o
@@ -264,7 +527,15 @@ por un error generado durante el procesamiento de la lógica de negocio.
 
 \subsection{Autenticación y autorización}
 
+
+
+
+
 \subsection{Documentación generada con Postman}
+
+
+
+
 
 \subsection{API del Visor SIGPAC}
 
