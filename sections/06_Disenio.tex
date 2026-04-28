@@ -207,16 +207,111 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
     \begin{itemize}
         \item \textbf{POST - /api/activity/user/{userId}/enclosure/{enclosureId}} \newline
         Descripción: crea una actividad asociada a un recinto para un usuario específico. El ID del usuario y del recinto es pasado como variable de la URL. Además, se podrá pasar el ID de la entidad como 
-        parámmetro de la petición si la actividad es realizada perteneciendo a una entidad.\newline
+        parámmetro de la petición si la actividad es realizada perteneciendo el usuario a una entidad.
         
         Datos enviados a través del JSON:
+        \begin{lstlisting}[language=json,caption={Creación de actividad realizada por usuario}]
+        {
+            "date" (LocalDate): "",
+            "season" (string): "",
+            "description" (string | null): "",
+            "type" (ActivityType): ,
+            "status" (ActivityStatus): ,
+            "phytoAct" (CreatePhytoActReq): [ ... ],
+        }
+        \end{lstlisting}
 
+        El tipo de dato ``ActivityType'' es un \textit{enum}, pudiendo definir el tipo de actividad que se guarda (ahora mismo solo tiene el valor ``fitosanitaria''), ``ActivityStatus'' es un \textit{enum} 
+        que representa el estado que tiene la actividad, pudiendo ser ``planificada'' y ``completada'' principalmente.
+
+        Este JSON contiene un campo ``phytoAct'' que representa la información de la actividad fitosanitaria. En esta clave se almacena una lista que contiene por cada valor el siguiente JSON:
+        \begin{lstlisting}[language=json,caption={Creación de actividad realizada por usuario}]
+        {
+            "phytoProductId" (long): ,
+            "applicationDate" (LocalDate): ,
+            "reason" (string): "",
+            "dose" (double): ,
+            "doseUnit" (string): ,
+            "totalAmount" (double): [ ... ],
+            "applicationMethod" (string): "",
+            "applicationMachinery" (string): "",
+            "applicatorName" (string): "",
+            "applicatorNif" (string): "",
+            "crops" (string): "",
+            "area" (double):  
+        }
+        \end{lstlisting}
+
+        Respuesta: se devuelve un JSON que contiene el id de la actividad y de la actividad fitosanitaria guardada en la base de datos junto con el instante en el que ha sido creado.
 
         \item \textbf{POST - /api/activity/{activityId}} \newline
+        Descripción: añade una nueva actividad fitosanitaria a una actividad ya creada anteriormente. El ID de la actividad es pasado como variable de la URL.
+
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Nueva actividad fitosanitaria añadida a una actividad}]
+        {
+            "phytoProductId" (long): ,
+            "applicationDate" (LocalDate): ,
+            "reason" (string): "",
+            "dose" (double): ,
+            "doseUnit" (string): ,
+            "totalAmount" (double): [ ... ],
+            "applicationMethod" (string): "",
+            "applicationMachinery" (string): "",
+            "applicatorName" (string): "",
+            "applicatorNif" (string): "",
+            "crops" (string): "",
+            "area" (double):  
+        }
+        \end{lstlisting}
+
+        Respuesta: devuelve un JSON que contiene el id de la actividad y de la actividad fitosanitaria guardada en la base de datos junto con el instante en el que ha sido creado. 
+
         \item \textbf{DELETE - /api/activity/{id}} \newline
+        Descripción: elimina una actividad almacenada en el sistema. El ID de la actividad es pasado como variable de la URL.
+
+        Respuesta: devuelve una respuesta sin contenido con código 204.
+
         \item \textbf{PUT - /api/activity/{activityId}} \newline
+        Descripción: actualiza una actividad almacenada en el sistema. El ID de la actividad es pasado como variable de la URL.
+
+        Datos enviados a través de un JSON:
+        \begin{lstlisting}[language=json,caption={Actualización de actividad}]
+        {
+            "description" (string): "",
+            "status" (ActivityStatus): ,
+            "phytoAct" (UpdatePhytoActReq): ,
+        }
+        \end{lstlisting}
+
+        El tipo de dato ``UpdatePhytoActReq'' contiene la información sobre la actividad fitosanitaria que se va a actualizar. Se trata de un JSON y contiene la siguiente información:
+        \begin{lstlisting}[language=json,caption={Actualización de actividad fitosanitaria}]
+        {
+            "phytoActId" (long): ,
+            "reason" (string): "",
+            "dose" (double): ,
+            "doseUnit" (string): "",
+            "totalAmount" (double): ,
+            "applicationMethod" (string): "",
+            "applicationMachinery" (string): "",
+            "applicatorNif" (string): "",
+            "area" (double):
+        }
+        \end{lstlisting}
+
+        Respuesta: devuelve un JSON con toda la información de la actividad.
+
         \item \textbf{GET - /api/activity/user/{userId}/enclosure/{enclosureId}} \newline
+        Descripción: obtiene todas las actividades de un usuario específico en un recinto concreto. El ID del usuario y del recinto es pasado como variable de la URL.
+        Además, se puede pasar como parámetros de la URL el \textit{id} de la entidad, en caso de que se quieran consultar las actividades perteneciendo a una entidad, y 
+        la \textit{season}, para obtener las actividades de una campaña concreta.
+
+        Respuesta: devuelve un JSON que contiene una lista con la información de cada una de las actividades encontradas en la base de datos.
+
         \item \textbf{GET - /api/activity/user/{userId}} \newline
+        Descripción: obtiene todas las actividades de un usuario específico. El ID del usuario es pasado como variable de la URL.
+
+        Respuesta: devuelve un JSON que contiene una lista con la información de cada una de las actividades encontradas en la base de datos. 
     \end{itemize}
 
     \item \textbf{AdminController}
@@ -522,18 +617,60 @@ Se han implementado varios controladores de acuerdo al recurso que manipulan. Es
     \end{itemize}
 \end{itemize}
 
-Hay un controlador más llamado \textbf{ErrorResponseHandler} que es el encargado de manejar las excepciones que se lanzan durante la ejecución del programa, bien por un error en la validación de los datos o
-por un error generado durante el procesamiento de la lógica de negocio.
+Hay un controlador más llamado \textbf{ErrorResponseHandler} que es el encargado de manejar las excepciones que se lanzan durante la 
+ejecución del programa, bien por un error en la validación de los datos o por un error generado durante el procesamiento de la lógica 
+de negocio.
 
 \subsection{Autenticación y autorización}
 
+El objetivo del proceso de autenticación y autorización es proteger los recursos de la API identificando a los usuarios y controlando qué 
+acciones pueden realizar según su rol y su relación con las entidades del sistema. En el presente proyecto se ha considerado el registro y 
+verificación por correo, autenticación a través de inicio de sesión con correo electrónico y contraseña, emisión de tokens (acceso y 
+\textit{refresh}) y autorización tanto por roles (\textit{admin} y \textit{basic}) como por reglas de negocio específicas (permisos asociados
+a entidades según rol).
 
+El flujo que se ha seguido para realizar la autenticación es el siguiente:
 
+\begin{itemize}
+    \item \textbf{Registro:} el usuario comienza registrándose mediante la ejecución del endpoint de \textbf{registro}. Al registrarse se crea 
+    el objeto usuario y se almacena en la base de datos junto con un token de confirmación que se envía por correo. Hasta que el usuario no 
+    confirme su registro no podrá acceder al sistema.
 
+    \item \textbf{Confirmación:} el usuario confirmará su cuenta al abrir el enlace en dicho correo, comprobando en el backend si el token es
+    válido y su expiración. De ser todo correcto, el usuario se marca como habilitado y puede acceder al sistema a través del inicio de sesión.
+
+    \item \textbf{Inicio de sesión (\textit{login}):} el usuario enviará el email junto con la contraseña al backend. El backend se 
+    se encargará de comprobar si el usuario existe buscándolo en la base de datos y obteniéndolo. Con la información del usuario obtenida y si
+    está habilitado en el sistema, se creará un token de acceso y de refresco que utilizará el usuario para las futuras peticiones a la API.
+
+    \item \textbf{Refresh:} por último, en caso de que el usuario necesite nuevos tokens para acceder a los recursos del sistema porque el que
+    tiene ha expirado, enviará el \textit{refresh token} en el campo \textbf{\textit{Authorization}} del cabecera de la petición y, si es vaĺido,
+    generará nuevos tokens que serán enviados al usuario.
+\end{itemize} 
+
+Para la verificación de la identidad del usuario que accede al sistema, los tokens con los que accede el usuario son generados con un tipo de clave
+\textbf{HMAC \cite{hmac}}. Este tipo de clave también conocida como \textit{Código de autenticación de mensaje basado en hash}, es una construcción específica 
+para calcular un código de autenticación de mensaje (MAC) que implica una función hash criptográfica en combinación con una llave criptográfica secreta.
+En ella va cifrada información propia del usuario como el email (\textit{subject}) y otra información auxiliar
+como el ID del usuario o el nombre (\textit{claims}). 
+
+Cuando el usuario hace peticiones con un token, hay un filtro que va a interceptar la llamada antes de ejecutar el contenido del endpoint. Este filtro
+extrae el token guardado en el campo \textit{Authorization} de la cabecera, extrae la información que almacena y verifica tanto si existe en el sistema 
+como si no ha expirado. Si todo es correcto, almacena en un contexto el usuario ``logueado''.
+
+En cuanto al control de acceso, como se ha comentado anteriormente, cada usuario tiene una serie de roles asociados a nivel de sistema y a nivel de entidad
+(en caso de pertenecer a una). Los roles del sistema son dos: \textbf{ADMIN} y \textbf{BASIC}. 
+
+El rol ``basic'' permite al usuario poder crear parcelas, actividades asociadas a esas parcelas así como la eliminación y actualización de cada una de ellas. 
+También podrá ver a qué entidades pertenece y sus datos personales. En cuanto al usuario con rol ``admin'', va a poder realizar todas las acciones que tiene 
+un usuario ``basic'' pero además, podrá ver, eliminar y atualizar todos los usuarios registrados en el sistema.
+
+Se han definido reglas de acceso a los recursos del sistema así como funciones de validación para determinar si el usuario puede ejecutar una funcionalidad
+o tiene autorización para acceder a un método/recurso. En próximos apartados se entrará en más detalle sobre esta parte.
 
 \subsection{Documentación generada con Postman}
 
-
+AGREGAR INFO ...
 
 
 
