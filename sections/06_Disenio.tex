@@ -175,6 +175,94 @@ acceder a funcionalidades del móvil (como el GPS).
 
 \subsection{Decisiones de diseño}
 
+El diseño del frontend se ha centrado en ofrecer una experiencia intuitiva y minimalista. Se ha priorizado la claridad visual para que la navegación sea fluida, permitiendo que cualquier perfil de 
+usuario pueda acceder a las distintas funcionalidades sin necesidad de una curva de aprendizaje previa. Al eliminar elementos innecesarios y reducir la carga de información en cada pantalla, se garantiza 
+que el usuario mantenga el foco en las tareas principales, evitando confusiones o fatiga durante el uso de la aplicación.
+
+En cuanto al logo que representa la aplicación es el siguiente:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{figures/olivaris_logo_2.png}
+    \caption{Logo de la aplicación Olivaris}
+    \label{fig:logo_olivaris}
+\end{figure}
+
+El logo ha sido diseñado teniendo en cuenta que el sector sobre el que se trabaja es el olivar y que el funcionamiento principal de la aplicación es el registro de actividades, de ahí el icono del cuaderno
+con distintos ``checks'' y el ramo con la oliva.
+
+A través del logo, se ha obtenido una paleta de colores con tonalidades relacionadas con el verde oliva.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/logo_colorpalette.png}
+    \caption{Paleta de colores}
+    \label{fig:paleta_colores}
+\end{figure}
+
+A continuación, se va a explicar la estructura de la aplicación y qué patrones se han seguido para el diseño y la experiencia de usuario.
+
+\subsubsection{Estructura de navegación y flujos de usuario}
+
+La navegación se realiza a partir de un componente creado que representa una barra de navegación, estando disponible en todas las pantallas de la aplicación. Se utiliza \textbf{expo-router} para gestionar 
+la navegación mediante un \textit{stack navigator}, proporcionando una estructura jerárquica del flujo de la aplicación, de manera que la nueva pestaña a la que se avanza se guarda en la ``pila'' y si se 
+vuelve a la anterior, se obtendrá al sacar de la estructura la última pantalla almacenada. 
+
+La navegación está dividida en dos contextos bien diferenciados:
+
+\begin{itemize}
+    \item \textbf{Pantallas públicas:} antes de la autenticación, el usuario solo tiene acceso a dos rutas: \textbf{pantalla de inicio/login (/)} y \textbf{registro de nuevo usuario (/registerUser)}.
+    Estas pantallas no muestran la barra de navegación y están diseñadas para no permitir acceso más allá sin credenciales válidas.
+
+    \item \textbf{Pantallas protegidas:} una vez autenticado, el usuario accede a un conjunto de rutas mediante validación de tokens. La aplicación implementa una función ``guardián'' de rutas que verifica 
+    la validez del token de acceso antes de permitir la navegación a cualquier pantalla protegida. Si el token ha expirado o no es válido, el usuario es automáticamente redirigido a la pantalla de login, 
+    garantizando de esta manera que nadie pueda acceder a funcionalidades sin estar autenticado.
+\end{itemize}
+
+Las pantallas principales son accesibles a través de una barra de navegación horizontal ubicada en la parte inferior de la interfaz, mostrando los iconos de: parcelas, actividades, entidades y usuarios del
+sistema (este último solo para administradores). Cada sección lleva a su pantalla correspondiente desde cualquier punto de la aplicación, permitiendo la navegación rápida entre las funcionalidades más usadas.
+
+Además de estas pantallas principales, existen pantallas de registro y modificación que aparecen de forma modal en el flujo: registro de parcelas, actividades, y asignación de usuarios a entidades. Estas pantallas 
+se muestran sin la barra de navegación para evitar distracciones durante el proceso de entrada de datos.
+
+En cuanto a los roles del sistema y autorización (acceso a funcionalidades), en la aplicación se distinguen tres perfiles principales de usuario:
+
+\begin{itemize}
+    \item \textbf{Usuario básico (agricultor)} \newline
+    Es el rol común que tienen la gran mayoría de usuarios. Con este rol el usuario puede realizar: consultar sus propias parcelas y crear nuevas, registrar actividades sobre sus parcelas, ver el historial de actividades 
+    y gestionar su información personal. 
+
+    El flujo de un agricultor es simple: tras autenticarse, entra directamente al área de parcelas desde donde puede navegar a actividades y ver su perfil, sin exposición a funcionalidades administrativas.
+
+    \item \textbf{Administrador del sistema:} \newline
+    Este rol tiene acceso a todas las funcionalidades anteriores y además, puede gestionar y crear usuarios en el sistema con cualquier rol y controlar cualquier entidad habilitada.
+
+    \item \textbf{Administrador de la entidad:} \newline
+    Este rol lo puede tener un usuario vinculado a una entidad. Permite gestionar a los usuarios dentro de una entidad (añadiendo nuevos o eliminándolos), además de poder gestionar todas las actividades de cada uno de estos
+    usuarios que pertenezcen a la entidad.
+
+    \item \textbf{Agricultor de la entidad:} \newline
+    Este rol lo puede tener un usuario vinculado a una actividad. Permite al usuario visualizar todas las actividades realizadas pero no permite crear nuevas ni modificarlas; de esto se encargarán los administradores de la entidad.
+\end{itemize}
+
+Estos roles se verifican dinámicamente cuando el usuario accede a la aplicación, utilizando la información almacenada en el token y refrescada cuando es necesario. La navegación se adapta en tiempo real no exponiendo directamente
+aquellas funcionalidades que el usuario no puede usar. Por ejemplo, si un usuario es administrador, ve la opción adicional de ``Usuarios del sistema'' en la barra de navegación; si no lo es, esa opción no aparece.
+
+\subsubsection{Gestión del estado de la aplicación}
+
+
+
+\subsubsection{Patrones de interacción y experiencia de usuario}
+
+
+
+\subsubsection{Principios de diseño visual}
+
+
+
+
+\subsubsection{Comunicación con la API}
+
 
 
 
