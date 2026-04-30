@@ -251,7 +251,7 @@ aquellas funcionalidades que el usuario no puede usar. Por ejemplo, si un usuari
 \subsubsection{Gestión del estado de la aplicación}
 
 En la aplicación no se ha planteado un estado global complejo. Los datos que se visualizan en cada pantalla así como los temporales, se gestionan de forma local dentro de cada pantalla mediante estados internos (con el 
-\textit{hook} \textbf{useState}) y efectos de carga (con el \textit{hook} \textbf{useEffect}), mientras que la información que se debe mantener entre pantallas o sesiones se guarda de forma persistente en el dispositivo (\textbf{SecureStore}). Este
+\textit{hook} \hyperlink{useState}{useState}) y efectos de carga (con el \textit{hook} \hyperlink{useEffect}{useEffect}), mientras que la información que se debe mantener entre pantallas o sesiones se guarda de forma persistente en el dispositivo (\textbf{SecureStore}). Este
 enfoque encaja con una aplicación móvil de alcance funcional claro, porque evita una capa de complejidad innecesaria y hace que cada pantalla se encargue de cargar solo la información que necesita.
 
 La parte más importante del estado persistente es la sesión del usuario. Los tokens de acceso y \textit{refresh} se almacenan de forma segura en el dispositivo, junto con información del usuario actual. Eso permite que la aplicación 
@@ -268,17 +268,64 @@ continuidad de sesión.
 
 \subsubsection{Patrones de interacción y experiencia de usuario}
 
+Para abordar este subapartado, se va a dividir en las distintas interacciones que el usuario puede tener con la aplicación:
 
+\begin{itemize}
+    \item \textbf{Interacción con mapas:} la aplicación integra mapas interactivos mediante \hyperlink{leaflet}{Leaflet}, incrustado en un componente del tipo \hyperlink{webview}{\textit{WebView}} nativo que permite visualizar parcelas y recintos como polígonos 
+    geográficos. El mapa se carga con la ubicación actual del usuario como punto de referencia central y muestra todos los polígonos asociados a sus parcelas en color azul. Los polígonos son clickables: al tocar uno de ellos, la aplicación 
+    envía un mensaje desde el WebView hacia React Native para identificar qué parcela o recinto fue seleccionado, permitiendo acciones posteriores como ver detalles o editar información a través de un \textit{pop up}.
+
+    El sistema también implementa un caché simple de ubicación: la primera vez que se accede a la pantalla de parcelas, se solicita la posición al dispositivo; en caso de que haya una ubicación guardada recientemente, se reutiliza para acelerar 
+    la carga. Si la pantalla se abre nuevamente, ya no hay que esperar a que el GPS se posicione.
+
+    \item \textbf{Interacción con formularios:} los formularios de registro están diseñados para validar en tiempo real mientras el usuario escribe. Cada campo tiene un estado de error asociado que se actualiza en el momento en que el usuario deja de escribir o 
+    toca otro campo. Por ejemplo, en el registro de parcelas, el campo de nombre muestra un error si está vacío, o en el registro de actividades, donde el campo de fecha solo se considera válido si cumple el formato DD-MM-YYYY.
+
+    Antes de enviar el formulario al servidor, la aplicación verifica a través de funciones de validación que todos los campos tengan el valor adecuado. Estas funciones se aplicación en el momento en el que se pulsa el botón de ``Guardar''. Si algún campo sigue 
+    siendo inválido, muestra una alerta pidiendo que se revisen los campos sin enviar nada al backend. Con este enfoque se reducen el número de peticiones al servidor y proporciona una retroalimentación inmediata sin saturar la interfaz con mensajes de error.
+    Además de esto, muchos formularios incluyen modales para seleccionar múltiples opciones predefinidas en lugar de introducir texto, como por ejemplo, al seleccionar el estado de una actividad.
+
+    \item \textbf{Interacción con listados:} los listados son mostrados a través de tarjetas individuales con la información estructurada: título destacado, secciones con etiqueta gris y el valor asociado a cada sección. Cada tarjeta puede incluir acciones secundarias
+    como botones de editar o eliminar tanto en la esquina como en la parte inferior. Los listados están ordenados siguiendo un criterio coherente: las actividades aparecen de más reciente a más antigua, reflejando de mejor forma el flujo de trabajo del agricultor.
+    
+    Cuando se navega hacia una pantalla que tiene un listado, se hace una petición al servidor y se obtienen todos los datos que van a ser mostrados en la tarjeta. En caso de que el usuario navega a otra pantalla y luego vuelva a la misma, la información se recarga
+    automáticamente gracias al uso del \textit{hook} \textbf{useEffect}, que realiza la petición de nuevo al backend para obtener la información antes de renderizar el componente. Esto asegura que siempre se van a ver los datos actualizados sin obligar al usuario 
+    a pulsar un botón de ``refrescar''.
+
+    \item \textbf{Retroalimentación visual:} la retroalimentación visual toma varias formas. Durante la carga de datos, se muestra el indicador clásico de tipo \textit{spinner} junto con un texto, comunicando al usuario que la aplicación está trabajando. Si ocurre 
+    algún error durante la ejecución, se mostrará a través de alertas nativas del sistema con un título y un mensaje descriptivo, proporcionando contexto sobre qué salió mal sin detener la navegación de la aplicación. Este método se utiliza también para mostrar los
+    mensajes de éxito, por ejemplo al eliminar un usuario.
+
+    Otros mensajes de error como los mostrados en los formularios, se marcan con texto rojo y se ubican debajo del campo, describiendo específicamente qué está mal (``la fecha es necesario'', ``formato inválido'', etc).
+\end{itemize}
 
 \subsubsection{Principios de diseño visual}
 
+El diseño visual de la aplicación ha sido planteado con un enfoque hacia dispositivos móviles y adaptable a distintas resoluciones. Debido a esta decisión, se han desarrollado estructuras verticales, contenedores de ancho completo, márgenes laterales moderados y 
+bloques de contenido que se adaptan a la pantalla según el tamaño disponible.
 
+En cuanto a la accesibilidad, se han priorizado deciciones como: tamaños de textos legibles, uso claro del color para diferenciar acciones y estados, y contraste suficiente entre fondo, superficie y contenido. Para los textos principales se han utilizado tonos 
+oscuros sobre fondos claros, mientras que los mensajes secundarios aparecen en gris para mantener la jerarquía visual sin perder legibilidad. Los botones tienen un color distintivo y un tamaño suficientemente amplio para facilitar la pulsación, algo importante en
+la interacción táctil. También se ha respetado el espacio seguro de la pantalla a través del componente \textbf{SafeAreaView}, evitando que el contenido quede pegado a los bordes o se solape con zonas externas a la aplicación.
 
+La coherencia visual entre pantallas se mantiene a través de un sistema común de colores, radios, sombras y estilos de botones. La aplicación reutiliza una paleta con colores simples: verde como color principal, fondos con colores suaves/claros, y tarjetas blancas
+para el contenido, ayudando de esta forma a que el usuario identifique rápidamente qué elementos forman parte de la misma interfaz. Las tarjetas, formularios y listados comparten una misma lógica visual: bordes redondeados, separación clara entre bloques y una 
+jerarquía constante entre título, etiqueta y valor. Esto reduce el esfuerzo de aprendizaje, porque el usuario no tiene que reinterpretar cada pantalla desde cero.
+
+También se buscó que la apariencia fuera consistente en componentes de distinta función. Un botón primario se comporta y se ve igual tanto en una pantalla de registro como en un listado; las tarjetas de información mantienen la misma estructura básica; y los formularios 
+repiten el mismo criterio de alineación y espaciado. Esa continuidad visual da sensación de sistema unificado y ayuda a que la aplicación resulte más predecible y fácil de usar.
 
 \subsubsection{Comunicación con la API}
 
+Para la comunicación con la API desde el frontend, se ha realizado una abstracción del cliente HTTP, es decir, la aplicación encapsula las llamadas en una capa de cliente central llamada \textbf{apiClient}, delegando los endpoints concretos a distintos módulos de la API
+(por ejemplo: \textbf{plotApi} o \textbf{activityApi}). Cada módulo exporta funciones pequeñas y tipadas, conteniendo cada una el apiClient, el tipo de petición que se realiza (post, put, get o delete) y la ruta con sus parámetros requeridos. Esta separación mantiene la 
+UI independiente de la URL de cada endpoint: los componentes consumen funciones directamente en lugar de construir peticiones HTTP manualmente. Gracias a ello es sencillo probar o sustituir la implementación del cliente sin tocar los componentes.
 
+El manejo de errores en red o devueltos por la API se hace a través de estructuras \textit{\textbf{try/catch}}: las llamadas se envuelven por capas de servicio y los componentes capturan los errores a través de esta estructura. En los \textit{catch} se usa la función 
+``getApiErrorMessage'' para normalizar los errores en el frontend y devolver retroalimentación al usuario.
 
+En cuanto a la autenticación e integración de tokens, se centraliza en el cliente HTTP: existe un interceptor en el apiClient que inyecta el token de acceso en el encabezado \textit{Authorization} para todas las peticiones que son enviadas al backend, evitando duplicar la
+lógica en cada llamada. La renovación de sesión (\textit{refresh}) se hace mediante una llamada específica disponible en los servicios de autenticación, y el bootstrap de la aplicación coordina la validación/renovación de credenciales antes de llevar al usuario a las pantallas privadas.
 
 \section{Diseño de la API}
 
