@@ -225,7 +225,7 @@ sistema (este último solo para administradores). Cada sección lleva a su panta
 Además de estas pantallas principales, existen pantallas de registro y modificación que aparecen de forma modal en el flujo: registro de parcelas, actividades, y asignación de usuarios a entidades. Estas pantallas 
 se muestran sin la barra de navegación para evitar distracciones durante el proceso de entrada de datos.
 
-En cuanto a los roles del sistema y autorización (acceso a funcionalidades), en la aplicación se distinguen tres perfiles principales de usuario:
+En cuanto a los roles del sistema y autorización (acceso a funcionalidades), en la aplicación se distinguen cuatro perfiles principales de usuario:
 
 \begin{itemize}
     \item \textbf{Usuario básico (agricultor)} \newline
@@ -250,7 +250,21 @@ aquellas funcionalidades que el usuario no puede usar. Por ejemplo, si un usuari
 
 \subsubsection{Gestión del estado de la aplicación}
 
+En la aplicación no se ha planteado un estado global complejo. Los datos que se visualizan en cada pantalla así como los temporales, se gestionan de forma local dentro de cada pantalla mediante estados internos (con el 
+\textit{hook} \textbf{useState}) y efectos de carga (con el \textit{hook} \textbf{useEffect}), mientras que la información que se debe mantener entre pantallas o sesiones se guarda de forma persistente en el dispositivo (\textbf{SecureStore}). Este
+enfoque encaja con una aplicación móvil de alcance funcional claro, porque evita una capa de complejidad innecesaria y hace que cada pantalla se encargue de cargar solo la información que necesita.
 
+La parte más importante del estado persistente es la sesión del usuario. Los tokens de acceso y \textit{refresh} se almacenan de forma segura en el dispositivo, junto con información del usuario actual. Eso permite que la aplicación 
+recuerde quién inició sesión, mantenga la sesión activa al volver a abrirla y pueda reconstruir el estado inicial sin obligar al usuario a autenticarse en cada acceso. Además, al inicio de la aplicación se comprueba si el token 
+sigue siendo válido y, si no lo es, se intenta renovar la sesión antes de enviar al usuario a la pantalla de inicio. De esta forma, la experiencia resulta más fluida y se reduce la complejidad en el acceso.
+
+A nivel de sincronización, la aplicación sincroniza con el backend los elementos que forman parte del funcionamiento real del sistema: autenticación, información del usuario, entidades, parcelas, actividades y listado de usuarios del 
+sistema. En estas pantallas se hacen peticiones al servidor cuando son abiertas o cuando se realiza alguna operación de alta, edición o borrado, para asegurar que la información mostrada esté actualizada. 
+
+La elección de este enfoque responde sobre todo a dos motivos. El primero es el rendimiento: al no depender de una capa global pesada, la aplicación carga más rápido y solo pide al servidor los datos necesarios en cada momento. El 
+segundo es la experiencia de uso: el usuario percibe una interfaz más estable, con menos esperas y con una sesión que se conserva entre aperturas. También ayuda a mantener el código más claro, porque cada pantalla gestiona su propio 
+ciclo de carga sin acoplarse al resto de la aplicación. En conjunto, este modelo resulta suficiente para el tipo de aplicación desarrollada y encaja bien con una interfaz móvil en la que se prioriza la sencillez, la rapidez y la 
+continuidad de sesión.
 
 \subsubsection{Patrones de interacción y experiencia de usuario}
 
