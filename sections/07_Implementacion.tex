@@ -1,13 +1,123 @@
 \chapter{Implementación}
 
-En este capítulo se va a explicar cómo se ha pasado lo planteado en el diseño a código, describiendo la implementación de las
-partes más importantes del sistema tanto a nivel de backend como de frontend, decisiones técnicas que se han tomado a lo largo 
-de la implementación y problemas que se han tenido durante el proceso.
+En este capítulo se va a explicar cómo se ha desarrollado el sistema, qué decisiones técnicas se han tomado a lo largo 
+de la implementación y qué problemas se han tenido durante el proceso.
 
-Como el trabajo ha sido dividido en distintos \textit{sprints} o iteraciones, se va a ir explicando el desarrollo siguiendo el
-mismo orden.
+Antes de entrar en la explicación del sistema, con las reuniones realizadas con Juan Luis Jiménez Laredo y \textbf{Pepe Agricultor ???}, se pudieron extraer los requisitos funcionales
+del sistema y acotar hacia donde se iba a dirigir el desarrollo de la aplicación. Una vez fijadas las funcionalidades más importantes que iba a tener el sistema, se comenzó priorizando
+y organizando el desarrollo en cada una de las iteraciones. 
+
+Para explicar el desarrollo, se va a seguir el orden fijado por cada sprint.
 
 \section{Sprint 1}
+
+Para que se pueda acceder a un sistema, es necesario que la ``persona'' esté registrada en ella. Por ello, en este sprint se fijó la implementación del \textbf{registro de un usuario} y del 
+\textbf{inicio de sesión}.
+
+Primero se elaboró el esquema de la base de datos. Analizando el uso que iba a tener la aplicación por parte de los usuarios, se fijó un sistema de roles basado en dos tipos: \textbf{admin} y 
+\textbf{basic} (ya explicados anteriormente).
+
+Teniendo en cuenta esto y que un usuario tiene que estar representado también a través de una entidad, el esquema desarrollado en la primera iteración fue el sisguiente:
+
+\textbf{INSERTAR IMAGEN DE LA PRIMERA PARTE DEL ESQUEMA}.
+
+La entidad usuario representa al usuario como tal que accede y utiliza la aplicación. Datos como el correo electrónico o el NIF son almacenados en el sistema.
+
+En cuanto a los roles, estos son almacenados en una tabla, en la que solo se guarda el nombre que identifica al rol.
+
+Para poder establecer la relación entre un usuario y el rol que tiene, hay una tabla intermedia que corresponde a una ``relación''. Esta tabla almacena el ID del usuario con el ID del rol, 
+estableciendo la relación de esta forma. Esta tabla intermedia permite relacionar a un usuario con varios roles, de manera que un usuario administrador tendrá rol administrador y rol básico,
+mientras que un usuario normal solo tendrá rol básico.
+
+Para crear las entidades y sus relaciones en la base de datos de PostgreSQL se ha realizado con Spring Boot directamente, ya que el framework tiene un \hyperlink{orm}{ORM} que facilita esta
+implementación. Para ello, es necesario previamente establecer la conexión con la base de datos. Esto se hace a través de un archivo conocido como \textbf{application.properties}, donde se fija
+el puerto, nombre de usuario, base de datos, entre otras más propiedades.
+
+Establecidas las propiedades, se procede a crear las entidades. El proyecto ha sido organizado en distintos directorios, cuyo significado y contenido se irá explicando a lo largo de este capítulo.
+Teniendo en cuenta esto, las entidades han sigo guardadas en un directorio llamado \textbf{models}, representando los modelos (entidades) del sistema. 
+
+Una entidad en Spring Boot es creada como una clase que tiene la anotación \textbf{\textit{@Entity}}. Esto indica a Spring Boot que la clase va a ser un componente del tipo Entidad. Además de esta
+anotación, se han añadido otras más como: \textbf{@Getter} (crea los métodos \textit{gets} para cada atributo), \textbf{@Setter} (crea los métodos \textit{setters} para todos los atributos) y
+\textbf{@Table} (permite inidicar el nombre que tiene la entidad o tabla en la base de datos).
+
+Siguiendo este patrón, se crearon las dos entidades junto con la relación entre ellas. Además de estas, se creó una entidad más que almacena los tokens de confirmación generados cuando un usuario se 
+registra, sabiendo de esta forma qué token pertenece a cada usuario y saber si su registro está confirmado o no.
+
+A continuación, se crearon los servicios que van a controlar el registro de usuarios y el inicio de sesión, siendo principalmente: \textbf{UserService} y \textbf{AuthService}. 
+
+\subsection{AuthService}
+
+Este servicio es el encargado de manejar la lógica de negocio entre el \textbf{registro} de un usuario del sistema o de un administrador de entidad, \textbf{confirmación} de un usuario registrado en el 
+sistema, \textbf{inicio de sesión} de un usuario y \textbf{refresco} o renovación de los \textit{tokens} de acceso.
+
+Entrando en más detalle, cada uno de los métodos que componen la clase tienen la siguiente funcionalidad:
+
+\begin{itemize}
+    \item \textbf{registerSystemUser:} registra un usuario en el sistema. A partir de los datos que obtiene, los envía a UserService para realizar el registro. Una vez realizado el registro, crea la URL
+    para confirmar la cuenta y se envía al usuario a través del EmailService.
+
+    \item \textbf{confirm:} a través del token que viaja en la URL del correo electrónico, se obtiene el usuario relacionado con el token. Obtenido el usuario, se habilita en el sistema permitiendo que 
+    pueda acceder a la aplicación durante el inicio de sesión.
+
+    \item \textbf{login:} permite la autenticación del usuario en el sistema. Utiliza el \textit{AuthenticationManager} de Spring Boot, que es el encargado de realizar la autenticación buscando al usuario
+    en la base de datos de a cuerdo al correo electrónico y la contraseña. Si el usuario es autenticado, se obtiene a través de un objeto del tipo \textit{UserDetails}, que identifica al usuario. Con la 
+    información del usuario se crean los tokens de acceso y refresco a través del JwtService. 
+
+    \item \textbf{refresh:} permite generar nuevos tokens de acceso a la aplicación. Para ello, utiliza el token de refresco. Con este token puede extraer la información codificada y buscar si el usuario 
+    sigue existiendo en el sistema y si no ha sido expirado. Si todo es correcto, se crean los nuevos tokens.
+\end{itemize}
+
+Para establecer la seguridad en la aplicación e indicar quién puede acceder a qué endpoints y cuáles requieren autenticación, se utiliza un archivo llamado \textbf{SecurityConfig}. En este archivo se fijan 
+propiedades de seguridad como la configuración de \hyperlink{cors}{CORS}, si se maneja estado entra las sesiones, cómo son las excepciones que se manejan en caso de que el acceso sea denegado (falta de 
+permisos o autorización) o necesidad de autenticación para ejecutar la funcionalidad. La parte más importante es la siguiente:
+
+\begin{verbatim}
+.authorizeHttpRequests(request -> request
+    .requestMatchers(HttpMethod.POST, "/api/auth/register/entityAdmin")
+        .authenticated()
+
+    // Allow all requests to auth endpoints
+    .requestMatchers("/api/auth/**").permitAll()
+    
+    .requestMatchers("/api/admin/**")
+        .hasRole("ADMIN")
+    .requestMatchers(HttpMethod.POST, "/api/entity/")
+        .hasRole("ADMIN")
+    .requestMatchers(HttpMethod.DELETE, "/api/plot/{id}")
+        .hasRole("ADMIN")
+    .requestMatchers("/api/entity/{entityId}/**")
+        .hasAnyRole("ADMIN", "BASIC")
+    .anyRequest()
+    .authenticated()
+)
+\end{verbatim}
+
+En esta parte, como se puede ver, se fija qué endpoints del controlador se pueden ejecutar según el rol, cuales puede ejecutar cualquier usuario y cuales requieren autenticación.
+
+Por último y no menos importante, se pueden añadir filtros que Spring Boot necesite aplicar antes de comprobar si el usuario que ejecuta la petición HTTP tiene acceso a un recurso y si está autenticado o no.
+El filtro implementado es \textbf{\textit{JwtAuthFilter}}. Este filtro se va a aplicar antes de ejecutar el contenido del endpoint del controlador (llamada la servicio), de manera que comprueba si el usuario
+ha enviado en la cabecera de la petición el token, si es válido o no y si el usuario sigue existiendo en el sistema. En caso de ser correcto, autentica al usuario guardando la información en el contexto de la
+petición y continuando Spring Boot el flujo del programa; en caso contrario, continua con la cadena de filtros y pasaría al contenido del archivo SecurityConfig, lanzando una excepción por falta de permisos
+o autenticación.
+
+\subsection{JwtService}
+
+Hablar de la estructura del token creado 
+
+
+\subsection{EmailService}
+
+
+
+\subsection{UserService}
+
+
+
+
+\subsubsection{Relación entre los componentes}
+
+Hablar de los controladores utilizados, repositorios, dtos, como es el flujo de comunicación entre ellos y como se comunican.
+
 
 \section{Sprint 2}
 
