@@ -100,23 +100,274 @@ ha enviado en la cabecera de la petición el token, si es válido o no y si el u
 petición y continuando Spring Boot el flujo del programa; en caso contrario, continua con la cadena de filtros y pasaría al contenido del archivo SecurityConfig, lanzando una excepción por falta de permisos
 o autenticación.
 
+En el siguiente diagrama se puede ver de forma gráfica el proceso de autenticación de un usuario:
+
+\textbf{INSERTAR IMAGEN DE FLUJO DE AUTENTICACION}
+
 \subsection{JwtService}
 
-Hablar de la estructura del token creado 
+Este servicio es el encargado de crear los tokens de acceso a la aplicación y de refresco (\textit{refresh}). Para crear el token es necesario establecer un \textbf{tiempo de expiración}, otro tiempo de expiración para 
+el de refresco y una \textbf{clave privada} con la que se firmará el token durante su creación. Esta clave es creada a partir de algoritmos como \textit{HS256} y permite verificar en el servidor que el token no ha sido manipulado durante su transmisión y que proviene de una 
+fuente legítima, evitando falsificaciones y garantizando de esta manera la integridad y autenticidad.
 
+La creación del token tiene la siguiente estructura:
+
+\begin{verbatim}
+    Jwts.builder()
+        .id(user.getId().toString())
+        .claims(Map.of(
+            "firstname", user.getFirstname(),
+            "userId", user.getId()
+        ))
+        .subject(user.getEmail())
+        .issuedAt(new Date(System.currentTimeMillis()))
+        .expiration(new Date(System.currentTimeMillis() + expiration))
+        .signWith(getSignKey())
+        .compact();
+\end{verbatim}
+
+\textbf{Jwts} es una clase del paquete \textit{jsonwebtoken} que permite construir tokens en Java. Lo que hacen estas líneas es lo siguiente:
+
+\begin{enumerate}
+    \item Se añade el id del usuario obtenido al realizar un inicio de sesión en la aplicación.
+    \item Se introduce información adicional (\textit{claims}), como puede ser el nombre del usuario.
+    \item En el campo \textit{subject} se añade el email del usuario, ya que es la forma de identificar de manera única al usuario sobre el que se crea el token.
+    \item A continuación se introduce el instante de tiempo en el que se ha creado el token (\textit{issuedAt}) y en qué instante expirará el token (\textit{expiration}).
+    \item Finalmente se firma el token con la clave privada generada.
+\end{enumerate}
+
+Tanto la creación del token de acceso como del token de refresco se hace utilizando el mismo código explicado. Lo único que habría que cambiar es el tiempo de expiración
+de cada token, teniendo el token de refresco un tiempo de expiración mayor que el de acceso (actualmente el token de acceso tiene un tiempo de expiración de 1 hora y el
+de refresco de 1 semana).
+
+Además de la creación de tokens, también va a ser el encargado de comprobar si un token es válido o no. Para saber si un token es válido se comprueba si no ha expirado
+el tiempo (el instante actual es anterior al tiempo de expiración) y que el usuario al que corresponde el token es el mismo que el que está realizando la petición (comprueba
+que no se esté usando un token de otro usuario).
 
 \subsection{EmailService}
 
+Este servicio es el encargado de realizar el envío de un mensaje de confirmación de registro a través del correo electrónico. El envío se hace a través de una función
+\textbf{asíncronca}, evitando de esta forma un bloqueo y permitiendo continuar la ejecución del código mientras el correo está siendo enviado. La función es la siguiente:
 
+\begin{verbatim}
+    try {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, 
+                                    true, "UTF-8");
+
+        helper.setText(emailBody(
+            url, 
+            firstname, 
+            templatePath,
+            emailText             
+        ), true);
+        helper.setFrom(from != null ? from : "");
+        helper.setTo(to != null ? to : "");
+        helper.setSubject(EMAIL_SUBJECT);
+        mailSender.send(mimeMessage);
+    } catch(MessagingException e) {
+        throw new MailSenderException(to);
+    }
+\end{verbatim}
+
+La funcionalidad es la siguiente:
+
+\begin{enumerate}
+    \item Se crea un objeto \textbf{mimeMessage} a partir de un JavaMailSender, siendo el que contendrá la estructura y propiedades
+    del mensaje que se va a enviar.
+    
+    \item A partir de un \textbf{helper} se añadirá el cuerpo del mensaje, que será un archivo HTML junto con algunos parámetros adicionales
+    como la URL que corresponde al endpoint de \textit{confirm}.
+
+    \item Por último, antes de ser enviado el mensaje, se establece el correo del destinatario y el correo del usuario que lo envía, junto con
+    un mensaje de cabecera.
+\end{enumerate}
 
 \subsection{UserService}
 
+Este servicio es el encargado de ejecutar todas las funcionalidades relacionadas con un usuario. Algunas de estas funcionalidades son: registro
+y creación de un usuario del sistema (\textit{createSystemUser}), eliminación de usuario y obtención del usuario según ID o email. 
+
+El método de \textbf{register} es llamado desde AuthService y es el encargado de crear un usuario con el rol \textit{basic} y almacenarlo en la 
+base de datos. Hay que destacar que en este método es donde se crea el \textbf{token de confirmación}, creado a través de la clase UUID que permite 
+generar identificadores únicos universales, muy recomendables para claves primarias:
+
+\begin{verbatim}
+    String token = UUID.randomUUID().toString();
+    LocalDateTime tokenExpiresAt = LocalDateTime.now()
+        .plusHours(confirmTokenExpiresHours);
+\end{verbatim}
 
 
+Por otro lado, el método de \textbf{createSystemUser}, realiza lo mismo que el método de registro con la diferencia de que se 
+pueden establecer los roles que tendrá el usuario (admin, basic o ambos).
 
-\subsubsection{Relación entre los componentes}
+\subsection{Relación entre los componentes}
 
-Hablar de los controladores utilizados, repositorios, dtos, como es el flujo de comunicación entre ellos y como se comunican.
+Además de los servicios anteriores, también han sido implementados los siguientes componentes:
+
+\begin{itemize}
+    \item \textbf{Controladores}: estos componentes son clases con la anotación \textbf{\textit{@RestController}} de Spring Boot. Esta
+    anotación indica a Spring Boot que el componente creado es un controlador que va a devolver objetos de tipo JSON. Cada controlador
+    contiene distintos endpoints, siendo estos los realizan las llamadas a los servicios mencionados anteriormente. 
+    
+    Tomando como ejemplo el controlador \textbf{AuthController}, la estructura es la siguiente:
+
+    \begin{verbatim}
+        @RestController
+        @RequestMapping(value = "/api/auth")
+        @AllArgsConstructor
+        public class AuthController {
+
+            private AuthService authService;
+
+            @PostMapping("/register")
+            public ResponseEntity<UserDto> registerSystemUser(
+                @Valid @RequestBody RegisterRequest request
+                ) {
+                return authService.registerSystemUser(request);
+            }
+
+            @PostMapping("/register/entityAdmin")
+            public ResponseEntity<UserDto> registerEntityAdminUser(
+                @Valid @RequestBody RegisterRequest request
+                ) {
+                return authService.registerEntityAdminUser(request);
+            }
+            
+            @GetMapping("/confirm")
+            public ResponseEntity<UserDto> confirm(
+                @RequestParam String token
+                ) {
+                return authService.confirm(token);
+            }
+
+            @PostMapping("/login")
+            public ResponseEntity<TokenResponse> login(
+                @Valid @RequestBody LoginRequest request
+                ) {
+                return authService.login(request);
+            }
+            
+            @PostMapping("/refresh")
+            public ResponseEntity<TokenResponse> refresh(
+                @RequestHeader(
+                    HttpHeaders.AUTHORIZATION
+                ) String authHeader
+            ) {
+                return authService.refresh(authHeader);
+            }
+        }
+    \end{verbatim}
+
+    Como se puede ver, aparece la anotación mencionada además de otras, como por ejemplo \textbf{\textit{@PostMapping}}, que 
+    indica que ese endpoint lleva una petición HTTP de tipo ``POST''; \textbf{\textit{@Valid}}, que permite validar que los datos
+    del JSON enviados son correctos, \textbf{\textit{@RequestParam}} o \textbf{\textit{@RequestBody}}, que indica que un JSON es 
+    enviado en el cuerpo de la petición o que se han pasado parámetros en la URL del endpoint.
+
+    Además del resto de controladores (UserController, EntityController, etc), hay un controlador especial que es el encargado de 
+    manejar las excepciones que son lanzadas durante el sistema. El controlador ha sido implementado de la siguiente forma:
+
+    \begin{verbatim}
+        @RestControllerAdvice
+        public class ErrorResponseHandler {
+
+            @ExceptionHandler({
+                UserAlreadyExistsException.class,
+                UserIsEnabledException.class
+            })
+            public ResponseEntity<ErrorDto> userException(
+                Exception ex
+            ) {
+                ErrorDto error = new ErrorDto(
+                    "Excepción relacionada con el estado 
+                    del usuario almacenado", 
+                    ex.getMessage(), 
+                    HttpStatus.CONFLICT.value()
+                );
+
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+            }
+
+            @ExceptionHandler(DataIntegrityViolationException.class)
+            public ResponseEntity<ErrorDto> integrityViolation(
+                Exception ex
+            ) {
+                ErrorDto error = new ErrorDto(
+                    "Error al ejecutar una operación SQL", 
+                    ex.getMessage(), 
+                    HttpStatus.CONFLICT.value()
+                );
+
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+            }
+            
+            @ExceptionHandler(HttpMessageNotReadableException.class)
+            public ResponseEntity<ErrorDto> messageNotReadable(
+                Exception ex
+            ) {
+                ErrorDto error = new ErrorDto(
+                    "Error en la lectura del mensaje", 
+                    ex.getMessage(), 
+                    HttpStatus.CONFLICT.value()
+                );
+
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(error);
+            }
+
+            @ExceptionHandler(MailSenderException.class)
+            public ResponseEntity<ErrorDto> mailSenderError(
+                Exception ex
+            ) {
+                ErrorDto error = new ErrorDto(
+                    "Error durante el envío del email de confirmación", 
+                    ex.getMessage(), 
+                    HttpStatus.INTERNAL_SERVER_ERROR.value()
+                );
+
+                return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(error);
+            }
+
+            @ExceptionHandler({
+                ConfirmTokenNotExistsException.class,
+                RoleNotExistsException.class,
+                UserNotFoundException.class,
+                EntityNotFoundException.class
+            })
+            public ResponseEntity<ErrorDto> entityNotExists(
+                Exception ex
+            ) {
+                ErrorDto error = new ErrorDto(
+                    "La entidad no existe en la base de datos", 
+                    ex.getMessage(), 
+                    HttpStatus.NOT_FOUND.value()
+                );
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(error);
+            }
+
+            ...
+        }
+    \end{verbatim}
+
+    Este controlador le indica a Spring Boot que es el encargado de manejar las excepciones a través de la anotación 
+    \textbf{\textit{@RestControllerAdvice}}. Con la anotación \textbf{\textit{@ExceptionHandler}} se va indicar qué
+    tipo de excepción va a tratar el método y que respuesta va a devolver. Las respuestas tienen la misma estructura 
+    a través de un DTO (explicado a continuación) llamado ``ErrorDto''.
+
+    \item \textbf{Repositorios}:
+    \item \textbf{DTOs}:
+\end{itemize}
+
+Los flujos de comunicación o como interactaún entre ellos es de la siguiente forma:
+
+
 
 
 \section{Sprint 2}
@@ -124,4 +375,10 @@ Hablar de los controladores utilizados, repositorios, dtos, como es el flujo de 
 \section{Sprint 3}
 
 \section{Sprint 4}
+
+
+
+
+
+Hablar en algún momento de los PreAuthorize
 
