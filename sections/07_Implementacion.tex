@@ -361,16 +361,176 @@ Además de los servicios anteriores, también han sido implementados los siguien
     tipo de excepción va a tratar el método y que respuesta va a devolver. Las respuestas tienen la misma estructura 
     a través de un DTO (explicado a continuación) llamado ``ErrorDto''.
 
-    \item \textbf{Repositorios}:
-    \item \textbf{DTOs}:
+    \item \textbf{Repositorios}: los repositorios son interfaces de Java que tienen la anotación \textbf{\textit{@Repository}}.
+    Esta anotación indica a Spring Boot que la interfaz va a ser tratada como un componente dicho tipo, permitiendo reducir la
+    complejidad y el código requerido para implementar el acceso a la capa de manejo de datos y persistencia (base de datos). 
+    
+    Esta interfaz hereda los métodos de otra interfaz llamada \textbf{\textit{CrudRepository}}. Esta interfaz incluye métodos 
+    como los siguientes:
+
+    \begin{itemize}
+        \item \textbf{$<$S extends T$>$ S save(S entity);}
+        Este método permite guardar una entidad (de cualquier tipo de dato) en la base de datos.
+
+        \item \textbf{Optional$<$T$>$ findById(ID id);}
+        Este método permite buscar un objeto dentro de la base de datos a partir de un ID. En caso de encontrarlo, se obtiene 
+        a través de un método \textit{.get()} del objeto \textit{Optional}.
+
+        \item \textbf{void delete(T entity);}
+        Este método elemina una tupla de la base de datos a partir del propio objeto con el que se está tratando en Spring Boot.
+
+        \item \textbf{long count();}
+        Este método devuelve el número de entidades u objetos que hay en una tabla de la base de datos.
+    \end{itemize}
+
+    Estos métodos pueden ser usados directamente al instanciar un repositorio y además, pueden ser creados directamente de forma
+    \textit{custom} en el propio componente. Para crear estos métodos, se han utilizados dos formas siguiendo la documentación de
+    Spring \cite{jdbc}:
+
+    \begin{itemize}
+        \item Usando palabras clave, como por ejemplo: \textit{and, or, is, equals}, etc. Algunos ejemplos podrían ser: 
+        \textit{findByLastnameAndFirstname}, que sería el equivalente a realizar una consulta SQL del tipo \textit{… WHERE lastname 
+        = :lastname AND firstname = :firstname}, o \textit{findByLastnameOrFirstname}, que sería el equivalente en una consulta SQL
+        a \textit{… WHERE lastname = :lastname OR firstname = :firstname}.
+
+        \item A través de la anotación \textbf{\textit{@Query}}. Esta anotación permite crear una consulta más compleja, como por
+        ejemplo:
+
+        \begin{verbatim}
+        @Query("""
+            SELECT DISTINCT u.email FROM User u
+            JOIN u.roles sr
+            JOIN u.userEntity uer
+            JOIN uer.enabledEntity ee
+            JOIN uer.entityRole er
+            WHERE sr.name = :systemRole
+                AND ee.nif = :entityNif
+                AND er.name = :entityRole
+        """)
+        List<String> getEmailEntityAdmins(
+            String systemRole, 
+            String entityRole, 
+            String entityNif
+        );
+        \end{verbatim}
+
+        En esta consulta se busca el email de un administrador de entidad, usando \textit{DISTINCT} para evitar valores duplicados y 
+        realizando \textit{JOINs} con cada una de las tablas necesarias (además de las condiciones con \textit{WHERE} para filtrar 
+        el contenido).
+    \end{itemize}
+
+    Las consultas que se crean con las palabras clave como nombre de los métodos (las primeras de las explicadas), no requieren escribir 
+    la consulta SQL como tal. Esto es gracias a que Spring utiliza \textbf{Spring Data JPA}. Este módulo de Spring es capaz de analizar
+    un método que está dentro de un repositorio JPA.
+
+    \textbf{JPA} e \textbf{Hibernate} son los encargados de trabajar en la ``sombra'' al realizar las operaciones sobre las bases de datos.
+    JPA (\textit{Java Persistence API}) es la especificación que establece las reglas o instrucciones (interfaces) a usar, mientras que
+    Hibernate es el encargado de implementarlas. Gracias a estas dos tecnologías es posible realizar un mapeo de los objetos de Java a los
+    datos que se almacenan en la base de datos y viceversa.
+
+    En cuanto a los repositorios implementados durante el sprint 1, fueron principalmente: \textbf{UserRepository} y \textbf{RoleRepository}.
+
+    El primero es el encargado de contener todas las operaciones SQL sobre la tabla de Usuarios, mientras que el segundo es el encargado de 
+    realizar todas las operaciones relacionadas con los roles almacenados en la tabla Roles. Algunos ejemplos de consultas dentro del 
+    UserRepository pueden ser:
+
+    \begin{verbatim}
+    
+    Optional<User> findByEmail(String email);
+
+    @Query("""
+        SELECT u.email FROM User u
+        JOIN u.roles r
+        WHERE r.name = :roleName
+    """)
+    List<String> getEmailByRol(String roleName);
+
+    Optional<User> findByConfirmationToken(String confirmationToken);
+    \end{verbatim}
+    
+    \item \textbf{DTOs}: los DTOs (\textit{Data Transfer Object}) son objetos planos (\textit{POJO - Plain Old Java Object}) que contienen
+    una serie de atributos que van a ser enviados al servidor, definiendo la estructura de los cuerpos (JSON) que van a ir en las peticiones
+    del cliente al servidor y en el respuestas del servidor al cliente.
+
+    Se podría usar directamente el mismo objeto entidad sobre el que se trabaja, por ejemplo enviando un objeto \textit{User}, pero
+    con los DTOs se consigue eliminar información que no quiere ser enviada (como contraseñas) o agregar información extra de otro objeto. Con
+    esta decisión se consigue mayor flexibilidad con la información que se quiere enviar sin manipular entidades.
+
+    Algunos de los DTOs utilizados y que han sido implementados durante el sprint son los siguientes:
+
+    \begin{verbatim}
+    @AllArgsConstructor
+    @Setter
+    @Getter
+    public class LoginRequest {
+        @NotBlank(message = "{user.email.notblank}")
+        @Email(message = "{user.email.invalid}")
+        private String email;
+
+        @NotBlank(message = "{user.password.notblank}")
+        @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*[0-9]).{9,}$", 
+            message = "{user.password.invalid}"
+        )
+        private String password;
+    }
+    \end{verbatim}
+
+    \begin{verbatim}
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public class RegisterRequest {
+        @NotBlank(message = "{user.firstname.notblank}")
+        private String firstname;
+
+        @NotBlank(message = "{user.lastname.notblank}")
+        private String lastname;
+
+        @NotBlank(message = "{user.email.notblank}")
+        @Email(message = "{user.email.invalid}")
+        private String email;
+
+        @NotBlank(message = "{user.password.notblank}")
+        @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*[0-9]).{9,}$", 
+            message = "{user.password.invalid}"
+        )
+        private String password;
+        
+        @Pattern(
+            regexp = "\\+?[0-9]{7,15}", message = "{user.phone.invalid}"
+        )
+        private String phone;
+
+        @NotBlank(message = "{user.nif.notblank}")
+        @Pattern(regexp = "^[0-9]{8}[A-Z]$")
+        private String nif;
+
+        private String entityNif;
+
+        private List<RoleTypes> roles;
+    }
+    \end{verbatim}
+
+    El primer DTO corresponde al cuerpo de la petición enviada desde el cliente al servidor cuando quiere realizar un inicio de sesión. Se puede
+    observar como se envía tanto el correo como el email. Las anotaciones que tiene sirven para indicar que los campos no pueden ser vacíos ni nulos
+    (\textit{@NotBlank}), que tienen que cumplir una expresión regular (\textit{@Pattern}) y que incluyen métodos de consulta (\textit{@Getter}) como
+    un constructor con todos los argumentos/atributos (\textit{@AllArgsConstructor}).
 \end{itemize}
 
 Los flujos de comunicación o como interactaún entre ellos es de la siguiente forma:
 
+\textbf{INSERTAR UN PEQUEÑO ESQUEMA}
 
-
+En este esquema se puede observar como los distintos componentes dentro del servidor se comunican entre ellos y como a su vez es comunicado con la base
+de datos para persistir datos o consultarlos.
 
 \section{Sprint 2}
+
+
+
+
 
 \section{Sprint 3}
 
