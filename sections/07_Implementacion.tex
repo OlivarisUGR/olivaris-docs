@@ -519,7 +519,7 @@ Además de los servicios anteriores, también han sido implementados los siguien
     un constructor con todos los argumentos/atributos (\textit{@AllArgsConstructor}).
 \end{itemize}
 
-Los flujos de comunicación o como interactaún entre ellos es de la siguiente forma:
+Los flujos de comunicación o como interactúan entre ellos es de la siguiente forma:
 
 \textbf{INSERTAR UN PEQUEÑO ESQUEMA}
 
@@ -528,7 +528,236 @@ de datos para persistir datos o consultarlos.
 
 \section{Sprint 2}
 
+El desarrollo de este sprint se centró en introducir la entidad nueva ``Entidad habilitada'', con su lógica de negocio adecuada e interaccion con el resto
+de componentes del anterior sprint.
 
+Según el \textbf{\textit{Anexo X - Registro de Autorizaciones para el uso de Aplicaciones Comerciales}} de la \textit{FEGA (Fondo Español de Garantía Agraria)}, se
+establece cual es el procedimiento para otorgar las autorizaciones necesarias a los diferentes agentes que van a interactuar con el CUE Comercial, es decir, 
+con la aplicación desarrollada Olivaris.
+
+Entre los agentes que describen, se encuentra el de \textbf{Entidad habilitada}. Esta entidad tendrá relación directa con los agricultores y podrá usar todos los
+CUEs Comerciales que desee. A partri de aquí, se supuso que en el sistema iba a existir esta nueva entidad, por lo que se actualizó el esquema de base de datos al
+siguiente:
+
+\textbf{INSERTAR ESQUEMA BASE DE DATOS - SPRINT 2}
+
+En este esquema se puede ver como la ``Entidad habilitada'' es una nueva entidad o tabla de la base de datos. Esta entidad tiene unos campos mínimos que la identifican
+y está relacionada directamente con un usuario, de manera, que un usuario que está registrado en el sistema puede pertenecer a una entidad también. Al pertenecer a dicha
+entidad, va a tener un rol específico, siendo \textbf{FARMER} (agricultor) o \textbf{ADMIN}. Además de estas características, hay otros campos añadidos a la relación que 
+establece los permisos que el usuario delega sobre ella. 
+
+Estos permisos son cuatro: escribir sobre el REA, leer del REA, escribir en el CUE, leer el CUE. Estos permisos se han fijado de esta manera de acuerdo al \textit{ANEXO VIII - 
+Modelo de Autorización de Representación}. En este anexo se establece que un usuario delega sobre una entidad los permisos siguientes:
+
+\begin{itemize}
+    \item Acceso información del REA de la explotación por la que es el/la titular.
+    \item Acceso cumplimentación del REA de la explotación por la que es el/la titular.
+    \item Acceso información del CUE de la explotación por la que es el/la titular.
+    \item Acceso cumplimentación del CUE de la explotación por la que es el/la titular. 
+\end{itemize}
+
+Con estos cuatro permisos, un usuario vinculado a la entidad con rol \textit{farmer}, delegará sobre ella todos los permisos de manipulación de datos tanto del REA como del CUE,
+por lo que estos campos aparecerán con los valores de \textit{true}. En caso de estar vinculado el usuario con la entidad con rol \textit{admin}, estos permisos tendrán valor 
+\textit{null}, ya que un usuario administrador no está delegando niguna autorización a manipular sus datos sobre la entidad.
+
+El servicio creado que agrupa toda esta lógica es \textbf{EntityService} (se decidió acortar el nombre a ``entidad'' directamente para no tratarla como ``entidad habilitada'').
+
+\subsection{EntityService}
+
+Este servicio es el que agrupa la lógica de negocio de asignación de los usurios a una entidad, así como su gestión y su edición de datos.
+
+El servicio es representado como una interfaz con los siguientes métodos:
+
+\begin{verbatim}
+    public interface EntityService {
+        ResponseEntity<EntityDto> create(CreateEntity request);
+
+        ResponseEntity<UserEntityDto> createAssignment(
+            Long entityId,
+            CreateUserEntity body
+        );
+
+        UserEntityDto assignUserToEntity(
+            Long entityId,
+            CreateUserEntity body
+        );
+
+        ResponseEntity<UserEntityDto> updateUserToEntityData(
+            Long entityId,
+            Long userId,
+            UpdateUserEntity body
+        );
+
+        ResponseEntity<Void> delete(Long entityId, Long userId);
+        ResponseEntity<List<EntityDto>> getUserEntities(Long userId);
+    }
+\end{verbatim}
+
+Esta sería la implementación de la interfaz en Spring Boot. Los métodos estarán implementados en una clase llamada \textbf{EntityServiceImpl} que será la encargada de implementar
+los métodos de la interfaz. A continuación se va a proceder a explicar la lógica de negocio que tiene cada uno de ellos.
+
+\begin{itemize}
+    \item \textbf{Create:} este método es el encargado de crear una entidad en el sistema con la información mínima de acuerdo a lo establecido en la tabla de la base de datos.
+    
+    \item \textbf{CreateAssgiment:} este es el método encargado de asignar una entidad ya creada en el sistema y un usuario registrado. Para realizar la asignación
+    se realiza una llamada al método \textit{AssignUserToEntity}. La implementación no se hizo en este método directamente porque la lógica se reutiliza en \textit{AuthService} 
+    para asignar automáticamente el rol admin al registrar un usuario de entidad.  
+
+    \item \textbf{AssignUserToEntity:} este método va a ser el encargado de contener toda la lógica de negocio para crear la asignación. El método recibirá el ID de la entidad e 
+    información relevante en el cuerpo de la petición como el correo del usuario y qué rol va a tener (\textit{admin} o \textit{farmer}). Además, recibirá el valor que tendrá cada uno
+    de los permisos ya comentados anteriormente: \textit{writeCue, writeRea, readCue, readRea}. En caso de querer que el usuario creado sea un admin de la entidad, el valor de los 
+    permisos será \textit{null}, es decir, no se pasan directamente en el cuerpo de la petición.
+
+    Hay que aclarar que aunque se ofrezca esta flexibilidad en la forma de otorgar permisos a la entidad, actualmente todos los permisos dados tienen el valor \textit{true} en caso
+    de que el usuario creado tenga el rol \textit{farmer}. En caso de que el usuario no quiera otorgar permisos no se vincularía directamente con la entidad, ya que de acuerdo al anexo
+    comentado anteriormente, el usuario cede todos los permisos de gestión a la entidad en caso de pertenecer a ella.
+    
+    A continuación se puede ver el código del método implementado:
+
+    \begin{verbatim}
+        public UserEntityDto assignUserToEntity(
+            Long entityId, 
+            CreateUserEntity body
+        ) {
+            User userDb = userRep.findByEmail(body.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(
+                    "El usuario no existe en el sistema"
+                ));
+
+            EnabledEntity entityDb = entityRep.findById(entityId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                    "La entidad habilitada no existe en la base de datos"
+                )); 
+            
+            EntityRole entityRoleDb = entityRoleRep.findByName(
+                    body.getEntityRole().toString()
+                )
+                .orElseThrow(() -> new EntityNotFoundException(
+                    "El rol dentro de la entidad no 
+                    existe en la base de datos"
+                ));
+            
+            Boolean writeCue = null;
+            Boolean writeRea = null;
+            Boolean readCue = null;
+            Boolean readRea = null;
+
+            // If role is farmer -> check the permissions 
+            //                      from request body
+            // Else if admin role -> permissions will be null
+            if(entityRoleDb.getName()
+                .equals(EntityRoleTypes.ROLE_FARMER.toString())
+            ) {
+                writeCue = body.getWriteCue() != null ? 
+                    body.getWriteCue() : false;
+                writeRea = body.getWriteRea() != null ? 
+                    body.getWriteRea() : false;
+                readCue = body.getReadCue() != null ? 
+                    body.getReadCue() : false;
+                readRea = body.getReadRea() != null ? 
+                    body.getReadRea() : false;
+            } 
+
+            UserEntityRole newUserEntityRole = new UserEntityRole(
+                userDb,
+                entityDb,
+                entityRoleDb,
+                writeCue,
+                writeRea,
+                readCue,
+                readRea
+            );
+
+            UserEntityRole userEntityRoleDb = userEntityRoleRep
+                .save(newUserEntityRole);
+
+            return UserEntityDto.fromEntity(userEntityRoleDb);
+        }
+    \end{verbatim}
+
+    \textbf{INSERTAR DIAGRAMA DE SECUENCIA ????}
+
+    \item \textbf{UpdateUserToEntityData:} este método permite actualizar los datos de la relación entre el usuario y una entidad. Con datos se refiere a los permisos que el usuario tiene
+    así como su rol. Esta funcionalidad se ha dejado en el backend pero desde el frontend no ha sido creada, es decir, ahora mismo no se contempla la modificación de los permisos o roles 
+    del usuario vinculado; el usuario se crea con unos datos fijos y en caso de ser modificados, se eleminaría su asignación y se crearía de la nueva manera. Esta decisión ha sido tomada
+    para priorizar otras funcionalidades que se consideran más imprescindibles en la aplicación.
+    
+    En cuanto a la lógica de negocio implementada, lo que se hace es obtener el objeto que representa un valor en la relación (tabla que relaciona usuario con entidad) y modificar cada uno 
+    de los valores según son pasados en el cuerpo de la petición, por ejemplo: si el rol es cambiado a \textit{admin}, solo se modifica el campo pasado.
+
+    \item \textbf{Delete:} este método va a elimiar una relación entre un usuario y una entidad, de manera que dejan de estar vinculados pero la entidad sigue existiendo en el sistema.
+    Hay otro método implementado (\textbf{\textit{DeleteEntity}}) que va a eliminar directamente la entidad de todo el sistema.
+
+    Estos métodos van a recibir los ID de la entidad y del usuario (en caso de eliminar el vínculo).
+    
+    \item \textbf{GetUserEntities:} este método permite obtener todas las entidades a las que pertenece un usuario. La implementación del método es la siguiente:
+    \begin{verbatim}
+        public ResponseEntity<List<EntityDto>> getUserEntities(
+            Long userId
+        ) {
+            // Check if user exists
+            User userDb = userRep.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(
+                    "El usuario no existe en el sistema"
+                ));
+
+            // Get the user entities that belong to him
+            List<UserEntityRole> entitiesList = userEntityRoleRep
+                .findEntityByUserId(userId);
+
+            List<EntityDto> entitiesDto = entitiesList.stream()
+                .map(EntityDto::fromUserEntityRole)
+                .toList();
+            
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(entitiesDto);
+        }
+    \end{verbatim}
+
+    Se puede ver como primero se busca el usuario en el sistema y, en caso de existir, se busca en todas las entidades en la tabla que almacena las relaciones.
+\end{itemize}
+
+\subsection{Migraciones de Bases de datos}
+
+Durante la realización del sistema ha habido que modificar algún atributo, relación o estructura de la base de datos. Para evitar eliminar toda la información 
+almacenada en ella al aplicar los cambios, se ha recurrido al uso de \textbf{Flyway}.
+
+\textit{Flyway} \cite{flyway} es una herramienta \textit{open source} que permite realizar migraciones de bases de datos. Una migración de bases de datos consiste en transferir
+información o datos de un esquema a otro mientras se cambia la estructura del sistema de almacenamiento.
+
+Para utilizar Flyway en Java, se han necesitado las dependencias: \textbf{\textit{spring-boot-starter-flyway}}, que permite el uso de Flyway en Spring Boot, y 
+\textbf{\textit{flyway-database-postgresql}}, que permite la comunicación con PostgreSQL. Además de esto, en el archivo de configuración de propiedades de Spring Boot 
+(\textit{application.properties}) se han añadido las propiedades que permiten a Flyway trabajar con bases de datos existentes sin necesidad de crear una 
+(\textit{baseline-on-migrate=true}), y otra para establecer el inicio de las migraciones desde el valor 1 (\textit{baseline-version=0}). Esto último se ha hecho 
+así puesto que en el primer uso de flyway, se creó una tabla interna en la base de datos que lleva un registro de las migraciones realizadas empezando desde la priemra 
+desde 0
+
+
+Las migraciones se realizan a través de archivos escritos en \textbf{SQL}, siendo nombrados de la forma: \textit{V(nº de versión)\_\_(lo que va a realizar)}. Algunos de los
+archivos creados han sido:
+
+\begin{itemize}
+    \item \textbf{V1\_\_modify\_user\_entity\_role\_tables.sql}: esta migración se creó para quitar una tabla de relación extra entre el usuario y la entidad que controlaba los permisos
+    del usuario vinculado a la entidad. Se decidió que se podía prescindir de la relación e introducir los permisos en la relación directa entre ambas entidades (como está actualmente).
+
+    \item \textbf{V4\_\_uppercase\_user\_plot\_plotname.sql}: esta migración realizó la modificación de todos los nombres de las fincas a mayúsculas, con la finalidad de evitar problemas de 
+    búsquedas e inserción de nombres con las letras en minúsculas o mayúsculas.
+\end{itemize}
+
+\subsection{Implementación de Integración Continua}
+
+La \textbf{Integración Continua (CI)} \cite{ci} es un componente muy importante dentro del mundo \textit{Devops}. Es la primera parte del flujo de trabajo automatizado que utilizan los
+Devops para agilizar la entrega de un producto software. Con esta fase se busca automatizar la integración de los cambios de código de varios contribuidores en un único proyecto de software.
+
+Para este proyecto, la integración continua ha consistido en la realización de un archivo llamado \textbf{text-and-build.yml} dentro de la carpeta \textit{workflows} del proyecto de GitHub.
+Gracias a GitHub, se puede utilizar la herramienta de \textbf{GitHub Actions} para realizar la integración continua.
+
+Este archivo mencionado se encarga de lo siguiente:
+
+
+
+
+\subsection{Tests en Spring Boot}
 
 
 
