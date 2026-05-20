@@ -964,10 +964,33 @@ que representen las actividades realizadas y parcelas de los usuarios. El nuevo 
 
 \textbf{INSERTAR ESQUEMA BASE DE DATOS}
 
-Este esquema ha sido el último realizado y cómo ha quedado finalmente. En la parte superior se pueden observar las nuevas tablas. Estas tablas son las siguientes:
+Este esquema ha sido el último realizado y muestra cómo ha quedado finalmente la base de datos. En la parte superior se pueden observar las nuevas tablas. Estas tablas son las siguientes:
 
 \begin{itemize}
-    \item 
+    \item \textbf{Parcela:} esta tabla identifica a una parcela en el sistema. Los campos se han creado en base al contenido que se guarda en cada parcela en el Visor SIGPAC, además de otros que se
+    han considerado importantes como la geometría.
+
+    La geometría se refiere al polígono que forma la parcela. Gracias al uso de la base de datos PostgreSQL se ha podido añadir una librería llamada \textbf{PostGIS} \cite{postgis}. Esta librería permite almacenar y
+    manipular datos geoespaciales. Entre sus características incluye:
+
+    \begin{itemize}
+        \item Almacenamiento de datos geoespaciales, como puntos, líneas, polígonos y multi-geoemtrías.
+        \item Búsqueda rápida de datos espaciales basados en la localización.
+        \item Funciones espaciales que permite realizar cálculos como distancias, áreas o intersecciones.
+        \item Procesamiento de geometrías.
+    \end{itemize}
+
+    Cuando se realiza la petición a la API de SIGPAC para obtener los datos de una parcela, se va a devolver en un campo una lista de puntos con latitud y longitud. A través del uso de PostGIS, se puede almacenar en la 
+    base de datos el polígono creado como resultado de la unión de todos los puntos, identificando de esta manera a la parcela cuando se quiera representar en el frontend.
+    
+    \item \textbf{Usuario - Parcela:} esta tabla muestra la relación entre una parcela y un usuario, representando la asignación del usuario con una parcela. Las parcelas tienen la información pública en la API de SIGPAC, 
+    de manera que una persona cualquiera podría asignarse una parcela que en realidad no le pertenece y guardar todas las actividades vinculadas a ella que quisiera. El sistema actual permite esta funcionalidad puesto que 
+    no hay una entidad externa que pueda validar que realmente esa parcela pertenece al usuario que se la ha asignado.
+     
+    \item \textbf{Recinto:}
+    \item \textbf{Actividad:}
+    \item \textbf{Actv\_Fitosanitaria:}
+    \item \textbf{Producto\_Fitosanitario:}
 \end{itemize}
 
 \subsection{Frontend}
