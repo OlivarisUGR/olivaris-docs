@@ -749,16 +749,137 @@ archivos creados han sido:
 La \textbf{Integración Continua (CI)} \cite{ci} es un componente muy importante dentro del mundo \textit{Devops}. Es la primera parte del flujo de trabajo automatizado que utilizan los
 Devops para agilizar la entrega de un producto software. Con esta fase se busca automatizar la integración de los cambios de código de varios contribuidores en un único proyecto de software.
 
-Para este proyecto, la integración continua ha consistido en la realización de un archivo llamado \textbf{text-and-build.yml} dentro de la carpeta \textit{workflows} del proyecto de GitHub.
-Gracias a GitHub, se puede utilizar la herramienta de \textbf{GitHub Actions} para realizar la integración continua.
+Para este proyecto, la integración continua ha sido desarrollada utilizando la funcionalidad de \textbf{GitHub Actions} ofrecida por GitHub. GitHub Actions es una plataforma de integración y 
+despliegue continua (CI/CD) que permite automatizar las pruebas, compilación y despliegue de un proyecto. 
 
-Este archivo mencionado se encarga de lo siguiente:
+Para implementarlo, ha sido necesario crear dentro del proyecto una carpeta llamada \textbf{\textit{workflows}} dentro de la carpeta \textit{.github}. El archivo que contiene la carpeta se llama
+\textbf{test-and-build.yml}. El contenido del archivo es el siguiente:
 
+\begin{verbatim}
+    name: Test and Build
 
+    on:
+        push:
+            branches: [ "main", "sprint-1" ]
 
+    jobs:
+        test_and_build:
+            runs-on: ubuntu-latest
+            
+            defaults:
+                run:
+                    working-directory: ./olivaris-app
+
+            steps:
+            - name: Checkout code
+                uses: actions/checkout@v4
+
+            - name: Set up JDK 21
+                uses: actions/setup-java@v4
+                with:
+                    java-version: '21'
+                    distribution: 'temurin'
+                    cache: maven
+
+            - name: Run test
+                run: mvn clean test
+
+            - name: Build with Maven
+                run: mvn -B package -DskipTests
+            
+            - name: Upload test results
+                if: always()
+                uses: actions/upload-artifact@v4
+                with:
+                    name: test-results
+                    path: olivaris-app/target/surefire-reports/
+\end{verbatim}
+
+Entre las partes más importantes del archivo se encuentran las siguientes:
+
+\begin{itemize}
+    \item \textbf{on:} esta parte va a definir los eventos que van a activar el \textit{workflow}. En este caso, cuando se haga un \textit{push} sobre la rama ``main''
+    o ``sprint 1'' del repositorio, se activará el worflow.
+
+    \item \textbf{jobs:} en esta parte se indican las tareas que se van a ejecutar. En este caso, se indica que el trabajo va a ejecutarse con la imagen \textit{ubuntu-latest}
+    junto con el directorio de trabajo sobre el que se ejecutarán los comandos \textit{run}.
+
+    \item \textbf{steps:} a partir de aquí se define paso a paso lo que se va a hacer. Primero se empieza clonando el repositorio para, a continuación, instalar y configurar
+    el JDK de Java con las propiedades correspondientes. Finalmente se ejecutará una limpieza de los tests para ejecutarlos de nuevo, comprobando de esta manera que el
+    código subido al repositorio es correcto y pasa las pruebas. A continuación, empaqueta el proyecto de java saltando los tests y siempre sube al proyecto de Github un informe
+    con los resultados de los tests pasados.
+\end{itemize}
 
 \subsection{Tests en Spring Boot}
 
+Las \textbf{pruebas (tests) de software} \cite{test} son el proceso de evaluar y verificar que un producto o aplicación de software funciona correctamente, de forma segura y eficiente, de acuerdo con sus 
+requisitos específicos.
+
+Los pruebas de software se van a clasificar en distintos tipos:
+
+\begin{itemize}
+    \item \textbf{Pruebas de unidad:} son pruebas que validan que cada unidad del software funcione según lo esperado. La unidad es considerada como el componente comprobable más
+    pequeño de la aplicación.
+
+    \item \textbf{Pruebas de integración:} garantiza que los distintos componentes que constituyen el software funcionen juntos de manera efectiva.
+    
+    \item \textbf{Pruebas del sistema:} este tipo de pruebas buscan comprobar si el sistema en completo rinde de la forma adecuada. Esta parte incluye todo tipo de pruebas como las funcionales,
+    no funcionales, de interfaz, de estrés y de recuperación.
+
+    \item \textbf{Pruebas de aceptación:} estas pruebas tienen como objetivo verificar que todo el sistema funciona según lo previsto.
+\end{itemize}
+
+Para poder realizar tests en Spring Boot, en este proyecto se ha utilizado el framework \textbf{JUnit}, siendo el más popular para realizar tests en Java y el encargado de realizar la ejecución de las pruebas.
+Además de este framework, se han recurrido a otras herramientas como \textbf{Mockito}, que permite crear ``objetos simulados'' para aislar el código y no depender de dependencias externas.
+
+Los tests se crean a través de clases con métodos, siendo los métodos los propios tests. Dependiendo lo que se quiera probar, se van a utilizar unas anotaciones u otras de JUnit. Un ejemplo podría ser el siguiente:
+
+\begin{verbatim}
+    @DataJpaTest
+    public class UserRepoTest {
+
+        @Autowired
+        private UserRepository userRep;
+
+        @Autowired
+        private RoleRepository roleRep;
+
+        @Test
+        public void createUserTest() {
+            Role adminRole = roleRep.findByName("ROLE_ADMIN")
+                .orElseThrow(() -> new RuntimeException(
+                    "ROLE_ADMIN not found"
+                ));
+
+            User savedUser = userRep.save(
+                UserFixtures.createBasicUser(adminRole)
+            );
+
+            assertThat(savedUser).isNotNull();
+            assertThat(savedUser.getId()).isGreaterThan(0);
+        }
+    }
+\end{verbatim}
+
+En este test se pueden encontrar distintas anotaciones:
+
+\begin{itemize}
+    \item \textbf{@DataJpaTest:} es una anotación que indica a Spring Boot que en esa clase se van a hacer pruebas sobre repositorios (consultas sobre la base de datos). De esta forma, Spring Boot solo va a cargar 
+    los componentes necesarios sin necesidad de cargar todos (servicios, modelos, etc), optimizando de esta forma la velocidad de ejecución de los tests.
+
+    \item \textbf{@Autowired:} indica a Spring Boot que las variables se van a instanciar a través de la inyección de dependencias correspondientes (en este caso \textit{UserRepository} y \textit{RoleRepository}).
+    
+    \item \textbf{@Test:} indica a Spring Boot que ese método es un test.
+\end{itemize}
+
+En este ejemplo dado se está realizando un test de repositorio, ya que se está guardando un usuario en la base de datos para comprobar a continuación que tiene un ID superior a 0 y que no es nulo.
+
+Otras de las anotaciones que se pueden dar a las clases podrían ser:
+
+\begin{itemize}
+    \item \textbf{@SpringBootTest:}
+    \item \textbf{@WebMvcTest:}
+\end{itemize}
 
 
 \section{Sprint 3}
