@@ -984,14 +984,45 @@ Este esquema ha sido el último realizado y muestra cómo ha quedado finalmente 
     base de datos el polígono creado como resultado de la unión de todos los puntos, identificando de esta manera a la parcela cuando se quiera representar en el frontend.
     
     \item \textbf{Usuario - Parcela:} esta tabla muestra la relación entre una parcela y un usuario, representando la asignación del usuario con una parcela. Las parcelas tienen la información pública en la API de SIGPAC, 
-    de manera que una persona cualquiera podría asignarse una parcela que en realidad no le pertenece y guardar todas las actividades vinculadas a ella que quisiera. El sistema actual permite esta funcionalidad puesto que 
+    de manera que cualquiera persona podría asignarse una parcela que en realidad no le pertenece y guardar todas las actividades vinculadas a ella que quisiera. El sistema actual permite esta funcionalidad puesto que 
     no hay una entidad externa que pueda validar que realmente esa parcela pertenece al usuario que se la ha asignado.
      
-    \item \textbf{Recinto:}
-    \item \textbf{Actividad:}
-    \item \textbf{Actv\_Fitosanitaria:}
-    \item \textbf{Producto\_Fitosanitario:}
+    \item \textbf{Recinto:} esta tabla contiene los datos relevantes que representan un recinto. Una parcela está compuesta por uno o más recintos, por lo que va a tener un campo que representa la geometría, además de otros
+    como el uso. Cuando se hace una petición a la API de SIGPAC para obtener los datos de una parcela, se van a obtener en la respuesta todos los recintos. De esta manera, cada recinto de la parcela se almacena en la tabla 
+    y posteriormente, con la unión de las geometrías de todos los recintos se obtiene la geometría de la parcela (engloba a todos los recintos).
+
+    \item \textbf{Actividad:} esta tabla va a representar los datos generales de una actividad, como el usuario que la realiza y sobre qué recinto se hace. Como el recinto está relacionado con la parcela, de esta forma también
+    se puede saber sobre qué parcela se ha realizado. 
+
+    Aunque se hayan contemplado para este proyecto solo actividades de tipo fitosanitario, el esquema de base de datos puede escalar a actividades de otro tipo gracias a esta tabla. Con esta tabla se consigue separar información
+    relevante de una actividad general y a través de una tabla específica (cómo la que se verá a continuación), se puede entrar en el detalle de una actividad concreta.
+
+    \item \textbf{Actividad fitosanitaria:} esta tabla representa una actividad de tipo fitosanitario. Los campos que tiene han sido dados de acuerdo al \textbf{\textit{Anexo III - Registros de los tratamientos fitosanitarios y 
+    de fertilización}}, del Real Decreto 1311/2012, por el que se establece el marco de actuación para conseguir un uso sostenible de los productos fitosanitarios. En este anexo se detallan los datos generales de una explotación 
+    que van a ser usados para el cuaderno de explotación. La información es extensa y la cantidad de datos es amplia, por lo que se han escogido los que se han considerado más relevantes ahora mismo. En un futuro, en caso de ser 
+    necesario, se podrían añadir nuevos campos a la base de datos.
+
+    Algunos de los campos escogidos (de acuerdo al anexo), han sido: fecha de tratamiento, número de parcela (ya está relacionada por lo que a través del recinto se podría obtener), identificación del aplicador, tipo de cultivo,
+    superficie tratada y producto fitosanitario.
+
+    \item \textbf{Producto fitosanitario:} es la tabla que representa al producto fitosanitario utilizado en una actividad fitosanitaria.
 \end{itemize}
+
+Una vez explicadas las nuevas tablas añadidas a la base de datos, se va a proceder a comentar los nuevos servicios creados durante el sprint y las funcionalidades más relevantes que se han implementado a nivel de backend.
+
+\subsubsection{ActivityService}
+
+
+
+
+
+\subsubsection{EnclosureService}
+
+\subsubsection{PhytoActService}
+
+\subsubsection{PlotService}
+
+\subsubsection{PhytoProductService}
 
 \subsection{Frontend}
 
