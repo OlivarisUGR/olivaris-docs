@@ -1012,7 +1012,133 @@ Una vez explicadas las nuevas tablas añadidas a la base de datos, se va a proce
 
 \subsubsection{ActivityService}
 
+Este servicio es el que contiene toda la lógica de negocio relacionada con las actividades. Dentro de este servicio se encuentran los siguientes métodos:
 
+\begin{itemize}
+    \item \textbf{Create:} este método es el encargado de crear una actividad en el sistema. Para poder ejecutarlo y crear la actividad, es necesario pasar el ID del usuario (quien realiza o crea la actividad), el ID del recinto
+    sobre el que se realiza la actividad, el ID de la entidad bajo la que se realiza la actividad (tendrá un valor \textit{null} en caso de no pertenecer a ninguna entidad) y el cuerpo de la petición o \textit{body} que contiene
+    los datos de la actividad que se va a crear (tanto los que rellenan los campos de la tabla actividad como de la tabla actividad fitosanitaria).
+
+    El código implementado para crear una actividad es el siguiente:
+
+    \begin{verbatim}
+        @PreAuthorize(
+            "@activityValidator.canCreateActivities(
+                #userId, #entityId, #body
+            )"
+        )
+        public ResponseEntity<ActivityCreatedResponse> create(
+            Long userId,
+            Long enclosureId,
+            Long entityId,
+            CreateActivityRequest body
+        ) {
+            // If activity exists -> Get and update it
+            // else -> create a new activity
+            Optional<Activity> optionalAct = actRep
+                    .findByDateAndEnclosureIdAndUserIdAndTypeAndEntityId(
+                        body.getDate(), enclosureId, userId, 
+                        body.getType(), entityId
+                    );
+
+            final Activity act;
+
+            if(optionalAct.isEmpty()) {
+                if(!sameYear(body.getSeason(), body.getDate())) {
+                    throw new ActivityException(
+                        "La camapaña tiene que coincidir 
+                        con el año de la actividad"
+                    );
+                }
+
+                act = createNewActivity(
+                    userId, enclosureId, entityId, body
+                );
+            } else {
+                throw new EntityExistsException(
+                    "La actividad ya existe en el sistema"
+                );
+            }
+
+            if(body.getDescription() != null && 
+                !body.getDescription().isBlank()) {
+                act.setDescription(body.getDescription());
+            }
+
+            if(body.getStatus() != null) {
+                act.setStatus(body.getStatus());
+            } else if(act.getStatus() == null) {
+                act.setStatus(body.getDate()
+                .isAfter(LocalDate.now()) ? 
+                    ActivityStatus.PLANNED : ActivityStatus.COMPLETED
+                );
+            }
+
+            // Create the phytosanitary activities
+            body.getPhytoAct().stream()
+                .forEach(phytoActDto -> {
+                    PhytoAct phytoAct = phytoActService
+                        .createPhytoActivity(act, phytoActDto);
+
+                    act.getPhytoAct().add(phytoAct);
+                });
+            
+            Activity actDb = actRep.save(act);
+            
+            // Create the DTO and return the response
+            ActivityCreatedResponse actDto = new 
+                ActivityCreatedResponse(
+                    actDb.getId(),
+                    actDb.getPhytoAct().stream()
+                        .map(pA -> pA.getId())
+                        .toList(),
+                    LocalDateTime.now(),
+                    "Una actividad de tipo fitosanitaria 
+                    ha sido registrada"
+                );
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .body(actDto);
+        }
+    \end{verbatim}
+
+    El funcionamiento del método es el siguiente:
+
+    \begin{enumerate}
+        \item Se busca si existe una actividad ya guardada en base a la fecha, recinto, usuario, entidad y tipo. Se hace de esta manera para que si coinciden todos los datos,
+        se utilice directamente la actividad ya almacenada en el sistema, evitando la creación de una nueva.
+
+        \item Si la actividad existe en el sistema, se lanzará una excepción comunicándolo al cliente. Sin embargo, si la actividad no ha sido encontrada, se procede a crear una
+        nueva comprobando previamente que el año de la campaña y de la fecha en que se realiza coinciden. De esta manera, se evitan crear actividades que estén fuera de la campaña
+        actual, considerando tanto campañas cerradas como campañas que aún no han comenzado.
+
+        \item A continuación, se van comprobando si los datos opcionales se han pasado o no en el cuerpo de la petición. Por ejemplo, en caso de que no se haya pasado el estado de 
+        la actividad (planificada o completada), se comprueba si la fecha de la actividad es posterior al día actual; si es así, el estado que tendrá será planificada, de lo contrario
+        será completada.
+
+        \item Una vez creada la actividad, se pasa a crear las actividades fitosanitarias. Los datos de estas actividades vienen a través de la lista que hay en el cuerpo de la petición.
+        De esta manera, se recorre la lista y por cada elemento, se crea una actividad fitosanitaria y se asigna a la actividad creada.
+
+        \item Finalmente, se guarda en la base de datos la actividad junto con los datos de la actividad fitosanitaria y se crea el DTO que será devuelto en el cuerpo de la respuesta.
+    \end{enumerate}
+
+    Hay que mencionar la anotación que aparece en la primera línea del código: \textbf{@PreAuthorize}. Las funciones que acompañan esta anotación van a devolver un valor booleano, indicando
+    de esta forma si el método se puede ejecutar o no.
+
+    En este caso la función indica si se tiene autorización para crear acividades o no. Para poder crear una actividad se tiene que cumplir:
+
+    \begin{itemize}
+        \item El usuario que va a crear la actividad pertenece a la entidad
+        \item La fecha y el estado de la actividad son correctos
+        \item La fecha de la campaña es correcta
+    \end{itemize}
+
+
+    \item \textbf{Delete:}
+    \item \textbf{UpdateActivity:}
+    \item \textbf{GetEnclosuresActByUser:}
+    \item \textbf{GetUserActivites:}
+\end{itemize}
 
 
 
