@@ -1128,27 +1128,74 @@ Este servicio es el que contiene toda la lógica de negocio relacionada con las 
     En este caso la función indica si se tiene autorización para crear acividades o no. Para poder crear una actividad se tiene que cumplir:
 
     \begin{itemize}
-        \item El usuario que va a crear la actividad pertenece a la entidad
-        \item La fecha y el estado de la actividad son correctos
-        \item La fecha de la campaña es correcta
+        \item El usuario que va a crear la actividad puede hacerlo si es para sí mismo y no pertenece a ninguna entidad. También podrá si pertenece a una entidad y tiene rol de administrador en 
+        ella, ya que ningún otro miembro de la entidad podría hacerlas en su lugar. El usuario que crea la actividad podrá hacerlo para otro usuario en caso de que ambos pertenezcan a la misma 
+        entidad, el que la crea tenga rol de administrador dentro de la entidad y el usuario al que se la crea haya dado los permisos correspondientes a la entidad. 
+
+        \item La fecha y el estado de la actividad son correctos, es decir, una actividad no podrá tener un estado ``completada'' si la fecha de la actividad es futura, o una actividad no puede tener
+        un estado ``planificada'' si la fecha de la actividad es pasada.
+
+        \item La fecha de la campaña es correcta si el año de la campaña no es inferior al año actual, puesto que no se pueden crear actividades para campañas pasadas o cerradas.
     \end{itemize}
 
+    Estas funciones que se utilizan con la anotación @PreAuthorize han sido usadas en muchos otros métodos para controlar quien puede ejecutar cada lógica de negocio, de acuerdo a roles y relaciones
+    con las entidades.
 
-    \item \textbf{Delete:}
-    \item \textbf{UpdateActivity:}
-    \item \textbf{GetEnclosuresActByUser:}
-    \item \textbf{GetUserActivites:}
+    \item \textbf{Delete:} este método se encarga de eleminar una actividad almacenada en la base de datos. En este caso por ejemplo hay una función booleana con @PreAuthorize que se encarga de 
+    comprobar que usuario puede eliminar o actualizar las actividades. La lógica es muy similar al apartado anterior: podrá hacerlo un usuario que no pertenece a ninguna entidad o que pertenece a cualquiera 
+    con rol admin, o podrá hacerlo sobre otro usuario que pertenece a la misma entidad y ha dado todos los permisos a ella.
+
+    \item \textbf{UpdateActivity:} este método se encarga de actualizar los datos de una actividad determinada, permitiendo cambiar datos de la actividad general como de las actividades fitosanitarias que 
+    están relacionadas con ella.
+
+    \item \textbf{GetEnclosuresActByUser:} este método devuelve todas las actividades realizadas en un recinto específico por un usuario concreto. Se puede buscar todas las actividades almacenadas en el sistema o las
+    realizadas en una campaña concreta (en caso de pasar el valor de la temporada en la petición).
+
+    \item \textbf{GetUserActivites:} método que devuelve todas las actividades realizadas por un usuario del sistema.
+    
+    \item \textbf{AddNewPhytoActivity:} método que agrega una nueva actividad fitosanitaria sobre una actividad ya creada. Este método busca la actividad concreta a través del ID y con los datos de la actividad
+    fitosanitaria pasados en el cuerpo de la petición, se crea una nueva para añadirla a la actividad.
+\end{itemize}
+
+\subsubsection{EnclosureService}
+
+Este es el servicio que manipula toda la lógica de negocio relacionada con los recintos del sistema. Entre los métodos implementados se encuentran:
+
+\begin{itemize}
+    \item \textbf{CreatePlotEnclosures:}
 \end{itemize}
 
 
 
-\subsubsection{EnclosureService}
-
 \subsubsection{PhytoActService}
+
+Este servicio es el encargado de gestionar la lógica de negocio relacionada con las actividades fitosanitarias. Los métodos implementados son los siguientes:
+
+\begin{itemize}
+    \item \textbf{CreatePhytoActivity:} este método es el encargado de crear una actividad fitosanitaria. Para ello, va a buscar el producto fitosanitario utilizado en el sistema y va a comprobar si la fecha de la actividad
+    fitosanitaria está entre el día actual como mínimo y como máximo en el día de la fecha fijada por la actividad, ya que en ese rango de tiempo se pueden realizar varias actividades fitosanitarias (aplicar distintos tipos de 
+    productos). Si no estuviese así, habría que crear una nueva actividad con datos repetidos para insertar la nueva actividad fitosanitaria.
+
+    \item \textbf{UpdatePhytoAct} actualiza una actividad fitosanitaria concreta según los datos que son enviados en el cuerpo de la petición.
+    
+    \item \textbf{UpdatePhytoActivities:} actualiza un conjunto de actividades fitosanitarias, recorriendo una lista y ejecutando el método anterior para cada elemento de la lista.
+\end{itemize}
 
 \subsubsection{PlotService}
 
+
+
+
+
 \subsubsection{PhytoProductService}
+
+La lógica de negocio implementada en este servicio está relacionada con los productos fitosanitarios. Los métodos implementados son los siguientes:
+
+\begin{itemize}
+    \item \textbf{Create:} método que se encarga de crear un producto fitosanitario a partir de la información pasada y lo almacena en el sistema.
+    
+    \item \textbf{GetAllPhytoProduct:} método que busca todos los productos fitosanitarios almacenados en el sistema y los devuelve para su consulta.
+\end{itemize}
 
 \subsection{Frontend}
 
@@ -1162,5 +1209,4 @@ Este servicio es el que contiene toda la lógica de negocio relacionada con las 
 
 
 
-Hablar en algún momento de los PreAuthorize
 
