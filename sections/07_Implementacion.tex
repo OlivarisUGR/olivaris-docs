@@ -1159,13 +1159,74 @@ Este servicio es el que contiene toda la lógica de negocio relacionada con las 
 
 \subsubsection{EnclosureService}
 
-Este es el servicio que manipula toda la lógica de negocio relacionada con los recintos del sistema. Entre los métodos implementados se encuentran:
+Este es el servicio que contiene toda la lógica de negocio relacionada con los recintos del sistema. Entre los métodos implementados se encuentran:
 
 \begin{itemize}
-    \item \textbf{CreatePlotEnclosures:}
+    \item \textbf{CreatePlotEnclosures:} este método se encarga de crear los recintos de una parcela. Para ello, va a recibir por parámetros una lista con todas las coordenadas de cada recinto y la parcela en la que pertenecen.
+    
+    El código que se ha implementado es el siguiente:
+
+    \begin{verbatim}
+        public List<Enclosure> createPlotEnclosures(
+            List<Map<String, Object>> enclosuresCoord, Plot plot
+        ) {
+            List<Enclosure> plotEnclosuresList = new ArrayList<>();
+            int i = 1;
+
+            // Create each enclosure and save on database
+            for(Map<String, Object> enclosureMap : enclosuresCoord) {
+                Map<String, Object> geometry = (Map<String, Object>) 
+                    enclosureMap.get("geometry");
+                List<List<Object>> coordinates = (List<List<Object>>) 
+                    geometry.get("coordinates");
+                
+                Map<String, Object> properties = (Map<String, Object>) 
+                    enclosureMap.get("properties");
+                Double area = ((Number) properties.get("superficie"))
+                    .doubleValue();
+                String use = properties.get("uso_sigpac")
+                    .toString();
+
+                Polygon polygon = this.convertToPolygon(coordinates);
+                String name = "Recinto " + i;
+                i++;
+
+                Enclosure enclosure = new Enclosure(
+                    plot,
+                    name.toUpperCase(),
+                    area,
+                    use,
+                    polygon
+                );
+
+                plotEnclosuresList.add(enclosure);
+                enclosureRep.save(enclosure);
+            }
+
+            return plotEnclosuresList;
+        }
+    \end{verbatim}
+
+    La lógica es la siguiente:
+
+    \begin{enumerate}
+        \item La función recibe la lista de coordenadas obtenidas en la respuesta de la petición a la API de SIGPAC.
+        
+        \item Se recorre cada elemento de la lista y de ella se obtienen los valores de los campos \textbf{\textit{geometry}} (que contiene las coordenadas
+        de cada punto que va a formar el polígono) y \textbf{\textit{properties}} (contiene otros datos auxiliares como el área del recinto y qué tipo de uso
+        tiene según SIGPAC).
+
+        \item A través de la función \textbf{convertToPolygon}, se va a recorrer cada punto de la lista de coordenadas y se crea un objeto \textbf{Coordinate} a través
+        de la latitud y longitud del punto que es guardado en una lista. Con cada objeto ``coordinate'', se va a trazar una línea que los una y finalmente se crea el polígono.
+
+        \item Finalmente, se guarda cada polígono en una lista que será devuelta y en la base de datos.
+    \end{enumerate}
+    
+    Para poder trabajar con objetos de tipo \textbf{Coordinate}, \textbf{Polygon} o \textbf{LinearRing} (línea al unir cada punto), existe en Java una API llamada
+    \textbf{JTS (\textit{Java Topology Suite})}. Esta API permite crear objetos espaciales y usar funciones geométricas 2D. De esta manera, se pueden crear los objetos de tipo polígono
+    que posteriormente se podrán insertar en el campo \textit{geometry} de la base de datos, ya que PostGIS y JTS operan bajo el mismo estándar, facilitando la manipulación de
+    los objetos desde el propio lenguaje Java a la base de datos de PostgreSQL y viceversa.
 \end{itemize}
-
-
 
 \subsubsection{PhytoActService}
 
@@ -1183,9 +1244,116 @@ Este servicio es el encargado de gestionar la lógica de negocio relacionada con
 
 \subsubsection{PlotService}
 
+Este servicio va a recoger toda la lógica de negocio relacionada con la gestión y manipulación de la entidad que representa una parcela. Entre los métodos más destacados que han sido
+implementados se encuentran los siguientes:
 
+\begin{itemize}
+    \item \textbf{CreateUserPlot:} este método es el encargado de asignar una parcela registrada en el sistema a un usuario concreto. Para ello, se van a extraer los datos enviados en el
+    cuerpo de la petición que representan una parcela: provincia, ciudad, código del polígono y número de parcela. De esta forma, se buscará si la parcela existe en el sistema, obteniéndola
+    para asignársela al usuario o de lo contrario, creándola y almacenándola en el sistema. El código implementado que se encarga de crear una parcela con sus recintos es el siguiente:
 
+    \begin{verbatim}
+        public Plot createPlotAndEnclosures(CreatePlot request) {
+            String province = request.getProvince()
+                .trim().toUpperCase();
+            String city = request.getCity()
+                .trim().toUpperCase();
+            String polygonCode = request.getPolygonCode().trim();
+            String plotNum = request.getPlotNum().trim();
 
+            int provinceCode = this.getProvinceCode(province);
+            int cityCode = this.getCityCode(
+                city, String.valueOf(provinceCode)
+            );
+
+            // Create and save the plot
+            Plot newPlot = new Plot(
+                String.valueOf(provinceCode),
+                String.valueOf(cityCode), 
+                polygonCode, 
+                plotNum, 
+                request.getLandRegister(),
+                province,
+                city
+            );
+
+            Plot plotDb = plotRep.save(newPlot);
+
+            // Get plot enclosures from SIGPAC API
+            SigpacGeoJsonResponse plotEnclosures = sigpacApiClient
+                .getPlotEnclosures(
+                    provinceCode, 
+                    cityCode,
+                    0, 
+                    0, 
+                    Integer.valueOf(polygonCode), 
+                    Integer.valueOf(plotNum)
+                );
+
+            // Create and save the plot enclosures on the system
+            List<Map<String, Object>> enclosureCoord = plotEnclosures
+                .getFeatures();
+            List<Enclosure> plotEnclosuresList = enclosureServ
+                .createPlotEnclosures(enclosureCoord, plotDb);
+            
+            // Calculate the area and geometry plot
+            List<Polygon> geometries = new ArrayList<>();
+            Double area = 0.0;
+
+            for(Enclosure en : plotEnclosuresList) {
+                area += en.getArea();
+                geometries.add(en.getGeometry());
+            }
+
+            if(!geometries.isEmpty()) {
+                // Union() method combine all geometries 
+                // in one geometry
+                Geometry combinedGeometry = CascadedPolygonUnion
+                    .union(geometries);
+                
+                if(combinedGeometry instanceof Polygon polygon) {
+                    plotDb.setGeometry(polygon);
+                }
+                
+                plotDb.setEnclosures(plotEnclosuresList);
+                plotDb.setArea(area);
+                plotDb = plotRep.save(plotDb);
+            }
+
+            return plotDb;
+        }
+    \end{verbatim}
+
+    La lógica seguida es la siguiente:
+
+    \begin{enumerate}
+        \item Se obtienen los datos enviados en la petición.
+        
+        \item Se procede a realizar las peticiones a la API de SIGPAC para obtener los códigos del municipio y de la provincia a través de las funciones
+        \textbf{getProvinceCode} y \textbf{getCityCode}.
+        
+        \item Se crea el objeto parcela (\textit{plot}) con toda esta información y se almacena en la base de datos.
+        
+        \item Se obtienen todos los recintos de la parcela especificada a través de la petición a la API de SIGPAC (función \textbf{getPlotEnclosures}).
+        
+        \item Se extrae el valor del campo \textit{features}, que contiene toda la información de cada recinto que compone la parcela y se ejecuta la función 
+        explicada anteriormente que va a crear el objeto polígono de JTS para cada recinto, devolviendo una lista con todos ellos.
+
+        \item Finalmente, se crea la parcela a través de la unión de cada geometría de los recintos (función \textit{union} de \textit{CascadedPolygonUnion}).
+    \end{enumerate}
+
+    \item \textbf{DeleteUserPlot:} método encargado de eliminar la relación entre un usuario y una parcela a través del ID del usuario y el ID de la parcela.
+    
+    \item \textbf{GetPlot:} método que busca una parcela en el sistema según el ID especificado y devuelve el objeto si es encontrado; de lo contrario lanzará una excepción.
+    
+    \item \textbf{GetPlotEnclosures:} método que busca una parcela en base a su ID y devuelve un objeto que contiene una lista con cada recinto que la compone.
+    
+    \item \textbf{GetUserPlots:} este método va a buscar un usuario en la base de datos en base a su ID. En caso de existir, va a obtener todas las parcelas que tiene asignadas, 
+    obtiene los recintos de cada una de ellas, los almacena en una lista y finalmente devuelve la lista con toda la información.
+
+    \item \textbf{UpdateUserPlot:} método que se encarga de actualizar los datos de una parcela asignada a un usuario. Permite modificar tanto el nombre de la parcela como el  
+    registro catastral (en caso de ser necesario).
+\end{itemize}
 
 \subsubsection{PhytoProductService}
 
@@ -1205,6 +1373,80 @@ La lógica de negocio implementada en este servicio está relacionada con los pr
 
 \section{Sprint 4}
 
+Este sprint ha sido el último y se ha basado en investigar cómo desplegar el backend en un servidor en la nube y cómo generar la APK del frontend para que
+cualquier dispositivo móvil pueda descargarla y utilizarla. Además, ha servido para mejorar detalles de usabilidad en el frontend y añadir otras funcionalidades 
+a la aplicación que se han considerado interesantes.
+
+\subsection{Despliegue con Docker}
+
+El despliegue del backend se ha realizado con \textbf{Docker}. Docker \cite{docker} es una plataforma que permite crear y desplegar rápidamente aplicaciones en distintos
+sistemas y entornos. Para ello, empaqueta toda la aplicación (software) en unas unidades llamadas \textbf{contenedores}. Estas unidades incluyen todo lo necesario para que 
+el software se ejecute, además de bibliotecas, herramientas, código y la versión ejecutable.
+
+El backend está desarrollado como una aplicación de Spring Boot con Maven definida a través del archivo \textbf{pom.xml}. ESte archivo es de gran importancia ya que es el que
+contiene todas las dependencias utilizadas en el sistema junto con sus versiones, por lo que es necesario conocerlas para Docker pueda empaquetarlas y ejecutar el sistema en 
+cualquier entorno.
+
+\subsubsection{Dockerfile}
+
+Este archivo define cómo Docker va a construir la aplicación en una \textbf{imagen}. Una imagen es una plantilla que contiene todo lo necesario para poder ejecutar una
+aplicación. El \textit{dockerfile} implementado hace lo siguiente:
+
+\begin{enumerate}
+    \item Usa una imagen ya creada en DockerHub llamada \textbf{eclipse-temurin:21-jdk-jammy} para compilar un proyecto en Java.
+    \item Copia todas las dependencias de maven definidas en el \textit{pom.xml}  así como la configuración necesaria.
+    \item A continuación, ejecuta maven para descargar todas las dependencias del proyecto y realiza una compilación para tener el archivo \textit{.jar}.
+\end{enumerate}
+
+En este punto del dockerfile se tiene el proyecto compilado a falta de ejecutarse. Este archivo continua de la siguiente manera:
+
+\begin{enumerate}
+    \item Una vez compilado el proyecto, se utiliza la imagen \textbf{eclipse-temurin:21-jre-jammy}. Esta imagen va a permitir ejecutar el .jar generado de la fase anterior de
+    compilación.
+
+    \item A continuación, se crea un usuario sin privilegios para ejecutar la aplicación desde ese usuario y no desde un usuario root que pueda tener todos los permisos (esta decisión
+    se realiza por motivos de seguridad, para que si alguien consigue acceder al contenedor no tenga todos los privilegios del sistema).
+
+    \item Finalmente el archivo es ejecutado a través de los comandos establecidos en la sentencia \textit{ENTRYPOINT} cuando el contenedor arranque.
+\end{enumerate}
+
+\subsubsection{Docker compose}
+
+Además del archivo anterior, se ha creado otro llamado \textbf{docker-compose.yml}. Este archivo es el encargado de ``orquestar'' cada servicio, es decir, creará una instancia de cada imagen
+y coordinará los contenedores. Para entender la diferencia con el archivo anterior, Dockerfile es quién establece como crear una imagen y cómo se ejecuta, mientras que Docker Compose se encarga
+de coordinar y gestionar varios contenedores que trabajan en conjunto.
+
+En este archivo se han levantado 3 contenedores distintos:
+
+\begin{itemize}
+    \item \textbf{Base de datos de PostgreSQL/PostGIS:} este servicio utiliza la imagen \textbf{postgis/postgis:16-3.4-alpine}. Esta elección se debe al uso de una base de datos que 
+    tiene instalada la herramienta PostGIS para poder trabajar con objetos geométricos y datos geoespaciales. También se van a definir las variables que permiten el acceso a la base de datos, 
+    como el nombre de usuario y contraseña, y se va a montar un volumen persistente para que los datos no se pierdan cuando el contenedor sea detenido.
+
+    Este archivo va a especificar como Docker tiene que crear la base de datos y qué contenido almacenar en ella. Para ello, se le indicará a Docker qué fichero tiene que copiar en el directorio 
+    para que PostgreSQL pueda ejecutarlo la primera vez que se crea la base de datos.
+
+    \item \textbf{Aplicación de Spring Boot:} este servicio va a esperar a que la base de datos esté creada e inicializada. Una vez hecho esto, se va a levantar la imagen creada en el Dockerfile
+    que contiene la aplicación de Spring Boot compilada y ejecutada.
+
+    En este servicio se van a exponer variables de entorno que son extraídas desde el archivo \textit{.env} para que pueda funcionar de esta manera tanto en local como en un servidor remoto sin 
+    necesidad de manipular el código fuente de la aplicación.
+
+    Finalmente, la aplicación se expone en el puerto 8080 para que otros contenedores dentro de la misma red puedan acceder a ella y no esté accesible directamente desde el exterior; de esto se 
+    encargará Nginx.
+
+    \item \textbf{Nginx como proxy inverso:} Nginx es un servidor web que actúa como proxy inverso, quitando la exposición directamente de las aplicaciones al exterior y actuando como un intermediario
+    que se encarga de distribuir el tráfico y sirviendo como puerta de entrada al servidor. Su configuración se va a definir en un archivo llamado \textbf{default.conf}.
+
+    En este archivo se le va a indicar a Nginx que esté escuchando en el puerto 443 con certificado SSL, de manera que si se le envía una petición, Nginx la reenvía al contenedor de la aplicación que 
+    está expuesto en el puerto 8080.
+
+    Se ha tomado la decisión de usar Nginx como proxy inverso para no exponer la aplicación directamente al exterior, mejorando de esta forma la seguridad y centralizando el tráfico web. Además, si se
+    quiere encriptar la información a través de HTTPS, Nginx permite manejar certificados TLS y la redirección de HTTP a HTTPS directamente.
+\end{itemize}
+
+Con este archivo se consigue que todo el entorno funcione de forma conjunta y coordinada a través de un solo comando: \textbf{docker compose up}. Con esta práctica se consigue como resultado un sistema 
+desplegado de forma modular, reproducible y más fácil de mover entre entornos.
 
 
 
