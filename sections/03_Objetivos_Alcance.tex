@@ -1,1 +1,59 @@
 \chapter{Objetivos y alcance del proyecto}
+
+\section{Objetivo general}
+
+El objetivo del presente proyecto consiste en la implementación de un Cuaderno de Explotación Comercial digital para agricultores y entidades habilitadas que centralice el registro y gestión de actividades
+agrícolas, destacando los tratamientos fitosanitarios, debido a su obligatoriedad a partir del 1 de enero de 2027.
+
+\section{Objetivos específicos}
+
+Entrando en más detalle, los objetivos que se van a buscar lograr serán los siguientes:
+
+\begin{itemize}
+    \item \textbf{Cumplimiento normativo:} garantizar que el sistema permita generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos exigidos, facilitando el cumplimiento de 
+    la normativa (por ejemplo, para el tratamiento de productos fitosanitarios).
+
+    \item \textbf{Autenticación y control de acceso:} proveer autenticación segura a través de Json Web Token y control de permisos por roles (adminsitrador, entidad habilitada y agricultor), asegurando que 
+    usuarios autorizados accedan y manipulen datos según criterios definidos.
+
+    \item \textbf{Gestión espacial de parcelas:} permitir registrar, almacenar y visualizar parcelas así como recintos con sus geometrías, usando para ello la integración con los servicios de la API de SIGPAC
+    cuando sea posible. Además, se ofrecerá un mapa con el cual se podrá interactuar.
+
+    \item \textbf{Registro y validación de actividades:} facilitar el registro, modificación y eliminación de actividades (planificadas y completadas) con validaciones específicas (fechas, campos obligatorios, etc)
+    y registros especiales para actividades de tipo fitosanitario (como tipo de producto, dosis y aplicador).
+    
+    \item \textbf{Soporte para entidades y delegación:} permitir la creación y gestión de entidades habilitadas (cooperativas), gestión de usuarios asociados y delegación de permisos para que administradores de 
+    entidad puedan gestionar actividades de agricultores autorizados.
+\end{itemize}
+
+\section{Alcance y limitaciones}
+
+\subsection{¿Qué sí se va a realizar?}
+
+Entre las funcionalidades que se esperan implementar y que se priorizarán están las siguientes:
+
+\begin{itemize}
+    \item Implementar un Cuaderno de Explotación Comercial digital que permita principalmente registrar, modificar y eliminar actividades tanto planificadas como completadas.
+    \item Registrar y visualizar parcelas junto con sus recintos, mostrando sus geometrías en un mapa interactivo.
+    \item Soportar registro específico de actividades fitosanitarias.
+    \item Autenticación segura con JWT y control por roles.
+    \item Almacenar datos según lo requerido por el CUE, exportarlos y dejarlo preparado para una integración futura con el REA.
+\end{itemize}
+
+\subsection{¿Qué no entra en el alcance?}
+
+Entre las funcionalidades que no se implementarán por falta de tiempo y recursos se encuentran las siguientes:
+
+\begin{itemize}
+    \item Obtención del certificado digital oficial para poder acceder al SIEX, así como la publicación en los servicios oficiales del REA, dejando la integración con la API oficial por falta de certificado.
+    \item Módulos de contabilidiad, como el control avanzado de costes y nóminas, obteniendo de esta manera un ERP más completo.
+    \item Soporte \textit{offline} o sincronización compleja entre múltiples dispositivos, permitiendo que el agricultor pueda almacenar sus actividades en ubicaciones donde no haya cobertura, para 
+    posteriormente guardar esos datos en la base de datos.
+    \item Aplicación multiplataforma con un cliente web.
+\end{itemize}
+
+\subsection{Justificación de las decisiones}
+
+Las decisiones han sido tomadas teniendo en cuenta el tiempo disponible, buscando priorizar las funcionalidades \textit{core} de la aplicación para entregar un prototipo funcional, y por otro lado la falta de recursos, 
+ya que la integración con la API oficial del SIEX requiere de un certificado específico para su acceso y es necesario tener constituida una empresa. Por esta razón, se ha implementado una base de datos local y se ha intentado
+ajustar lo máximo posible para una integración futura.

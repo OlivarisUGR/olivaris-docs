@@ -957,8 +957,6 @@ a ejecutar el endpoint de creación y cómo se verifica a continuación que la r
 Este sprint tuvo una duración superior a los anteriores ya que se terminó de completar la base de datos, lógica de negocio asociada al backend, nuevos modelos y controladores. Además de esto, se 
 implementó el frontend, librerías externas para representar datos y la conexión entre el cliente y el servidor.
 
-\subsection{Backend}
-
 Una vez establecida la estructura de la base de datos y la forma de almacenar la información con respecto a las entidades y usuarios, se pasó a introducir en el esquema nuevas tablas o entidades 
 que representen las actividades realizadas y parcelas de los usuarios. El nuevo esquema de base de datos obtenido fue el siguiente:
 
@@ -1010,7 +1008,7 @@ Este esquema ha sido el último realizado y muestra cómo ha quedado finalmente 
 
 Una vez explicadas las nuevas tablas añadidas a la base de datos, se va a proceder a comentar los nuevos servicios creados durante el sprint y las funcionalidades más relevantes que se han implementado a nivel de backend.
 
-\subsubsection{ActivityService}
+\subsection{ActivityService}
 
 Este servicio es el que contiene toda la lógica de negocio relacionada con las actividades. Dentro de este servicio se encuentran los siguientes métodos:
 
@@ -1157,7 +1155,7 @@ Este servicio es el que contiene toda la lógica de negocio relacionada con las 
     fitosanitaria pasados en el cuerpo de la petición, se crea una nueva para añadirla a la actividad.
 \end{itemize}
 
-\subsubsection{EnclosureService}
+\subsection{EnclosureService}
 
 Este es el servicio que contiene toda la lógica de negocio relacionada con los recintos del sistema. Entre los métodos implementados se encuentran:
 
@@ -1228,7 +1226,7 @@ Este es el servicio que contiene toda la lógica de negocio relacionada con los 
     los objetos desde el propio lenguaje Java a la base de datos de PostgreSQL y viceversa.
 \end{itemize}
 
-\subsubsection{PhytoActService}
+\subsection{PhytoActService}
 
 Este servicio es el encargado de gestionar la lógica de negocio relacionada con las actividades fitosanitarias. Los métodos implementados son los siguientes:
 
@@ -1242,7 +1240,7 @@ Este servicio es el encargado de gestionar la lógica de negocio relacionada con
     \item \textbf{UpdatePhytoActivities:} actualiza un conjunto de actividades fitosanitarias, recorriendo una lista y ejecutando el método anterior para cada elemento de la lista.
 \end{itemize}
 
-\subsubsection{PlotService}
+\subsection{PlotService}
 
 Este servicio va a recoger toda la lógica de negocio relacionada con la gestión y manipulación de la entidad que representa una parcela. Entre los métodos más destacados que han sido
 implementados se encuentran los siguientes:
@@ -1253,7 +1251,13 @@ implementados se encuentran los siguientes:
     para asignársela al usuario o de lo contrario, creándola y almacenándola en el sistema. El código implementado que se encarga de crear una parcela con sus recintos es el siguiente:
 
     \begin{verbatim}
-        public Plot createPlotAndEnclosures(CreatePlot request) {
+        public Plot createPlotAndEnclosures
+            WithResolvedGeoData(
+                CreatePlot request,
+                int provinceCode,
+                int cityCode,
+                String landRegister
+        ) {
             String province = request.getProvince()
                 .trim().toUpperCase();
             String city = request.getCity()
@@ -1272,7 +1276,7 @@ implementados se encuentran los siguientes:
                 String.valueOf(cityCode), 
                 polygonCode, 
                 plotNum, 
-                request.getLandRegister(),
+                landRegister,
                 province,
                 city
             );
@@ -1327,7 +1331,9 @@ implementados se encuentran los siguientes:
     La lógica seguida es la siguiente:
 
     \begin{enumerate}
-        \item Se obtienen los datos enviados en la petición.
+        \item Se obtienen los datos enviados en la petición. En el caso de la \textbf{referencia catastral}, se obtiene a través de la petición a un endpoint de la API de SIGPAC
+        que devuelve la referencia catastral entre los datos de la parcela, evitando de esta manera que se tenga que introducir de forma manual (es una cadena de caracteres
+        grande).
         
         \item Se procede a realizar las peticiones a la API de SIGPAC para obtener los códigos del municipio y de la provincia a través de las funciones
         \textbf{getProvinceCode} y \textbf{getCityCode}.
@@ -1355,7 +1361,7 @@ implementados se encuentran los siguientes:
     registro catastral (en caso de ser necesario).
 \end{itemize}
 
-\subsubsection{PhytoProductService}
+\subsection{PhytoProductService}
 
 La lógica de negocio implementada en este servicio está relacionada con los productos fitosanitarios. Los métodos implementados son los siguientes:
 
@@ -1364,12 +1370,6 @@ La lógica de negocio implementada en este servicio está relacionada con los pr
     
     \item \textbf{GetAllPhytoProduct:} método que busca todos los productos fitosanitarios almacenados en el sistema y los devuelve para su consulta.
 \end{itemize}
-
-\subsection{Frontend}
-
-
-
-
 
 \section{Sprint 4}
 
