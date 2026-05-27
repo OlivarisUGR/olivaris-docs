@@ -1420,7 +1420,124 @@ necesarios para que se vea la pantalla de la aplicación correctamente.
 
 Algunos de los componentes más interesantes que se han implementado son los siguientes:
 
+\begin{itemize}
+    \item \textbf{Mapa:} el componente \textit{Map} proporciona la visualización del espacio geográfico de cada parcela almacenada en la aplicación. Está implementado en map.tsx y utiliza principalmente los servicios:
+    
+    \begin{itemize}
+        \item \textbf{location.tsx:} este servicio se encarga de gestionar el acceso a la ubicación del dispositivo. Comprueba si el usuario ha dado permisos a usar la ubicación y, si es así, obtiene la ubicación almacenada
+        en caché si ha accedido recientemente a ella o de lo contrario, extrae la ubicación actual y la almacena en una caché.
 
+        \item \textbf{mapService.tsx:} este servicio se encarga de transformar el formato de las ubicaciones pasadas desde el backend al formato que necesita Leaflet, ya que el componenten \textit{MapView} muestra este componente.
+    \end{itemize}
+    
+    El diseño del componente se basa en la usabilidad táctil y la eficiencia en la actualización de datos. 
+
+    Para su desarrollo, se han utilizado dos librerías principalmente: \textbf{Leaflet} y \textbf{OpenStreetMap}. Leaflet es una librería de JavaScript de código abierto que permite generar mapas interactivos. Está caracterizada
+    por su simplicidad y usabilidad, además de tener muchas funcionalidades extras a través de \textit{plugins} y una amplia documentación de su API. Con esta librería se ha podido dar funcionalidades al mapa dibujado en la aplciación,
+    como el poder hacer \textit{zoom} o mover el mapa.
+
+    Por el otro lado, está OpenStreetMap. Esta herramienta \cite{openStreetMap} consiste en una base de datos cartográfica mantenida por una comunidad, convirtiéndola en \textit{open source}. Es distribuida gratuitamente y es muy utilizada
+    para crear mapas digitales. 
+
+    Para que Leaflet pueda funcionar, se ha integrado en el HTML a través del componente \textit{WebView}, permitiendo de esta manera mostrar las parcelas y construir un mapa interactivo sin depender de una vista nativa compleja. Una de las partes más
+    importantes del código es la siguiente:
+    
+    \begin{verbatim}
+        const map = L.map('map', {
+            zoomControl: true,
+            attributionControl: true,
+        });
+
+        L.tileLayer('https://tile.openstreetmap.org
+                        /{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map);
+
+        const bounds = L.latLngBounds([]);
+
+        if(location && Number.isFinite(location.latitude) && 
+            Number.isFinite(location.longitude)) {
+            const currentLocation = [
+                location.latitude, 
+                location.longitude
+            ];
+            L.marker(currentLocation).addTo(map)
+                .bindPopup('Ubicación actual');
+            bounds.extend(currentLocation);
+        }
+
+        payload.polygons.forEach((polygon) => {
+            const coords = polygon.coords.map(
+                (coord) => [coord.latitude, coord.longitude]
+            );
+
+            if(coords.length < 3) {
+                return;
+            }
+
+            const layer = L.polygon(coords, {
+                color: polygon.type === 'plot' ? 
+                    '#17751e' : '#2e5bd8',
+                weight: 2,
+                fillColor: polygon.type === 'plot' ? 
+                    '#3f5e2c' : '#2e5bd8',
+                fillOpacity: 0.28,
+            });
+
+            layer.on('click', () => {
+                window.ReactNativeWebView.postMessage(JSON.stringify({
+                    type: 'polygon',
+                    polygonId: polygon.id,
+                }));
+            });
+
+            layer.addTo(map);
+            const layerBounds = layer.getBounds();
+
+            if(layerBounds.isValid()) {
+                bounds.extend(layerBounds);
+            }
+        });
+
+        if(bounds.isValid()) {
+            map.fitBounds(bounds.pad(0.2));
+        } else if(location && Number.isFinite(location.latitude) && 
+                Number.isFinite(location.longitude)) {
+            map.setView([location.latitude, location.longitude], 16);
+        } else {
+            map.setView([40.4168, -3.7038], 6);
+        }
+    \end{verbatim}
+
+    La explicación del código es la siguiente:
+
+    \begin{enumerate}
+        \item Se crea el mapa, inicializando el componente de Leaflet con la instrucción \textit{L.map} y añadiéndole las propiedades que permiten hacerle zoom y que el usuario se pueda mover
+        por él, además de mostrar la información del proveedor cartográfico (\textit{attributionControl}).
+
+        \item Se añade la capa de OpenStreetMap que va a mostrar el mapa, añadiendo un límite de zoom.
+        \item Se crea un objeto \textit{bounds}, que será el que contenga todas las coordenadas que se pintarán en el mapa.
+        \item Se comrpueba si existe una ubicación válida del usuario (a través de la ubicación del dispositivo). Si es así, se crea un marcador que muestra la ubicación actual del usuario junto
+        con una etiqueta.
+
+        \item A continuación, se recorren todos los polígonos que se han obtenido como resultado de la consulta al backend y se transforman en el formato que necesita Leaflet para poder representarlos.
+        \item Se comprueba si el polígono tiene al menos 3 puntos y si es así, se crea una capa que representa el polígono junto con el color que lo representa.
+        \item Se añade sobre el polígono un evento de click que será enviado a React Native en el caso de ser activado, indicando la acción a realizar y el ID del polígono.
+        \item Se añade el polígono al mapa y se obtienen sus límites (\textit{bounds}), pudiendo de esta forma el mapa saber cuanto es el área total ocupada por todos los elementos, utilizándolo en el siguiente paso.
+        \item Finalmente, se decide como cuadrar la vista: si hay límites válidos ajusta el zoom para que se vean todos los polígonos, si no hay límites pero sí ubicación, se centra el mapa según la ubicación, y
+        si o hay ninguna de las dos, se centra en Madrid (centro de España).
+    \end{enumerate}
+
+    El componente ha quedado finalmente de la siguiente manera:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{figures/map_app.jpeg}
+        \caption{Componente del mapa visto desde la aplicación}
+        \label{fig:map_app}
+    \end{figure}
+\end{itemize}
 
 \section{Sprint 4}
 
