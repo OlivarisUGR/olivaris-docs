@@ -1006,9 +1006,11 @@ Este esquema ha sido el último realizado y muestra cómo ha quedado finalmente 
     \item \textbf{Producto fitosanitario:} es la tabla que representa al producto fitosanitario utilizado en una actividad fitosanitaria.
 \end{itemize}
 
+\subsection{Backend}
+
 Una vez explicadas las nuevas tablas añadidas a la base de datos, se va a proceder a comentar los nuevos servicios creados durante el sprint y las funcionalidades más relevantes que se han implementado a nivel de backend.
 
-\subsection{ActivityService}
+\subsubsection{ActivityService}
 
 Este servicio es el que contiene toda la lógica de negocio relacionada con las actividades. Dentro de este servicio se encuentran los siguientes métodos:
 
@@ -1155,7 +1157,7 @@ Este servicio es el que contiene toda la lógica de negocio relacionada con las 
     fitosanitaria pasados en el cuerpo de la petición, se crea una nueva para añadirla a la actividad.
 \end{itemize}
 
-\subsection{EnclosureService}
+\subsubsection{EnclosureService}
 
 Este es el servicio que contiene toda la lógica de negocio relacionada con los recintos del sistema. Entre los métodos implementados se encuentran:
 
@@ -1226,7 +1228,7 @@ Este es el servicio que contiene toda la lógica de negocio relacionada con los 
     los objetos desde el propio lenguaje Java a la base de datos de PostgreSQL y viceversa.
 \end{itemize}
 
-\subsection{PhytoActService}
+\subsubsection{PhytoActService}
 
 Este servicio es el encargado de gestionar la lógica de negocio relacionada con las actividades fitosanitarias. Los métodos implementados son los siguientes:
 
@@ -1240,7 +1242,7 @@ Este servicio es el encargado de gestionar la lógica de negocio relacionada con
     \item \textbf{UpdatePhytoActivities:} actualiza un conjunto de actividades fitosanitarias, recorriendo una lista y ejecutando el método anterior para cada elemento de la lista.
 \end{itemize}
 
-\subsection{PlotService}
+\subsubsection{PlotService}
 
 Este servicio va a recoger toda la lógica de negocio relacionada con la gestión y manipulación de la entidad que representa una parcela. Entre los métodos más destacados que han sido
 implementados se encuentran los siguientes:
@@ -1361,7 +1363,7 @@ implementados se encuentran los siguientes:
     registro catastral (en caso de ser necesario).
 \end{itemize}
 
-\subsection{PhytoProductService}
+\subsubsection{PhytoProductService}
 
 La lógica de negocio implementada en este servicio está relacionada con los productos fitosanitarios. Los métodos implementados son los siguientes:
 
@@ -1370,6 +1372,55 @@ La lógica de negocio implementada en este servicio está relacionada con los pr
     
     \item \textbf{GetAllPhytoProduct:} método que busca todos los productos fitosanitarios almacenados en el sistema y los devuelve para su consulta.
 \end{itemize}
+
+\subsection{Frontend}
+
+Como ha sido comentado anteriormente, el \textit{stack} utilizado para el desarrollo del frontend ha sido React Native con Expo y TypeScript. Entre los archivos más importantes
+se encuentran:
+
+\begin{itemize}
+    \item \textbf{package.json:} archivo que contiene todas las dependencias utilizadas en el proyecto, como por ejemplo \textit{expo-router} para la navegación entre pantallas.
+    \item \textbf{\_layout.tsx} archivo que define las rutas a las que se pueda navegar en la aplicación usando expo-router. Este archivo se encuentra en el directorio \textit{app}.
+    \item \textbf{app.json y eas.json:} definen la configuración de Expo.
+    \item \textbf{tsconfig.json:} define la configuración de TypeScript.
+\end{itemize}
+
+En cuanto a la estructura del frontend, algunos de los directorios que muestran como se ha organizado el proyecto se ha organizado son los siguientes:
+
+\begin{itemize}
+    \item \textbf{app:} directorio que contiene cada uno de los archivos que representan las páginas o entradas a las que acceden el \textit{router} de expo. 
+     
+    \item \textbf{components:} directorio que contiene todos los componentes reutilizables, como por ejemplo: formularios, modables, barra de navegación y mapas (entre otros).
+     
+    \item \textbf{screens:} directorio que contiene todas las pantallas que se muestran al navegar por la aplciación. Estas pantallas agrupan componentes y son mostradas cuando se 
+    accede a alguna de las rutas establecidas en el directorio \textit{app}.
+
+    \item \textbf{services:} directorio que contiene la lógica de negocio y manejo de las respuestas al realizar llamadas a la API, pudiendo filtrar datos y evitando manipular la respuesta
+    directamente desde el archivo que realiza la petición.
+
+    \item \textbf{api:} contiene los clientes HTTP orientado a las entidades del backend, de manera que cada archivo contiene solo las peticiones hacia los endpoints que son de su competencia,
+    por ejemplo: el archivo plotApi.tsx realiza las peticiones solo hacia el controlador de \textit{plot} del backend.
+
+    \item \textbf{types:} define los DTOs y modelos en TypeScript para que haya un tipado fuerte.
+    
+    \item \textbf{assets:} almacena recursos estáticos como las imágenes o iconos utilizados.
+    
+    \item \textbf{styles:} aunque los estilos de los componentes se definen en el propio archivo donde se crea el componente, en este directorio se almacenan los temas y estilos compartidos
+    en distintos puntos de la aplicación.
+\end{itemize}
+
+\subsubsection{Flujo entre capas}
+
+A través del uso de expo-router, se van a definir todas las rutas en el directorio \textit{app}. Cuando se navega entre pantallas, lo que está ocurriendo ``por detrás'', es un acceso a la ruta concreta
+que corresponde a un archivo de este directorio. El archivo en cuestión va a devolver una pantalla (\textit{screen}), y esta \textit{screen} devuelve los componentes almacenados en \textit{components} que sean 
+necesarios para que se vea la pantalla de la aplicación correctamente.
+
+
+\subsubsection{Componentes}
+
+Algunos de los componentes más interesantes que se han implementado son los siguientes:
+
+
 
 \section{Sprint 4}
 
