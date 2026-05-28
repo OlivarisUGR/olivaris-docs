@@ -19,7 +19,12 @@ Primero se elaboró el esquema de la base de datos. Analizando el uso que iba a 
 
 Teniendo en cuenta esto y que un usuario tiene que estar representado también a través de una entidad, el esquema desarrollado en la primera iteración fue el sisguiente:
 
-\textbf{INSERTAR IMAGEN DE LA PRIMERA PARTE DEL ESQUEMA}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema_db_s1.png}
+    \caption{Esquema de la base de datos del Sprint 1}
+    \label{fig:schema_db_s1}
+\end{figure}
 
 La entidad usuario representa al usuario como tal que accede y utiliza la aplicación. Datos como el correo electrónico o el NIF son almacenados en el sistema.
 
@@ -99,10 +104,6 @@ El filtro implementado es \textbf{\textit{JwtAuthFilter}}. Este filtro se va a a
 ha enviado en la cabecera de la petición el token, si es válido o no y si el usuario sigue existiendo en el sistema. En caso de ser correcto, autentica al usuario guardando la información en el contexto de la
 petición y continuando Spring Boot el flujo del programa; en caso contrario, continua con la cadena de filtros y pasaría al contenido del archivo SecurityConfig, lanzando una excepción por falta de permisos
 o autenticación.
-
-En el siguiente diagrama se puede ver de forma gráfica el proceso de autenticación de un usuario:
-
-\textbf{INSERTAR IMAGEN DE FLUJO DE AUTENTICACION}
 
 \subsection{JwtService}
 
@@ -521,7 +522,12 @@ Además de los servicios anteriores, también han sido implementados los siguien
 
 Los flujos de comunicación o como interactúan entre ellos es de la siguiente forma:
 
-\textbf{INSERTAR UN PEQUEÑO ESQUEMA}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema_comun.png}
+    \caption{Esquema de comunicación entre los componentes}
+    \label{fig:schema_comun}
+\end{figure}
 
 En este esquema se puede observar como los distintos componentes dentro del servidor se comunican entre ellos y como a su vez es comunicado con la base
 de datos para persistir datos o consultarlos.
@@ -538,8 +544,12 @@ con la aplicación desarrollada Olivaris.
 Entre los agentes que describen, se encuentra el de \textbf{Entidad habilitada}. Esta entidad tendrá relación directa con los agricultores y podrá usar todos los
 CUEs Comerciales que desee. A partri de aquí, se supuso que en el sistema iba a existir esta nueva entidad, por lo que se actualizó el esquema de base de datos al
 siguiente:
-
-\textbf{INSERTAR ESQUEMA BASE DE DATOS - SPRINT 2}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema-db-s2.png}
+    \caption{Esquema de la base de datos del Sprint 2}
+    \label{fig:schema_db_s2}
+\end{figure}
 
 En este esquema se puede ver como la ``Entidad habilitada'' es una nueva entidad o tabla de la base de datos. Esta entidad tiene unos campos mínimos que la identifican
 y está relacionada directamente con un usuario, de manera, que un usuario que está registrado en el sistema puede pertenecer a una entidad también. Al pertenecer a dicha
@@ -675,8 +685,6 @@ los métodos de la interfaz. A continuación se va a proceder a explicar la lóg
         }
     \end{verbatim}
 
-    \textbf{INSERTAR DIAGRAMA DE SECUENCIA ????}
-
     \item \textbf{UpdateUserToEntityData:} este método permite actualizar los datos de la relación entre el usuario y una entidad. Con datos se refiere a los permisos que el usuario tiene
     así como su rol. Esta funcionalidad se ha dejado en el backend pero desde el frontend no ha sido creada, es decir, ahora mismo no se contempla la modificación de los permisos o roles 
     del usuario vinculado; el usuario se crea con unos datos fijos y en caso de ser modificados, se eleminaría su asignación y se crearía de la nueva manera. Esta decisión ha sido tomada
@@ -731,7 +739,6 @@ Para utilizar Flyway en Java, se han necesitado las dependencias: \textbf{\texti
 (\textit{baseline-on-migrate=true}), y otra para establecer el inicio de las migraciones desde el valor 1 (\textit{baseline-version=0}). Esto último se ha hecho 
 así puesto que en el primer uso de flyway, se creó una tabla interna en la base de datos que lleva un registro de las migraciones realizadas empezando desde la priemra 
 desde 0
-
 
 Las migraciones se realizan a través de archivos escritos en \textbf{SQL}, siendo nombrados de la forma: \textit{V(nº de versión)\_\_(lo que va a realizar)}. Algunos de los
 archivos creados han sido:
@@ -960,7 +967,12 @@ implementó el frontend, librerías externas para representar datos y la conexi�
 Una vez establecida la estructura de la base de datos y la forma de almacenar la información con respecto a las entidades y usuarios, se pasó a introducir en el esquema nuevas tablas o entidades 
 que representen las actividades realizadas y parcelas de los usuarios. El nuevo esquema de base de datos obtenido fue el siguiente:
 
-\textbf{INSERTAR ESQUEMA BASE DE DATOS}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema_db_s3.png}
+    \caption{Esquema de la base de datos del Sprint 3}
+    \label{fig:schema_db_s3}
+\end{figure}
 
 Este esquema ha sido el último realizado y muestra cómo ha quedado finalmente la base de datos. En la parte superior se pueden observar las nuevas tablas. Estas tablas son las siguientes:
 
@@ -1533,11 +1545,49 @@ Algunos de los componentes más interesantes que se han implementado son los sig
 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.4\textwidth]{figures/map_app.jpeg}
+        \includegraphics[width=0.6\textwidth]{figures/map_app.jpeg}
         \caption{Componente del mapa visto desde la aplicación}
         \label{fig:map_app}
     \end{figure}
 \end{itemize}
+
+La imagen anterior corresponde a la pantalla de inicio cuando se accede a la aplicación. El resto de pantallas (siendo un usuario administrador del sistema) son las siguientes:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/plot_list.jpeg}
+    \caption{Pantalla de parcelas}
+    \label{fig:plot_list}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/activities.jpeg}
+    \caption{Pantalla de actividades}
+    \label{fig:activities}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/entities.jpeg}
+    \caption{Pantalla de entidades}
+    \label{fig:entities}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/users.jpeg}
+    \caption{Pantalla de usuarios del sistema}
+    \label{fig:useres}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/account.jpeg}
+    \caption{Pantalla del perfil de usuario}
+    \label{fig:account}
+\end{figure}
+
 
 \section{Sprint 4}
 

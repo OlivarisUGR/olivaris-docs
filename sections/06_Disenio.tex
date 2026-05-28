@@ -65,7 +65,12 @@ información.
 Por otro lado, la comunicación entre el servidor y la base de datos se realiza mediante un \hyperlink{orm}{\textbf{ORM \textit{(Object-Relational Mapping)}}}, una herramienta estándar en el desarrollo actual. En este caso, se han utilizado JPA e 
 Hibernate integrados con Spring Boot. Estas herramientas permiten gestionar las entidades, sus relaciones y las operaciones SQL de forma automática y transparente, lo que agiliza el desarrollo, reduce errores y optimiza el trabajo con la base de datos.
 
-\textbf{INSERTAR IMAGEN DEL ESQUEMA DE LA ARTQUITECTURA A ALTO NIVEL}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema_comun.png}
+    \caption{Diagrama de comunicación entre componentes}
+    \label{fig:schema_comun_2}
+\end{figure}
 
 Esta separación clara entre componentes garantiza la total independencia entre ellos. El servidor no necesita conocer los detalles de implementación del frontend; simplemente expone la manipulación de recursos a cualquier cliente, sin importar su 
 lenguaje de programación o plataforma utilizada (web, móvil o aplicaciones de terceros).
@@ -87,7 +92,12 @@ visión de las clases del sistema, detallando sus atributos, métodos y las cone
 
 El esquema de bases de datos del sistema es el siguiente:
 
-\textbf{INSERTAR IMAGEN DEL ESQUEMA}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/schema_db_s3.png}
+    \caption{Diagrama E/R de la base de datos}
+    \label{fig:er_diagram}
+\end{figure}
 
 \begin{itemize}
     \item \textbf{Usuario:} es la entidad que representa un usuario en el sistema. Cuenta con atributos principales como el nombre, correo electrónico y número de teléfono.
@@ -161,7 +171,12 @@ El esquema de bases de datos del sistema es el siguiente:
 
 El diagrama de clases del sistema es el siguiente:
 
-\textbf{INSERTAR IMAGEN DEL ESQUEMA}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/class-diagram.png}
+    \caption{Diagrama de clases}
+    \label{fig:class-diagram}
+\end{figure}
 
 \section{Diseño de la interfaz}
 
@@ -829,12 +844,6 @@ un usuario ``basic'' pero además, podrá ver, eliminar y atualizar todos los us
 
 Se han definido reglas de acceso a los recursos del sistema así como funciones de validación para determinar si el usuario puede ejecutar una funcionalidad
 o tiene autorización para acceder a un método/recurso. En próximos apartados se entrará en más detalle sobre esta parte.
-
-\subsection{Documentación generada con Postman}
-
-AGREGAR INFO ...
-
-
 
 \subsection{API del Visor SIGPAC}
 
