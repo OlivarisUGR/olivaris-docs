@@ -214,17 +214,28 @@ una funcionalidad nueva que se iba integrando en el sistema. Los sprint han sido
     Como este sprint ha abarcado una mayor cantidad de HU y actividades a realizar, investigación sobre React Native y se ha juntado con Semana
     Santa, ha tenido una duración mayor, siendo en total de 3 semanas.
 
-    \item \textbf{Sprint 4}
+    \item \textbf{Sprint 4}: este ha sido el último sprint. Se ha centrado principalmente en desplegar el backend realizado en un servidor en la 
+    nube, de manera que pueda estar continuamente ejecutándose. Para ello, se ha investigado como funciona Docker y qué archivos eran necesarios 
+    implementar en función del estado proyecto. 
 
+    Además de esto, se ha investigado como generar una APK del frontend para que pueda ser descargada desde cualquier dispositivo móvil.
 
+    Finalmente, el sprint ha servido también para añadir mejoras en cuanto a usabilidad de la aplicación y otras funcionalidades que se han considerado
+    teniendo en cuenta el tiempo del que se disponía.
 \end{itemize}
 
 Al finalizar cada sprint, se ha realizado un Sprint Review junto con el tutor del presente TFG para debatir si se ha cumplido lo establecido, 
 qué cosas son necesarias modificar y por donde hay que dirigir el siguiente sprint.
 
-Finalmente, se puede ver el cronograma a través de un Diagrama de Gantt que se ha obtenido como resultado de todos los sprints:
+Finalmente, se puede ver un \textit{roadmap} del proyecto, según se han ido realizando actividades desde GitHub Projects:
 
-INSERTAR IMAGEN DEL DIAGRAMA DE GANTT DEL PROYECTO
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/roadmap_ghprojects.png}
+    \caption{Roadmpa del proyecto visto desde GitHub Projects}
+    \label{fig:roadmap_ghprojects}
+\end{figure}
+
 
 \section{Presupuesto del proyecto}
 
@@ -236,18 +247,19 @@ Para elaborar la presupuesto, se va a dividir en distintas secciones:
 
 \subsubsection{Coste de personal}
 
-\begin{itemize}
-    \item \textbf{Horas trabajadas:} las horas trabajadas han sido de aproximadamente 320 horas. Estas horas incluyen tanto la realización de todas las tareas
-    fijadas para cada sprint, realización de la memoria e investigación de las herramientas utilizadas.
+El desarrollo del proyecto ha requerido una dedicación aproximada equivalente a cuatro meses de trabajo a media jornada, incluyendo las tareas de análisis, 
+diseño, implementación, pruebas, documentación e investigación de las tecnologías utilizadas.
 
-    \item \textbf{Precio por hora:} según la página de \textbf{Glassdoor} \cite{glassdoor}, el sueldo base se encuentra en el rango de 17.000€ - 22.000€ brutos anuales,
-    lo que se traduce en un total de 1.416'66€ - 1.833'33€ brutos al mes divididos en 12 pagas mensuales. 
-    
-    Los cálculos se van a realizar cogiendo el rango superior (22.000€), ya que este desarrollo ha sido realizado por un futuro ingeniero. De esta forma, se tienen 11.46€/h
-    aproximadamente.
+Para estimar el coste de personal, se ha tomado como referencia el salario bruto anual de un perfil de \textit{desarrollador junior full stack} relacionado 
+con la ingeniería del software, utilizando como base los datos salariales publicados por Glassdoor \cite{glassdoor}. El rango salarial consultado se sitúa 
+entre 17.000 € y 22.000 € brutos anuales.
 
-    Realizando los cálculos adecuados, se obtiene un total de \textbf{3.667'2€} en total.  
-\end{itemize}
+Con el objetivo de obtener una estimación acorde al nivel técnico del proyecto, se ha considerado el valor superior del rango (22.000 € brutos anuales) además
+de un extra por realizar labores que se escapan de la competencia de un desarrollador full stack junior, como es la extracción de requisitos, la definición de la
+arquitectura y de la base de datos. Teniendo esto en cuenta, el salario asciende a \textbf{26.000 €} brutos anuales, que equivalen aproximadamente a un coste de 
+\textbf{13'54 €/hora}.
+
+Realizando la siguiente operación: 13'54 €/h x 320 h (4 meses a media jornada), el coste total del desarrollador es de \textbf{4.332'8 €} (aproximadamente).
 
 \subsubsection{Costes de infraestructura y Operación del servidor}
 
@@ -260,21 +272,21 @@ El servidor solicitado cuenta con las siguientes características:
     \item 75GB de almacenamiento.
 \end{itemize}
 
-El servidor con estas características tiene un precio de \textbf{48€} trimestrales. Como el despliegue se hizo durante la fase final del proyecto, con los 3 meses alquilados es suficiente ahora mismo.
+El servidor con estas características tiene un precio de \textbf{48 €} trimestrales. Como el despliegue se hizo durante la fase final del proyecto, con los 3 meses alquilados es suficiente por ahora.
 
 \subsubsection{Gastos de suministros}
 
 Estos gastos incluyen todos aquellos costes derivados del desarrollo del proyecto, tales como electricidad y el acceso a Internet.
 
 \begin{itemize}
-    \item \textbf{Internet:} conexión a Internet durante los 4 meses de desarrollo, con un precio de 27€ al mes, lo que hacen un total de \textbf{108€}.
-    \item \textbf{Electricidad:} el pago de electricidad cada mes es de 42.5€, por lo que hace un total (con respecto a los 4 meses) de \textbf{170€}.
+    \item \textbf{Internet:} conexión a Internet durante los 4 meses de desarrollo, con un precio de 27 € al mes, lo que hacen un total de \textbf{108 €}.
+    \item \textbf{Electricidad:} el pago de electricidad cada mes es de 42.5 €, por lo que hace un total (con respecto a los 4 meses) de \textbf{170 €}.
 \end{itemize}
 
-El \textbf{coste total} de los suministros, al sumar ambas cantidades, es de \textbf{278€}.
+El \textbf{coste total} de los suministros, al sumar ambas cantidades, es de \textbf{278 €}.
 
 \subsubsection{Total presupuestado}
 
 Para calcular el total presupuestado, se va a sumar la cantidad total de cada una de las secciones: 
 
-3.667'2€ (coste personal) + 48€ (servidor CSIRC) + 278€ (gasto de suministros) = \textbf{3.993'2€}
+4.332'8 € (coste personal) + 48 € (servidor CSIRC) + 278 € (gasto de suministros) = \textbf{4.658'8 €}
