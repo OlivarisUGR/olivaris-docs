@@ -100,22 +100,62 @@ El esquema de bases de datos del sistema es el siguiente:
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Usuario:} es la entidad que representa un usuario en el sistema. Cuenta con atributos principales como el nombre, correo electrónico y número de teléfono.
+    \item \textbf{Usuario:} es la entidad que representa un usuario en el sistema. Cuenta con los siguientes campos:
+    
+    \begin{itemize}
+        \item Id\_user (bigint)
+        \item Firstname (varchar)
+        \item Lastname (varchar)
+        \item Email (varchar)
+        \item Phone (varchar)
+        \item Password (varchar)
+        \item Created\_at (timestamp)
+        \item Updated\_at (timestamp)
+        \item Enabled (boolean)
+        \item Nif (varchar)
+        \item Confirmation\_token (varchar)
+        \item Token\_exp\_at (timestamp)
+    \end{itemize}
     
     \item \textbf{Roles del sistema:} entidad que representa los roles que un usuario tiene en el sistema. Se pueden distinguir dos tipos: \textit{rol admin}, que es el 
     usuario que tiene un control total sobre la aplicación, pudiendo gestionar todos los usuarios que pertenecen al sistema; y \textit{rol básico}, que es el rol que adquiere
-    cualquier usuario que ser registra en el sistema.
+    cualquier usuario que ser registra en el sistema. La tabla tiene los siguientes campos:
+
+    \begin{itemize}
+        \item Id\_role (bigint)
+        \item Name (varchar)
+    \end{itemize}
     
     \item \textbf{Usuario - Rol:} relación entre un usuario y los roles que tiene en el sistema. En cuanto al diseño, se ha considerado que un usuario puede tener varios roles,
-    formando una jerarquía: el usuario admin tiene rol admin y rol básico.
+    formando una jerarquía: el usuario admin tiene rol admin y rol básico. Los campos son los siguientes:
+
+    \begin{itemize}
+        \item Id\_user (bigint)
+        \item Id\_role (bigint)
+    \end{itemize}
     
     \item \textbf{Entidad habilitada:} entidad que representa a una entidad habilitada (por ejemplo: una cooperativa), siendo la que tiene una relación directa con el agricultor
     y que podrá utilizar el CUE comercial (sistema desarrollado). Se ha fijado este nombre de acuerdo al \textit{Anexo X para el Registro de Autorizaciones para el Uso de 
-    Aplicaciones Comerciales}.
+    Aplicaciones Comerciales}. Los campos que tiene la tabla son los siguientes:
+
+    \begin{itemize}
+        \item Id\_entity (bigint)
+        \item Name (varchar)
+        \item Nif (varchar)
+        \item Phone (varchar)
+        \item Email (varchar)
+        \item Enabled (boolean)
+    \end{itemize}
     
-    \item \textbf{Rol de la entidad:} entidad que representa el rol que tiene un usuario vinculado a una entidad habilitada. El rol puede ser: \textit{admin}, que correspone con
+    \item \textbf{Rol de la entidad:} entidad que representa el rol que tiene un usuario vinculado a una entidad habilitada. El rol puede ser: \textit{admin}, que corresponde con
     el usuario administrador de una entidad, siendo el encargado de poder gestionar los datos de los agricultores que pertenecen a la misma entidad, y \textit{farmer} (agricultor),
-    siendo el usuario vinculado con una entidad que delega permisos a los administradores para poder gestionar sus datos (leer y crear actividades).
+    siendo el usuario vinculado con una entidad que delega permisos a los administradores para poder gestionar sus datos (leer y crear actividades). Los campos que tiene son los
+    siguientes:
+
+    \begin{itemize}
+        \item Id\_entity\_role (bigint)
+        \item Name (varchar)
+    \end{itemize}
     
     \item \textbf{Usuario - Entidad - Rol entidad:} relación entre la tabla usuario, entidad y rol de la entidad. Cuando un usuario es vinculado con una entidad, se le añade un rol
     dentro de la entidad, siendo esta relación la que almacena la información.
@@ -129,6 +169,19 @@ El esquema de bases de datos del sistema es el siguiente:
     Los tipos de \textbf{permisos} se han creado siguiendo el \textit{Anexo X} para la elaboración de un CUE comercial. Este anexo explica que un usuario titular de una explotación podrá 
     grabar sus datos en el CUE comercial, lo que equivale a gestionar sus propios datos relativos a una actividad dentro del sistema, o delegar esta función a una entidad habilitada,
     siendo esta la encargada de gestionar sus actividades, utilizando el CUE comercial (sistema actual) para almacenar los datos.
+
+    La tabla tiene los siguientes campos:
+
+    \begin{itemize}
+        \item Id\_user\_entity (bigint)
+        \item Id\_user (bigint)
+        \item Id\_entity (bigint)
+        \item Id\_entity\_role (bigint)
+        \item Write\_cue (boolean)
+        \item Write\_rea (boolean)
+        \item Read\_cue (boolean)
+        \item Read\_rea (boolean)
+    \end{itemize}
     
     \item \textbf{Parcela:} entidad que representa una parcela del sistema. Está compuesta por todos los datos necesarios que la representan así como la información proporcionada por el
     \textbf{Visor SIGPAC} \cite{visorSigpac}, como son: código de provincia y municipio (donde se ubica la parcela), código de polígono, número de parcela, geometría que representa la 
@@ -137,12 +190,41 @@ El esquema de bases de datos del sistema es el siguiente:
     El Visor SIGPAC de Andalucía es una aplicación web que permite obtener información gráfica y alfanumérica de las parcelas agrícolas de Andalucía. El Visor ofrece información , a nivel
     de recinto, del año en curso y del anterior. Entre la datos que ofrece destacan: uso del recinto, superficie del recinto, pendiente media, coeficiente de regadío y región (entre otras).
 
-    \item \textbf{Recinto:} entidad que representa un recinto dentro de la parcela. Este recinto está relacionado con una parcela a través de una clave foránea y además, almacena la geomtría
+    Los campos de la tabla son los siguientes:
+
+    \begin{itemize}
+        \item Id\_plot (bigint)
+        \item Province\_code (varchar)
+        \item City\_code (varchar)
+        \item Polygon\_code (varchar)
+        \item Plot\_num (varchar)
+        \item Geometry (geometry(polygon))
+        \item Land\_register (varchar)
+        \item Area (double)
+        \item Name (varchar)
+        \item City (varchar)
+        \item Province (varchar)
+        \item Addition\_code (varchar)
+        \item Zone\_code (varchar)
+    \end{itemize}
+
+    \item \textbf{Recinto:} entidad que representa un recinto dentro de la parcela. Este recinto está relacionado con una parcela a través de una clave foránea y además, almacena la geometría
     del polígono que representa el recnto así como su uso.
 
     Para almacenar los datos del recinto y de la parcela que no dependen del usuario (no dados por el), se ha recurrido a utilizar la \textbf{API} \cite{apiSgipac} que ofrece el servicio de
     \textbf{SIGPAC}. Los endpoints utilizados y su uso será explicado en el último apartado de esta sección.
     
+    La tabla tiene con los siguientes campos:
+
+    \begin{itemize}
+        \item Id\_enclosure (bigint)
+        \item Id\_plot (bigint)
+        \item Name (varchar)
+        \item Area (double)
+        \item Sigpac\_use (varchar)
+        \item Geometry (geometry(polygon))
+    \end{itemize}
+
     \item \textbf{Usuario - Parcela:} entida que relaciona un usuario con una parcela. A través de esta relación se puede saber qué usuario se ha asignado una parcela para poder posteriormente 
     mostrarla en un mapa. El usuario puede tener múltiples parcelas y una parcela está relacionada con múltiples usuarios, ya que la API es pública y todas las parcelas, pertenezcan
     en la realidad a un usuario o no, pueden ser accedidas por cualquier usuario. En un futuro, se tendría que utilizar otro sistema que permita validar si la parcela que el usuario 
@@ -150,11 +232,30 @@ El esquema de bases de datos del sistema es el siguiente:
 
     Esta relación es una entidad como tal ya que, además de tener las claves foráneas, cuenta con un atributo propio de la relación que es el nombre que el usuario le pone a la parcela.
 
+    Los campos que tiene la tabla son los siguientes:
+
+    \begin{itemize}
+        \item Id\_user (bigint)
+        \item Id\_plot (bigint)
+    \end{itemize}
+
     \item \textbf{Actividad:} entidad que representa una actividad realizada por un usuario. Esta tabla relaciona un usuario con un recinto a través de sus ids como claves foráneas, consiguiendo
     de esta manera saber qué usuario ha realizado una actividad en un recinto dentro de una parcela. Además de estos datos, también se almacena el tipo de actividad realizada con un dato de tipo
     \textit{enum}. Este diseño permite que la base de datos pueda esccalar, de manera que en esta tabla se almacenan los datos que identifican a una actividad en general y en otra tabla, se 
     almacenerán los datos específicos del tipo de actividad que se realiza (fitosanitaria, riego, poda, etc.), pudiendo tener la información sin repetir y mejor gestionada.
     
+    La tabla cuenta con los siguientes campos:
+
+    \begin{itemize}
+        \item Id\_activity (bigint)
+        \item Id\_user (bigint)
+        \item Id\_enclosure (bigint)
+        \item Type (varchar)
+        \item Date (date)
+        \item Description (varchar)
+        \item Season (varchar)
+    \end{itemize}
+
     \item \textbf{Actividad fitosanitaria:} entidad que representa una actividad del tipo fitosanitaria. La tabla almacena datos específicos para este tipo de actividad como son: fecha en la
     que se aplica, producto utilizado, dosis y cantidad, tipo de cultivo y persona que aplica el producto (entre otros). Esta tabla está totalmente relacionada con la tabla actividad, ya que en
     la realidad es vista la información de ambas tablas como un ``todo'', pero en el diseño la información está separada.
@@ -162,9 +263,37 @@ El esquema de bases de datos del sistema es el siguiente:
     La tabla también recoge información de un producto fitosanitario a través de una clave foránea. Esta información se almacena en una tabla a parte, de manera que se evita duplicar información
     y el sistema escala mejor.
 
+    Entre los campos que tiene la tabla se ecuentran:
+
+    \begin{itemize}
+        \item Id\_phyto\_act (bigint)
+        \item Id\_activity (bigint)
+        \item Id\_product (bigint)
+        \item App\_date (date)
+        \item Reason (varchar)
+        \item Dose (double)
+        \item Dose\_unit (varchar)
+        \item Total\_amount (double)
+        \item App\_method (varchar)
+        \item App\_match (varchar)
+        \item App\_name (varchar)
+        \item App\_nif (varchar)
+        \item Crops (varchar)
+        \item Area (double)
+    \end{itemize}
+
     \item \textbf{Producto fitosanitario:} entidad que representa un producto fitosanitario en el sistema. Almacena información como el registro oficial, siendo un identificador del producto, 
     además del nombre o tipo de producto.
+
+    Los campos que tiene la tabla son los siguientes:
     
+    \begin{itemize}
+        \item Id\_product (bigint)
+        \item Name (varchar)
+        \item Oficial\_register (varchar)
+        \item Active\_subtance (varchar)
+        \item Type (varchar)
+    \end{itemize}
 \end{itemize}
 
 \subsection{Diagrama de clases}
