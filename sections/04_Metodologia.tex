@@ -1,7 +1,7 @@
 \chapter{Metodología}
 
 En este capítulo se va a exponer cómo se ha desarrollado el proyecto en cuanto a organización y planificación de cada
-una de las partes que lo han compuesto.
+una de las partes.
 
 \section{Metodología de desarrollo}
 
@@ -15,8 +15,8 @@ A continuación se va a proceder a explicar en distintos apartados las piezas cl
 
 Un equipo Scrum está formado por varios miembros, desempeñando cada uno un rol junto con unas responsabilidades.
 Aunque normalmente la cantidad de miembros es reducida, pueden darse situaciones donde este número crezca considerablemente
-porque así lo requiera el proyecto pero por lo general, los equipos de Scrum deben componerse de tres roles: el propietario
-del producto (o \textit{Product Owner}), el \textit{Scrum Master} y el equipo de desarrollo.
+porque así lo requiera el proyecto pero por lo general, los equipos de Scrum deben componerse de tres roles: el \textbf{propietario
+del producto} (o \textit{Product Owner}), el \textbf{\textit{Scrum Master}} y el \textbf{equipo de desarrollo.}
 
 En el proyecto, estos roles han sido asignados de la siguiente manera:
 
@@ -26,8 +26,8 @@ En el proyecto, estos roles han sido asignados de la siguiente manera:
     Este rol ha sido asignado tanto al tutor del TFG, el Dr. Juan Luis Jiménez 
     Laredo, así como al autor del presente proyecto. Se ha decidido así puesto que, entre ambos se ha ido dando forma
     a la propuesta: qué necesidades debía de cubrir el sistema, los requisitos funcionales  y las historias de usuario. 
-    Asimismo, se encargaron de la priorización en cada iteración y de determinar cuando se consideraba cerrada una iteración,
-    comprobando que el desarrollo fuese funcionando y incremental.
+    Asimismo, se encargaron de la priorización en cada iteración y de determinar cuándo se consideraba cerrada una iteración,
+    comprobando que el desarrollo fuese funcionando de forma incremental.
 
     \item \textbf{Scrum Master}
     \newline
@@ -84,7 +84,7 @@ Entre los eventos de Scrum, se encuentran los siguientes:
 
     \item \textbf{Planificación de Sprints}
     \newline
-    La planificación del sprint consiste en una reunión que realiza el equipo de desarrollo para planificar cual será
+    La planificación del sprint consiste en una reunión que realiza el equipo de desarrollo para planificar cuál será
     el trabajo que se va a realizar durante el sprint. Esta reunión es diriga por el \textit{Scrum Master} y va a servir
     para ir añadiendo las historias de usuario o actividades importantes que se tengan que realizar, pasándolas del
     \textit{Product Backlog} al sprint específico.
@@ -108,8 +108,8 @@ Entre los eventos de Scrum, se encuentran los siguientes:
 
     \item \textbf{Retrospectiva del Sprint}
     \newline
-    Esta es la última reunión, donde el equipo se reúne para analizar qué cosas se han conseguido y han funcionado y cuales
-    no, buscando de esta forma qué cosas deben mejorarse de cara a las próximas iteraciones.
+    Esta es la última reunión, donde el equipo se reúne para analizar qué cosas se han conseguido, cuales han funcionado y dónde han
+    habido problemas, buscando de esta forma qué cosas deben mejorarse de cara a las próximas iteraciones.
 \end{itemize}
 
 \subsection{¿Por qué usar la metodología Scrum?}
@@ -188,8 +188,6 @@ una funcionalidad nueva que se iba integrando en el sistema. Los sprint han sido
     de usuarios, así como el desarrollo de la base de datos inicial (luego se han ido añadiendo tablas sobre esta), englobando los
     servicios relacionados con el registro de usuarios, inicio de sesión, confirmación del registro a través de notificaciones enviadas
     por correo electrónico y creación de JSON Web Tokens para garantizar seguridad en los posteriores accesos al servidor.
-
-    La duración de este sprint ha sido de 1 semana.
     
     \item \textbf{Sprint 2}: este sprint ha sido una continuación del anterior, ya que se le ha agregado a la base de datos y al sistema
     la interacción de los usuarios con una ``entidad habilitada'' (puede ser una cooperativa, empresa, etc). Esta interacción se basa
@@ -202,17 +200,12 @@ una funcionalidad nueva que se iba integrando en el sistema. Los sprint han sido
     \hyperlink{githubActions}{GitHub Actions}, para que cada vez que se suba un cambio a la rama de trabajo, se pasen los tests realizados
     y construya el prorgrama.
 
-    La duración del sprint ha sido de 1 semana.
-
     \item \textbf{Sprint 3}: en este sprint se ha implementado la lógica relacionada con la creación de parcelas, recintos y actividades de 
     tipo fitosanitarias relacionadas con cada recinto. También se ha implementado el frontend así como las peticiones a la API desarrollada 
     para obtener los datos que van a ser mostrados en el lado del cliente.
 
     En este apartado ha habido que investigar cómo programar en React Native con JavaScript, cómo utilizar los componentes y cómo mostrar 
     en el mapa las parcelas de un usuario.
-
-    Como este sprint ha abarcado una mayor cantidad de HU y actividades a realizar, investigación sobre React Native y se ha juntado con Semana
-    Santa, ha tenido una duración mayor, siendo en total de 3 semanas.
 
     \item \textbf{Sprint 4}: este ha sido el último sprint. Se ha centrado principalmente en desplegar el backend realizado en un servidor en la 
     nube, de manera que pueda estar continuamente ejecutándose. Para ello, se ha investigado como funciona Docker y qué archivos eran necesarios 
@@ -232,7 +225,7 @@ Finalmente, se puede ver un \textit{roadmap} del proyecto, según se han ido rea
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/roadmap_ghprojects.png}
-    \caption{Roadmpa del proyecto visto desde GitHub Projects}
+    \caption{Roadmap del proyecto visto desde GitHub Projects}
     \label{fig:roadmap_ghprojects}
 \end{figure}
 
