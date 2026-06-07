@@ -1,9 +1,8 @@
 \chapter{Análisis y requisitos}\label{cap:especificación}
 
-Antes de empezar con el desarrollo e implementación del sistema es necesario realizar una fase previa correspondiente
-al análisis. En esta fase se van a extraer los requisitos que va a tener el sistema, conociendo de esta forma las 
-funcionalidades que tendrá. A continuación se va a desarrollar como ha sido la fase de análisis y obtención de 
-requisitos.
+Antes de empezar con el desarrollo e implementación del sistema es necesario realizar una fase previa. En esta fase se 
+van a extraer los requisitos que va a tener el sistema junto con las funcionalidades que tendrá. A 
+continuación se va a explicar el proceso que se ha seguido.
 
 \section{Recopilación de información}
 
@@ -98,15 +97,16 @@ de correo electrónico con el personal adecuado.
         \item \textbf{Jefe de Seguridad de los Servicios Informáticos de la UGR}: se contactó con el Jefe de Seguridad
         para comentarle qué situación había, qué se quería realizar y cómo es el tipo de certificado digital que se 
         necesita para poder acceder a esta API. Se comentó las partes que deben incluir el certificado: parte pública 
-        en formato .PEM,\hyperlink{certificadoTls}{\textit{TLS Web Client Authentiacion}} (clientAuth) y el 
+        en formato .PEM, \hyperlink{certificadoTls}{\textit{TLS Web Client Authentiacion}} (clientAuth) y el 
         subdominio de la entidad o el CIF/NIF (el de la UGR en este caso), con la finalidad de saber si la UGR puede 
         gestionar un certificado con estas características y de esta forma poder acceder al sistema.
     \end{itemize}
 
     La funcionalidad del CUE digital es muy interesante pero ha tenido un problema: el proceso para extraer la información 
     es largo y lento (muchos correos electrónicos y tiempos de espera entre ellos), así como problemas derivados del uso de 
-    un certificado digital que no se tiene, por lo que esta funcionalidad ha pasado a un segundo plano y se ha profundizado
-    en aquellas que la aplicación va tener con alta probabilidad.
+    un certificado digital que no se tiene, por lo que esta funcionalidad ha pasado a un segundo plano. El proyecto se ha 
+    centrado en desarrollar el sistema con una base de datos y lógica de negocio propia que ``supla'' la falta de acceso a los
+    endpoints de la API que se encargarían de realizar estas acciones.
 \end{itemize}
 
 \section{CUE comercial}
@@ -115,17 +115,36 @@ Durante esta fase de análisis, viendo la necesidad que va a haber a partir de e
 (aplicación software) a los titulares de una explotación, se ha orientado el desarrollo del sistema hacia este ámbito. Esta 
 decisión ha causado que el sistema evolucione de un ERP clásico que se iba a desarrollar en un principio, a acotar el sistema 
 a un diario de actividades que permita registrar su información en un CUE digital utilizando los datos suministrados por el usuario
-y por la REA.
+y por la REA (en caso de poder acceder a la API).
 
-A partir de este punto, el sistema a desarrollar debe poder acceder a la API o interfaz que suministran NOMBREE para consumir sus
-endpoints, permitiendo obtener datos de la REA y exportar datos al CUE digital. Sin embargo, este proceso empezó siendo lento y tedioso,
-ya que requería un certificado que como se ha comentado antes, ha sido difícil de conseguir, por lo que se tomó la decisión de elaborar
-un sistema con una base de datos propia, que tenga las entidades necesarias para almacenar la información que podrían rellenar los datos 
-del CUE digital. De esta manera, el sistema también estaría adaptado a una posible integración futura de la API, ya que sería añadir
-el cliente de esta y que los datos sean enviados directamente a los servidores del REA y CUE que maneja el ministerio en vez de 
-almacenarlos en las tablas.
+A partir de este punto, el sistema a desarrollar debe poder acceder a la API o interfaz que suministran el \textbf{SIEX} (Sistema de Información
+de Explotaciones Agrarias) para consumir sus endpoints, permitiendo obtener datos de la REA y exportar datos al CUE digital. Sin embargo, este 
+proceso empezó siendo lento y tedioso, ya que requería un certificado que como se ha comentado antes, ha sido difícil de conseguir, por lo que se 
+tomó la decisión de elaborar un sistema con una base de datos propia, que tenga las entidades necesarias para almacenar la información que podrían 
+rellenar los datos del CUE digital. De esta manera, el sistema también estaría adaptado a una posible integración futura de la API, ya que sería añadir
+el cliente de esta y que los datos sean enviados directamente a los servidores del REA y CUE que maneja el ministerio en vez de almacenarlos en las tablas.
 
-\textbf{METO MÁS INFO AQUÍ ???}
+Para obtener información sobre el CUE, se han accedido a los siguientes anexos principalmente:
+
+\begin{itemize}
+    \item \textbf{Anexo IX - Modelo de autorización de acceso a la información del REA y CUE:} este anexo se ha utilizado para saber qué permisos son
+    los que cede un usuario que pertenece a una entidad habilitada sobre dicha entidad. Además de este, también se ha utilizado el anexo \textbf{Anexo VIII - 
+    Modelo de Autorización de Representación} para investigar sobre los permisos.
+
+    \item \textbf{Anexo VI - Interfaz Único Común:} este anexo se ha utilizado para comprender cómo funciona la interfaz de acceso o API. Como al final no 
+    se pudo acceder a ella, la consulta a este anexo fue al inico del proyecto y sin entrar en detalle.
+
+    \item \textbf{Anexo X - Registro de Autorizaciones para el uso de Aplicaciones Comerciales:} este anexo ha servido para comprender qué tipo de usuarios 
+    van a interactuar con la aplicación y entre ellos, pudiendo distinguir entre tres: empresa desarrollador del software, entidad habilitada y titular de la
+    explotación.
+
+    \item \textbf{Anexo III - Registros de los tratamientos fitosanitarios y de fertilización:} este anexo se ha utilizado para investigar sobre qué datos de una
+    explotación así como de una actividad fitosanitaria son utilizados para el cuaderno de explotación.
+\end{itemize}
+
+Otras fuentes que se visitaron para obtener más información fue el \textbf{Cuaderno de Explotación de la Junta de Andalucía}. En esta página se ha consultado 
+información sobre el CUE Comercial (aplicación desarrollada), como por ejemplo: la fecha en la que será obligatorio el uso del CUE Digital para los agricultores 
+en las actividades de tipo fitosanitario, o el proceso que tiene que seguir una empresa para darse de alta como CUE Comercial y poder acceder a la interfaz IUWS.
 
 \section{Personas}
 
