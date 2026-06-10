@@ -16,10 +16,13 @@
 
 \textbf{Abstract:}
 
-This Final Degree Project addresses the design and implementation of Olivaris, a collaborative management platform aimed at farmers and authorised entities to centralise the registration and tracking of information related to the olive grove. The project arises from the need to replace manual and scattered working methods with a digital solution capable of organising parcels, plots, activities and the documentation associated with the farm in a more efficient way, thereby improving traceability and supporting compliance with future regulatory requirements.
+This Final Degree Project addresses the design and implementation of Olivaris, a digital platform aimed at collaborative management of olive grove farms. The project arises in a context of increasing digitalization of 
+the agricultural sector and regulatory evolution around the System of Information of Agricultural Farms, the Regional Registry of Agricultural Farms, and the Digital Farm Operation Logbook. Within this framework, Olivaris 
+is presented as a tool to centralize the management of parcels, plots, users, authorized entities and agricultural activities, especially those related to the use of phytosanitary products.
 
-The proposed solution is built on a client-server architecture, with a backend responsible for exposing a REST API for the management of users, parcels and activities, and a frontend designed to provide a clear and intuitive user experience. The system includes authentication and access control mechanisms based on JWT and role permissions, ensuring that each user can access only the information and functionality corresponding to their role. Special attention has also been given to the spatial representation of parcels and plots, as well as to the handling of phytosanitary activities.
+The developed solution is based on a client-server architecture, with a backend that exposes a REST API, database persistence, authentication through JWT and role-based access control. The system allows registering and viewing 
+parcels, managing activities associated with farms and modeling the relationship between farmers and authorized entities through access and management permissions.
 
-In addition, the platform has been designed with extensibility in mind, so that it can serve as a foundation for future integrations with external services related to agricultural management. In this context, the work is not limited to implementing a functional application, but also defines a technological structure that promotes maintainability, system evolution and adaptation to new requirements.
-
-Ultimately, Olivaris provides a digital tool that helps modernise olive grove management, moving towards a more efficient, centralised and accessible agricultural administration.
+Although the platform does not perform an effective integration with the official SIEX/REA services, its design has been developed taking into account the conceptual structure and information requirements associated with this 
+framework, in order to facilitate a possible future integration. As a result, a functional and extensible prototype is obtained that contributes to the digitalization of olive grove management and serves as a basis for future 
+improvements, such as offline functionality, advanced report generation or cross-platform access.

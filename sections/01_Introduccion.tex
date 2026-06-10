@@ -1,32 +1,53 @@
 \chapter{Introducción}\label{cap:introduccion}
 
-En la actualidad, la gestión de una explotación agrícola implica registrar y consultar una gran cantidad de información relacionada con parcelas, actividades, costes y producción. En muchos casos, este control se
-realiza todavía mediante documentos dispersos u hojas de cálculo rellenadas manualmente, lo que dificulta la trazabilidad de las tareas, la consulta rápida de datos y la elaboración de informes. Además, la creciente
-exigencia normativa en materia de registro de actividades agrícolas refuerza la necesidad de disponer de herramientas digitales que centralicen y estructuren toda esta información.
+En los últimos años, la gestión de las explotaciones agrícolas ha experimentado un proceso creciente de digitalización, impulsado por la necesidad de mejorar la organización interna de las
+explotaciones y por la evolución del marco normativo asociado a la Política Agraria Común, la trazabilidad de las actuaciones agrarias y el uso sostenible de insumos como fertilizantes y
+productos fitosanitarios. Como consecuencia, agricultores y entidades de apoyo deben gestionar una cantidad cada vez mayor de información sobre parcelas, recintos, cultivos, tratamientos,
+productos aplicados, fechas de actuación y documentación asociada.
 
-Este Trabajo de Fin de Grado aborda precisamente este problema mediante el desarrollo de una plataforma orientada a agricultores y entidades habilitadas para gestionar de forma unificada y sencilla sus explotaciones. 
-El objetivo general del proyecto es diseñar e implementar una solución que permita registrar, organizar y consultar la información agrícola de manera más eficiente, facilitando el control de actividades y preparando el
-sistema para el cumplimiento de las exigencias normativas.
+Tradicionalmente, parte de esta información se ha registrado mediante cuadernos en papel, hojas de cálculo o aplicaciones no conectadas entre sí. Aunque estos mecanismos pueden resultar
+adecuados en explotaciones de pequeña escala, presentan limitaciones importantes cuando se requiere consultar información histórica, generar informes, compartir datos con una entidad
+colaboradora o preparar la información para su comunicación a sistemas administrativos. Estas limitaciones son especialmente relevantes en sectores como el olivar, donde la gestión de
+parcelas y actividades agrícolas tiene una gran importancia económica, territorial y medioambiental.
+
+A nivel normativo, el Real Decreto 1054/2022 establece el Sistema de Información de Explotaciones Agrícolas, Ganaderas y de la Producción Agraria, conocido como SIEX. Este sistema se
+concibe como una infraestructura de información formada por bases de datos y registros administrativos interconectados, cuyo objetivo es facilitar la gestión, el seguimiento y el control
+de la información relativa a las explotaciones agrarias. Dentro de este marco se sitúan el Registro Autonómico de Explotaciones Agrícolas, o REA, que recoge la información general de las
+explotaciones y sus unidades de producción, y el Cuaderno Digital de Explotación Agrícola, o CUE, destinado al registro de determinadas actividades realizadas sobre dichas explotaciones.
+
+Aunque la utilización del CUE digital ha sido objeto de ajustes normativos y no debe entenderse como una obligación universal e inmediata para todos los agricultores, la tendencia regulatoria
+apunta hacia una mayor interoperabilidad y digitalización de la información agrícola. Además, determinadas obligaciones vinculadas a productos fitosanitarios, fertilización o intervenciones
+relacionadas con la PAC hacen especialmente relevante disponer de herramientas capaces de registrar información de forma ordenada, trazable y compatible con los modelos definidos por la
+administración.
+
+Este Trabajo de Fin de Grado aborda esta problemática mediante el diseño e implementación de Olivaris, una plataforma digital orientada a la gestión colaborativa de explotaciones del olivar.
+La aplicación centraliza el registro de parcelas y recintos, la gestión de usuarios y entidades habilitadas, la definición de permisos de acceso y el registro de actividades agrícolas
+asociadas a las explotaciones. Aunque la integración efectiva con los servicios oficiales de SIEX/REA no forma parte del alcance final implementado, el diseño del sistema se ha realizado
+teniendo en cuenta la estructura conceptual de dicho marco, con el objetivo de facilitar una posible integración futura.
+
+La solución desarrollada se basa en una arquitectura cliente-servidor, con un backend encargado de exponer una API REST, gestionar la persistencia de datos, aplicar mecanismos de autenticación
+y autorización, y mantener la lógica de negocio principal. Sobre esta base se construye una aplicación cliente orientada a facilitar el uso por parte del agricultor y de las entidades
+colaboradoras. De este modo, Olivaris no pretende sustituir a los sistemas oficiales, sino proporcionar una base tecnológica funcional, extensible y alineada con las necesidades actuales de
+digitalización de la gestión agrícola en el olivar.
 
 \section{Estructura de la memoria}
 
-La memoria va a estar divididad en los siguientes capítulos:
+La memoria va a estar dividida en los siguientes capítulos:
 
 \begin{itemize}
     \item \textbf{Capítulo 1: Introducción}
     \newline
-    En este capítulo se va a dar una breve introducción del producto que se va a desarrollar en el presente Trabajo de
-    Fin de Grado. Además, se van a describir los distintos capítulos en los que se dividirá la memoria.
+    En este capítulo se presenta una introducción general al producto desarrollado en el presente Trabajo de Fin de Grado.
+    Además, se describen los distintos capítulos en los que se estructura la memoria.
 
-    \item \textbf{Capítulo 2: Estado del arte}
+    \item \textbf{Capítulo 2: Objetivos y Alcance}
+    \newline
+    En este capítulo se detallan el objetivo general, los objetivos específicos y el alcance del proyecto.
+
+    \item \textbf{Capítulo 3: Estado del arte}
     \newline
     En este capítulo se realizará un análisis del contexto técnico y social del problema, así como un análisis de productos
     software relacionados, herramientas existentes para su desarrollo e implementación así como librerías.
-
-    \item \textbf{Capítulo 3: Objetivos y Alcance}
-    \newline
-    Aunque los objetivos hayan sido mencionados anteriormente, aquí se entrará en más detalle describiendo tanto el
-    objetivo general como los objetivos específicos del trabajo.
 
     \item \textbf{Capítulo 4: Metdología}
     \newline
@@ -48,7 +69,7 @@ La memoria va a estar divididad en los siguientes capítulos:
     \item \textbf{Capítulo 7: Implementación}
     \newline
     Este capítulo explicará cómo se ha materializado el diseño del sistema en código. Estará divido en las siguientes
-    secciones: descripción de los módulos, tecnologías utilizadas, decicisiones técnicas y problemas encontrados.
+    secciones: descripción de los módulos, tecnologías utilizadas, decisiones técnicas y problemas encontrados.
 
     \item \textbf{Capítulo 8: Evaluación y experimentación}
     \newline
@@ -61,16 +82,16 @@ La memoria va a estar divididad en los siguientes capítulos:
     el desarrollo del proyecto y qué caminos quedan abiertos para ampliar o mejorar lo que ya se ha conseguido de cara
     al futuro.
 
-    \item \textbf{Capítulo 10: Declaración de usos responsable de herramientas de IA}
+    \item \textbf{Bibliografía:}
+    \newline
+    Referencias a los documentos de los que se ha obtenido información que ha sido utilizada en el presente documento.
+
+    \item \textbf{Anexo 1: Declaración de usos responsable de herramientas de IA}
     \newline
     En este capítulo se realiza una declaración sobre cómo ha sido utilizada la Inteligencia Artificial para el desarrollo
     del proyecto.
 
-    \item \textbf{Capítulo 11: Referencias}
-    \newline
-    Referencias a los documentos de los que se ha obtenido información que ha sido utilizada en el presente documento.
-
-    \item \textbf{Capítulo 12: Glosario}
+    \item \textbf{Anexo 2: Glosario}
     \newline
     El glosario va a recoger todos aquellos términos técnicos y de relevancia que se hayan usado en el presente documento,
     con la finalidad de aclarar aquellos conceptos que puedan ser confusos o no conocidos.

@@ -16,20 +16,15 @@
 
 \textbf{Resumen:}
 
-El presente Trabajo de Fin de Grado aborda el diseño e implementación de Olivaris, una plataforma de gestión colaborativa orientada a agricultores 
-y entidades habilitadas para centralizar el registro y seguimiento de la información asociada al olivar. El proyecto surge de la necesidad de sustituir 
-métodos de trabajo manuales por una solución digital que permita organizar de forma más eficiente las parcelas, los recintos, las actividades y la 
-documentación vinculada a la explotación agrícola, facilitando así tanto la trazabilidad como el cumplimiento de la futura normativa.
+El presente Trabajo de Fin de Grado aborda el diseño e implementación de Olivaris, una plataforma digital orientada a la gestión colaborativa de explotaciones del olivar. El
+proyecto surge en un contexto de creciente digitalización del sector agrícola y de evolución normativa en torno al Sistema de Información de Explotaciones Agrarias, el Registro
+Autonómico de Explotaciones Agrícolas y el Cuaderno Digital de Explotación Agrícola. En este marco, Olivaris se plantea como una herramienta para centralizar la gestión de parcelas,
+recintos, usuarios, entidades habilitadas y actividades agrícolas, especialmente aquellas relacionadas con el uso de productos fitosanitarios.
 
-La solución desarrollada se apoya en una arquitectura cliente-servidor con un backend encargado de exponer una API REST para la gestión de usuarios, 
-parcelas y actividades, y un frontend orientado a ofrecer una experiencia de uso clara e intuitiva. El sistema incorpora mecanismos de autenticación y 
-control de acceso basados en JWT y permisos por roles, garantizando que cada usuario pueda acceder únicamente a la información y a las funcionalidades 
-que le corresponden. Además, se ha prestado especial atención a la representación espacial de las parcelas y recintos, así como al tratamiento de actividades 
-fitosanitarias.
+La solución desarrollada se basa en una arquitectura cliente-servidor, con un backend que expone una API REST, persistencia en base de datos, autenticación mediante JWT y control de
+acceso por roles. El sistema permite registrar y visualizar, parcelas, gestionar actividades asociadas a explotaciones y modelar la relación entre agricultores y entidades habilitadas
+mediante permisos de acceso y gestión.
 
-Asimismo, la plataforma está pensada para una posible extensión, de manera que pueda servir como base para futuras integraciones con servicios externos 
-relacionados con la gestión agrícola. En este contexto, el trabajo no solo se centra en la implementación de una aplicación funcional, sino también en la 
-definición de una estructura tecnológica que favorece la mantenibilidad, la evolución del sistema y su adaptación a nuevos requisitos.
-
-Olivaris es una herramienta digital que contribuye a modernizar la gestión del olivar, avanzando hacia una administración agrícola más eficiente, centralizada y accesible.
-
+Aunque la plataforma no realiza una integración efectiva con los servicios oficiales de SIEX/REA, su diseño se ha elaborado teniendo en cuenta la estructura conceptual y los requisitos de
+información asociados a este marco, de forma que facilite una posible integración futura. Como resultado, se obtiene un prototipo funcional y extensible que contribuye a la digitalización
+de la gestión del olivar y sirve como base para futuras mejoras, como el funcionamiento \textit{offline}, la generación avanzada de informes o el acceso multiplataforma. 
