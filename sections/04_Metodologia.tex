@@ -1,92 +1,90 @@
 \chapter{Metodología}
 
-En este capítulo se va a exponer cómo se ha desarrollado el proyecto en cuanto a organización y planificación de cada
-una de las partes.
+En este capítulo se expone cómo se ha desarrollado el proyecto en términos de organización y planificación de sus distintas fases.
 
-\section{Metodología de desarrollo}
+\section{Enfoque metodológico}
 
-Para la organización del proyecto se ha utilizado la metodología ágil \hyperlink{scrum}{\textbf{Scrum}} \cite{scrum}. 
-Este tipo de metodología es muy útil debido a que permite ir realizando entregas del proyecto de forma iterativa y 
-permite adaptarse a los cambios de forma rápida y eficiente.
+Para la organización del proyecto se ha utilizado la metodología ágil \hyperlink{scrum}{\textbf{Scrum}} \cite{scrum}.
+Este tipo de metodología resulta útil porque permite realizar entregas del proyecto de forma iterativa y adaptarse a los cambios de manera rápida y eficiente.
 
-A continuación se va a proceder a explicar en distintos apartados las piezas clave que componen el marco Scrum.
+A continuación se explican, en distintos apartados, las piezas clave que componen el marco Scrum.
 
 \subsection{Miembros del equipo Scrum}
 
-Un equipo Scrum está formado por varios miembros, desempeñando cada uno un rol junto con unas responsabilidades.
-Aunque normalmente la cantidad de miembros es reducida, pueden darse situaciones donde este número crezca considerablemente
-porque así lo requiera el proyecto pero por lo general, los equipos de Scrum deben componerse de tres roles: el \textbf{propietario
-del producto} (o \textit{Product Owner}), el \textbf{\textit{Scrum Master}} y el \textbf{equipo de desarrollo.}
+Un equipo Scrum está formado por varios miembros, y cada uno desempeña un rol con unas responsabilidades concretas.
+Aunque normalmente la cantidad de miembros es reducida, puede haber situaciones en las que este número crezca considerablemente
+si así lo requiere el proyecto. Por lo general, los equipos Scrum deben componerse de tres roles: el \textbf{propietario
+del producto} (o \textit{Product Owner}), el \textbf{\textit{Scrum Master}} y el \textbf{equipo de desarrollo}.
 
 En el proyecto, estos roles han sido asignados de la siguiente manera:
 
 \begin{itemize}
-    \item \textbf{Propieatrio del producto}
+    \item \textbf{Propietario del producto}
     \newline
-    Este rol ha sido asignado tanto al tutor del TFG, el Dr. Juan Luis Jiménez 
-    Laredo, así como al autor del presente proyecto. Se ha decidido así puesto que, entre ambos se ha ido dando forma
-    a la propuesta: qué necesidades debía de cubrir el sistema, los requisitos funcionales  y las historias de usuario. 
-    Asimismo, se encargaron de la priorización en cada iteración y de determinar cuándo se consideraba cerrada una iteración,
-    comprobando que el desarrollo fuese funcionando de forma incremental.
+    Este rol ha sido asignado tanto al tutor del TFG, el Dr. Juan Luis Jiménez
+    Laredo, como al autor del presente proyecto. Se ha decidido así puesto que, entre ambos, se ha ido dando forma
+    a la propuesta: qué necesidades debía cubrir el sistema, los requisitos funcionales y las historias de usuario.
+    Asimismo, se encargaron de la priorización en cada iteración y de determinar cuándo se consideraba cerrada, comprobando
+    que el desarrollo funcionase de forma incremental.
 
     \item \textbf{Scrum Master}
     \newline
-    Este rol ha sido asignado al autor del proyecto, quien se ha encargado de asegurar el 
-    cumplimiento de las prácticas Scrum mediante la orientación, eliminación de impedimentos, optimización del rendimiento 
-    y entregas durante cada iteración.
+    Este rol ha sido asignado al autor del proyecto, quien se ha encargado de asegurar el
+    cumplimiento de las prácticas Scrum mediante la orientación, la eliminación de impedimentos, la optimización del rendimiento
+    y el control de las entregas durante cada iteración.
     
     \item \textbf{Equipo de Desarrollo}
     \newline
-    Este rol ha sido asignado al autor del proyecto debido a que ha sido el
-    responsable de la ejecución técnica y el desarrollo del software.
+    Este rol ha sido asignado al autor del proyecto, ya que ha sido el
+    responsable de la ejecución técnica y del desarrollo del software.
 \end{itemize}
 
 \subsection{Artefactos de Scrum}
 
-Los artefactos, dentro de la metodología Scrum, es información que el equipo utiliza para definir el trabajo que hay que
+Los artefactos, dentro de la metodología Scrum, son la información que el equipo utiliza para definir el trabajo que hay que
 realizar para crear un producto. Hay tres tipos de artefactos: \textit{backlog} del producto, \textit{backlog} del sprint y
 meta o incremento del sprint.
 
 \begin{itemize}
-    \item \textbf{Pila (\textit{backlog}) del Producto}
+    \item \textbf{Pila (\textit{backlog}) del producto}
     \newline
-    En este artefacto se agrupan todas las actividades en forma de lista que un equipo tiene que completar para crear el 
-    producto. En este proyecto se ha utilizado la herramienta de GitHub Projects para crear un tablero donde se recojan 
+    En este artefacto se agrupan todas las actividades en forma de lista que un equipo tiene que completar para crear el
+    producto. En este proyecto se ha utilizado la herramienta GitHub Projects para crear un tablero donde se recojan
     todas las actividades que se han planteado (historias de usuario, requisitos, mejoras y correcciones).
 
     \item \textbf{\textit{Backlog} del Sprint}
     \newline
-    Esta sería la lista de elementos (historias de usuario y actividades) que el equipo de desarrollo ha seleccionado para
-    realizar durante un sprint. Con la herramienta de GitHub Projects, además de poder tener una pila de producto con todas
-    las actividades, se pueden agrupar las actividades por iteraciones / sprints y crear tableros que solo visualicen las 
+    Esta es la lista de elementos (historias de usuario y actividades) que el equipo de desarrollo ha seleccionado para
+    realizar durante un sprint. Con la herramienta GitHub Projects, además de poder mantener una pila de producto con todas
+    las actividades, se pueden agrupar por iteraciones o sprints y crear tableros que solo muestren las
     actividades relacionadas con ese sprint.
 
     \item \textbf{Meta del Sprint}
     \newline
-    Este artefacto corresponde a la parte del producto que se obtiene al acabar una iteración. En este caso, cada vez 
-    que se acaba la iteración, se obtiene una nueva funcionalidad que se añade al producto y que puede ser probada, con el fin
-    de ir obteniendo algo ``tangible'' que el \textit{Product Owner} y el cliente pueda ver.
+    Este artefacto corresponde a la parte del producto que se obtiene al acabar una iteración. En este caso, cada vez
+    que se completa una iteración, se obtiene una nueva funcionalidad que se añade al producto y que puede ser probada, con el fin
+    de ir obteniendo algo ``tangible'' que el \textit{Product Owner} y el cliente puedan ver.
 \end{itemize}
 
 \subsection{Eventos de Scrum}
 
-Con eventos de Scrum se va a referir a todas aquellas prácticas que son realizadas dentro del equipo Scrum de manera periódica,
-englobando las ceremonias y reuniones que estos realizan en distintos momentos durante el desarrollo del producto.
+Con eventos de Scrum se hace referencia a todas aquellas prácticas que se realizan dentro del equipo Scrum de manera periódica,
+englobando las ceremonias y reuniones que se llevan a cabo en distintos momentos durante el desarrollo del producto.
 
 Entre los eventos de Scrum, se encuentran los siguientes:
 
 \begin{itemize}
     \item \textbf{Organización del Backlog}
     \newline
-    Consiste en realizar una limpieza y actualización sobre la pila del producto, de manera que pueda estar lista para
-    usarse por parte del equipo de desarrollo y de los miembros del equipo en cualquier momento. Esta labor es realizada
+    Consiste en realizar una limpieza y actualización de la pila del producto, de manera que pueda estar lista para
+    usarse por parte del equipo de desarrollo y del resto de miembros del equipo en cualquier momento. Esta labor es realizada
     por el \textit{Product Owner}.
 
     \item \textbf{Planificación de Sprints}
     \newline
     La planificación del sprint consiste en una reunión que realiza el equipo de desarrollo para planificar cuál será
-    el trabajo que se va a realizar durante el sprint. Esta reunión es diriga por el \textit{Scrum Master} y va a servir
-    para ir añadiendo las historias de usuario o actividades importantes que se tengan que realizar, pasándolas del
+    el trabajo que se va a realizar durante el sprint. Esta reunión es dirigida por el \textit{Scrum Master} y sirve
+    para añadir las historias de usuario o actividades importantes que se tengan que realizar, pasándolas del
     \textit{Product Backlog} al sprint específico.
 
     \item \textbf{Ejecución de Sprint}
@@ -96,57 +94,60 @@ Entre los eventos de Scrum, se encuentran los siguientes:
 
     \item \textbf{Reunión rápida}
     \newline
-    Este tipo de ruenión se realiza al comienzo de la jornada de manera diaria. Son reuniones de corta duración donde se
+    Este tipo de reunión se realiza al comienzo de la jornada de manera diaria. Son reuniones de corta duración donde se
     plantea lo que se va a realizar ese día y si hay algún obstáculo, de manera que todo el equipo trabaje en sintonía y
-    se acerquen cada vez más a la consecución del sprint.
+    se acerque cada vez más a la consecución del sprint.
 
     \item \textbf{Revisión del Sprint}
     \newline
     La revisión del sprint consiste en una reunión en la que el equipo de desarrollo muestra a las partes interesadas del
-    producto los elementos del backlog que están finalizados a través de una ``demo'', diciendo el \textit{Product Owner}
+    producto los elementos del backlog que están finalizados a través de una ``demo'', decidiendo el \textit{Product Owner}
     si se publica o no el incremento.
 
     \item \textbf{Retrospectiva del Sprint}
     \newline
-    Esta es la última reunión, donde el equipo se reúne para analizar qué cosas se han conseguido, cuales han funcionado y dónde han
-    habido problemas, buscando de esta forma qué cosas deben mejorarse de cara a las próximas iteraciones.
+    Esta es la última reunión, donde el equipo se reúne para analizar qué cosas se han conseguido, cuáles han funcionado y dónde han
+    surgido problemas, buscando de esta forma qué aspectos deben mejorarse de cara a las próximas iteraciones.
 \end{itemize}
 
 \subsection{¿Por qué usar la metodología Scrum?}
 
-La elección de la metodología Scrum ha sido por sus valores y por todas las ventajas que tiene, siendo una de las 
-metodologías más usadas actualmente por los equipos de trabajo. 
+La elección de la metodología Scrum se ha basado en sus valores y en las ventajas que ofrece, siendo una de las
+metodologías más utilizadas actualmente por los equipos de trabajo.
 
 Para empezar, el hecho de trabajar en equipo hace que cada uno de los miembros tenga un papel importante que desarrollar
-para alcanzar la meta establecida, haciendo que cada uno se sienta importante y sepa que está aportando valor al producto.
-Además, la alta comunicación que hay en esta metodología y el hecho de que sea iterativa, hace que siempre se busque la 
-autocrítica en el equipo y la mejora de este de cara a la próximas iteraciones, permitiendo de esta manera que el producto
+para alcanzar la meta establecida, de modo que todos se sientan parte del proceso y aporten valor al producto.
+Además, la alta comunicación que existe en esta metodología y el hecho de que sea iterativa hacen que se busquen siempre
+la autocrítica en el equipo y su mejora de cara a las próximas iteraciones, permitiendo así que el producto
 vaya mejorando y adecuándose a lo que el cliente quiere.
 
-Añadiendo a lo anterior, Scrum tiene una alta flexibilidad y adaptación ya que permite realizar cambios en la estructura
-cuando son necesarios, además de permitir realizar entregas del producto software a las partes interesadas en periodos cortos
-de tiempo, lo que ayuda a saber si el camino hacia el objetivo es el adecuado o hay que realizar modificaciones.
+Además de lo anterior, Scrum tiene una alta flexibilidad y capacidad de adaptación, ya que permite realizar cambios en la estructura
+cuando son necesarios, además de permitir entregar el producto software a las partes interesadas en periodos cortos
+de tiempo. Esto ayuda a comprobar si el camino hacia el objetivo es el adecuado o si hay que realizar modificaciones.
 
-Con respecto al presente proyecto, hay que destacar que los roles, artefactos y reuniones han sido adaptadas, ya que el equipo
-de desarrollo ha sido compuesto por un solo individuo y muchas decisiones han sido tomadas en conjunto con el tutor del TFG.
+Con respecto al presente proyecto, hay que destacar que los roles, artefactos y reuniones han sido adaptados, ya que el equipo
+de desarrollo ha estado compuesto por un solo individuo y muchas decisiones se han tomado en conjunto con el tutor del TFG.
 Sin embargo, se han seguido todos los principios y la teoría Scrum de la mejor forma posible.
 
-\subsection{Adapatación de la metodología Scrum al proyecto}
+\subsection{Adaptación de la metodología Scrum al proyecto}
 
 Una vez explicadas todas las partes que componen la metodología Scrum, se va a proceder a explicar cómo esas partes han
 sido adaptadas y tratadas en el presente proyecto.
 
-Como se ha comentado anteriormente, se ha utilizado la herramienta de GitHub Projects \cite{githubProjects} para elaborar
+En cuanto a los miembros del equipo Scrum, tanto el equipo de desarrollo como el Scrum Master han sido asumidos por el autor del TFG, mientras
+que el Product Owner o Propietario del Producto ha sido asumido por el tutor del TFG.
+
+Como se ha comentado anteriormente, se ha utilizado la herramienta GitHub Projects \cite{githubProjects} para elaborar
 el \textbf{\textit{Product Backlog}}, donde se han añadido todas las historias de usuario así como actividades necesarias
-para poder desarrollar el software. A través de esta pila de producto se han ido organizando los diferentes sprints con 
-las actividades necesarias para la realización de cada uno de ellos, ya que la herramienta de Projects permite crear distintas
+para poder desarrollar el software. A través de esta pila de producto se han ido organizando los diferentes sprints con
+las actividades necesarias para la realización de cada uno de ellos, ya que la herramienta Projects permite crear distintas
 vistas (cada una corresponde a un sprint) y asignar tareas del backlog a estas vistas. 
 
-Tanto el Product Backlog como la planificación de cada uno de los sprints han sido llevados a cabo por el autor del proyecto, 
+Tanto el Product Backlog como la planificación de cada uno de los sprints han sido llevados a cabo por el autor del proyecto,
 añadiendo toda la información (historias de usuario y tareas) que ha considerado necesaria para desarrollar el software 
 junto con las recomendaciones del tutor del TFG (Dr. Juan Luis Jiménez Laredo) cuando ha sido requerido. Asimismo, la 
 ejecución de cada sprint ha sido realizada por el autor del proyecto. En las imágenes \ref{fig:ejemplo_hu} y 
-\ref{fig:sprint1_tablero} se puede ver un ejemplo de cómo es una historia de usurio y de cómo sería una sprint:
+\ref{fig:sprint1_tablero} se puede ver un ejemplo de cómo es una historia de usuario y de cómo sería un sprint:
 
 \begin{figure}[H]
     \centering
@@ -162,7 +163,7 @@ ejecución de cada sprint ha sido realizada por el autor del proyecto. En las im
     \label{fig:sprint1_tablero}
 \end{figure}
 
-En cuanto a las reuniones realizadas durante todo el desarrollo del sistema, han sido tratas de la siguiente forma:
+En cuanto a las reuniones realizadas durante todo el desarrollo del sistema, han sido tratadas de la siguiente forma:
 
 \begin{itemize}
     \item \textbf{Reunión diaria}: ha sido realizada por el autor del proyecto, revisando qué hizo el último día y planteando
@@ -174,47 +175,46 @@ En cuanto a las reuniones realizadas durante todo el desarrollo del sistema, han
     del sistema y se ha debatido sobre posibles correcciones a realizar.
 
     \item \textbf{Reunión de retrospectiva}: ha sido realizada junto con el tutor del TFG y ha servido para tratar qué aspectos de lo
-    realizado durante el sprint es mejorable y qué se podría añadir o contemplar para futuros sprints. También ha servido para fijar las 
+    realizado durante el sprint son mejorables y qué se podría añadir o contemplar para futuros sprints. También ha servido para fijar las
     ideas de lo que iba a ser desarrollado en el próximo sprint y qué camino se iba a ir tomando.
 \end{itemize}
 
 \subsection{Sprints realizados}
 
-Para alcanzar el objetivo fijado y desarrollar este software, se han realizado distintos sprints o iteraciones, cada uno agrupando
-una funcionalidad nueva que se iba integrando en el sistema. Los sprint han sido los siguientes:
+Para alcanzar el objetivo fijado y desarrollar este software, se han realizado distintos sprints o iteraciones, cada uno centrado en
+una funcionalidad nueva que se iba integrando en el sistema. Los sprints han sido los siguientes:
 
 \begin{itemize}
-    \item \textbf{Sprint 1}: en este sprint se ha empezado implementando en el backend el sistema de autenticación y autorización 
-    de usuarios, así como el desarrollo de la base de datos inicial (luego se han ido añadiendo tablas sobre esta), englobando los
-    servicios relacionados con el registro de usuarios, inicio de sesión, confirmación del registro a través de notificaciones enviadas
-    por correo electrónico y creación de JSON Web Tokens para garantizar seguridad en los posteriores accesos al servidor.
+    \item \textbf{Sprint 1}: en este sprint se comenzó implementando en el backend el sistema de autenticación y autorización
+    de usuarios, así como el desarrollo de la base de datos inicial (a la que luego se fueron añadiendo tablas), englobando los
+    servicios relacionados con el registro de usuarios, el inicio de sesión, la confirmación del registro a través de notificaciones enviadas
+    por correo electrónico y la creación de JSON Web Tokens para garantizar la seguridad en los posteriores accesos al servidor.
     
-    \item \textbf{Sprint 2}: este sprint ha sido una continuación del anterior, ya que se le ha agregado a la base de datos y al sistema
-    la interacción de los usuarios con una ``entidad habilitada'' (puede ser una cooperativa, empresa, etc). Esta interacción se basa
-    en los permisos que un usuario puede darle a una entidad para manipular sus datos, teniendo cada usuario que pertence a la entidad 
+    \item \textbf{Sprint 2}: este sprint ha sido una continuación del anterior, ya que se agregó a la base de datos y al sistema
+    la interacción de los usuarios con una ``entidad habilitada'' (puede ser una cooperativa, empresa, etc.). Esta interacción se basa
+    en los permisos que un usuario puede darle a una entidad para manipular sus datos, teniendo cada usuario que pertenece a la entidad
     unos roles determinados (administrador o agricultor).
 
-    Para desarrollar este sprint se ha tenido que investigar sobre qué tipo de usuarios hay en un CUE comercial, y qué permisos puede 
-    delegar un usuario sobre sus datos a una entidad \cite{anexosSIEX}. Además, en este sprint se han introducido \textbf{test unitarios y de
-    integración}, por lo que se ha tenido que investigar como hacerlo en SpringBoot y también se ha creado un \textbf{\textit{workflow}} en 
-    \hyperlink{githubActions}{GitHub Actions}, para que cada vez que se suba un cambio a la rama de trabajo, se pasen los tests realizados
-    y construya el prorgrama.
+    Para desarrollar este sprint se ha tenido que investigar qué tipo de usuarios hay en un CUE comercial y qué permisos puede
+    delegar un usuario sobre sus datos a una entidad \cite{anexosSIEX}. Además, en este sprint se han introducido \textbf{tests unitarios y de
+    integración}, por lo que se ha tenido que investigar cómo hacerlo en Spring Boot y también se ha creado un \textbf{\textit{workflow}} en
+    \hyperlink{githubActions}{GitHub Actions}, para que cada vez que se suba un cambio a la rama de trabajo, se ejecuten los tests y se construya el programa.
 
-    \item \textbf{Sprint 3}: en este sprint se ha implementado la lógica relacionada con la creación de parcelas, recintos y actividades de 
-    tipo fitosanitarias relacionadas con cada recinto. También se ha implementado el frontend así como las peticiones a la API desarrollada 
-    para obtener los datos que van a ser mostrados en el lado del cliente.
+    \item \textbf{Sprint 3}: en este sprint se implementó la lógica relacionada con la creación de parcelas, recintos y actividades
+    fitosanitarias asociadas a cada recinto. También se implementó el frontend, así como las peticiones a la API desarrollada
+    para obtener los datos que se muestran en el lado del cliente.
 
-    En este apartado ha habido que investigar cómo programar en React Native con JavaScript, cómo utilizar los componentes y cómo mostrar 
+    En este apartado fue necesario investigar cómo programar en React Native con JavaScript, cómo utilizar los componentes y cómo mostrar
     en el mapa las parcelas de un usuario.
 
-    \item \textbf{Sprint 4}: este ha sido el último sprint. Se ha centrado principalmente en desplegar el backend realizado en un servidor en la 
-    nube, de manera que pueda estar continuamente ejecutándose. Para ello, se ha investigado como funciona Docker y qué archivos eran necesarios 
-    implementar en función del estado proyecto. 
+    \item \textbf{Sprint 4}: este ha sido el último sprint. Se centró principalmente en desplegar el backend realizado en un servidor en la
+    nube, de manera que pudiera estar continuamente ejecutándose. Para ello, se investigó cómo funciona Docker y qué archivos eran necesarios
+    implementar en función del estado del proyecto.
 
-    Además de esto, se ha investigado como generar una APK del frontend para que pueda ser descargada desde cualquier dispositivo móvil.
+    Además de esto, se investigó cómo generar una APK del frontend para que pudiera ser descargada desde cualquier dispositivo móvil.
 
-    Finalmente, el sprint ha servido también para añadir mejoras en cuanto a usabilidad de la aplicación y otras funcionalidades que se han considerado
-    teniendo en cuenta el tiempo del que se disponía.
+    Finalmente, el sprint también sirvió para añadir mejoras en cuanto a la usabilidad de la aplicación y otras funcionalidades que se consideraron
+    teniendo en cuenta el tiempo disponible.
 \end{itemize}
 
 Al finalizar cada sprint, se ha realizado un Sprint Review junto con el tutor del presente TFG para debatir si se ha cumplido lo establecido, 
@@ -229,6 +229,24 @@ Finalmente, se puede ver un \textit{roadmap} del proyecto, según se han ido rea
     \label{fig:roadmap_ghprojects}
 \end{figure}
 
+\section{Organización del código y repositorios}
+
+La gestión del código fuente del proyecto se ha organizado a través de la organización de GitHub \href{https://github.com/OlivarisUGR}{\textit{OlivarisUGR}}, 
+que agrupa tres repositorios públicos y separa claramente las responsabilidades de cada parte del sistema.
+
+\begin{itemize}
+    \item \textbf{olivaris-backend}: contiene el código del servidor y toda la lógica de negocio implementada en Java. En este repositorio se encuentran los 
+    servicios de autenticación, acceso a datos, reglas de dominio y despliegue del backend.
+
+    \item \textbf{olivaris-frontend}: alberga el desarrollo de la interfaz de usuario de la aplicación, realizada con TypeScript. Aquí se centraliza la parte 
+    visual y la comunicación con la API del backend.
+
+    \item \textbf{olivaris-docs}: reúne la documentación del proyecto en formato \LaTeX{}, incluyendo la memoria, anexos y el presente TFG.
+\end{itemize}
+
+Esta separación ha permitido mantener un repositorio por cada bloque funcional del proyecto, facilitando el mantenimiento, la revisión de cambios y la evolución 
+independiente de cada componente. Además, la organización en GitHub ha servido como punto central para coordinar el trabajo, mientras que la planificación y el 
+seguimiento de tareas se han apoyado en GitHub Projects.
 
 \section{Presupuesto del proyecto}
 
