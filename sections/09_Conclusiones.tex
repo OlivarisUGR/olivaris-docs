@@ -1,66 +1,72 @@
 \chapter{Conclusiones y trabajo futuro}
 
-\section{Resumen de lo conseguido}
+El objetivo principal de este Trabajo de Fin de Grado ha consistido en diseñar e implementar una plataforma digital para la gestión colaborativa de explotaciones de olivar. El 
+trabajo parte de la necesidad de organizar de forma estructurada la información asociada a parcelas, recintos, usuarios, entidades habilitadas y actividades agrícolas, en un 
+contexto en el que la digitalización y la trazabilidad de la información agraria adquieren cada vez más importancia.
 
-En este trabajo se ha desarrollado un prototipo funcional de un Cuaderno de Explotación Comercial (CUE) digital que cubre las funcionalidades principales definidas en los objetivos:
+Como respuesta a esta problemática se ha desarrollado Olivaris, un prototipo funcional basado en una arquitectura cliente-servidor. El sistema incorpora un backend con API REST, 
+autenticación mediante JWT, control de acceso por roles, gestión de usuarios y entidades, registro de parcelas y recintos, gestión de actividades agrícolas y soporte para información 
+geoespacial. Además, se ha desarrollado una aplicación móvil que permite interactuar con las principales funcionalidades del sistema.
 
-\begin{itemize}
-    \item \textbf{Cumplimiento normativo preparado:} se ha diseñado el modelo de datos y los mecanismos necesarios para almacenar la información requerida por el CUE y generar/exportar los
-    formatos esenciales para su posterior integración con sistemas oficiales.
-    \item \textbf{Autenticación y control de acceso:} se ha implementado un sistema de registro, confirmación por correo y autenticación mediante JWT, con control de permisos por roles
-    (administrador, entidad, agricultor).
-    \item \textbf{Gestión de parcelas y visualización espacial:} se permite registrar parcelas y recintos con sus geometrías y visualizarlas en un mapa interactivo.
-    \item \textbf{Registro y validación de actividades:} se puede crear, modificar y eliminar actividades (planificadas y completadas), incluyendo campos específicos para actividades
-    fitosanitarias (producto, dosis, aplicador) y validaciones básicas de integridad.
-    \item \textbf{Soporte para entidades y delegación:} se ha modelado la relación entre entidades habilitadas y usuarios, permitiendo la delegación de gestión de actividades.
-    \item \textbf{Evaluación de rendimiento:} se han llevado a cabo pruebas de carga con Locust que han permitido caracterizar latencias y comportamientos bajo concurrencia y detectar cuellos
-    de botella en infraestructuras concretas.
-\end{itemize}
+Los resultados obtenidos permiten concluir que la solución propuesta es técnicamente viable. Olivaris permite centralizar información relevante de una explotación agrícola, organizarla 
+en torno a parcelas y actividades, y gestionar distintos perfiles de usuario con permisos diferenciados. De este modo, el sistema ofrece una base funcional para mejorar la organización 
+de la información y facilitar la colaboración entre agricultores y entidades habilitadas.
 
-El sistema se ha implementado con Spring Boot y PostgreSQL en el backend, siguiendo un diseño por capas (controladores, servicios, repositorios) y con componentes
-de soporte como el servicio de JWT, el servicio de envío de correos para confirmación y un conjunto de endpoints REST documentados en los controladores. Estas decisiones han permitido
-conseguir un sistema coherente y extensible en el tiempo.
+Uno de los aspectos más relevantes del proyecto es la integración de distintos componentes tecnológicos en una solución coherente: backend, base de datos, información geoespacial, aplicación
+móvil, mecanismos de seguridad, despliegue mediante contenedores y pruebas de rendimiento. Esta combinación permite que el sistema no se limite a una funcionalidad aislada, sino que constituya 
+una base extensible sobre la que incorporar nuevas capacidades.
 
-\section{Limitaciones}
+Asimismo, el diseño del sistema se ha planteado teniendo en cuenta el marco SIEX/REA/CUE, de forma que la estructura de la información pueda facilitar una posible adaptación futura a los requisitos 
+de estas plataformas. Aunque no se ha implementado una integración efectiva con servicios oficiales, el trabajo realizado permite avanzar hacia una gestión agrícola más digital, estructurada y preparada 
+para escenarios de interoperabilidad.
 
-Durante el desarrollo se han identificado limitaciones relevantes que condicionan el estado actual del proyecto:
+Las pruebas realizadas han permitido validar el comportamiento técnico del sistema en distintos escenarios de carga. Aunque esta evaluación no sustituye a una validación completa con usuarios reales, sí 
+aporta una primera evidencia sobre el funcionamiento del backend y sobre la influencia que tiene la infraestructura de despliegue en el rendimiento de la aplicación.
 
-\begin{itemize}
-    \item \textbf{Integración oficial con SIEX/REA no realizada:} la conexión con los servicios oficiales del REA/SIEX no se ha materializado debido a la falta del certificado digital
-    oficial y a requisitos administrativos (constitución de empresa) necesarios para obtener acceso. Por tanto, la exportación a formato CUE queda preparada, pero no validada contra
-    los servicios de producción.
+En conjunto, Olivaris cumple los objetivos principales planteados al inicio del proyecto y demuestra que es posible construir una plataforma funcional para la gestión colaborativa del olivar utilizando 
+tecnologías actuales, abiertas y extensibles.
 
-    \item \textbf{Ausencia de soporte offline/sincronización avanzada:} no se ha implementado un mecanismo de funcionamiento offline y sincronización entre dispositivos, lo cual
-    limita el uso en entornos con cobertura intermitente.
+\section{Limitaciones del sistema}
 
-    \item \textbf{Funcionalidades auxiliares no incluidas:} módulos de contabilidad/ERP, informes avanzados y una interfaz multiplataforma completa (cliente web o de escritorio)
-    quedan fuera del alcance por limitaciones temporales.
+A pesar de los resultados obtenidos, el sistema presenta algunas limitaciones que deben tenerse en cuenta.
 
-    \item \textbf{Pruebas y despliegue en entornos productivos limitados:} las pruebas de carga se han realizado en entornos controlados (local y \textit{on premise}) y han mostrado
-    diferencias importantes según la infraestructura (CSIRC vs \textit{on premise}). Esto conllevó a pensar que podría ser necesario cambiar el alojamiento en la nube y mejorar la infraestructura
-    de cara a un uso alto de la aplicación. 
+En primer lugar, la plataforma no incorpora todavía una integración efectiva con los servicios oficiales asociados al marco SIEX/REA/CUE. El diseño se ha orientado a facilitar una posible compatibilidad 
+futura, pero la conexión real con dichas plataformas queda fuera del alcance implementado.
 
-    \item \textbf{Optimización y escalabilidad pendiente:} aunque el prototipo funciona correctamente, el rendimiento puede mejorarse (caching, optimización de consultas, ajuste
-    de configuración del servidor y de la base de datos) para aguantar cargas elevadas de usuarios en producción.
-\end{itemize}
+En segundo lugar, la aplicación no dispone de funcionamiento offline. Esta limitación es relevante en el contexto agrícola, ya que muchas parcelas pueden encontrarse en zonas con conectividad limitada. 
+En el estado actual, el uso de la aplicación depende de la conexión con el backend.
+
+Otra limitación es que la generación de informes se encuentra en una fase inicial. Aunque permite generarlos en base a las actividades realizadas, en una herramienta de este tipo sería útil poder generar 
+informes en base a los criterios: parcela, campaña, producto aplicado o fecha.
+
+Asimismo, el sistema se ha centrado principalmente en una aplicación móvil. Una versión web permitiría mejorar la consulta, revisión y administración de datos desde ordenador, especialmente para entidades 
+habilitadas o usuarios que gestionen un número elevado de parcelas.
+
+Finalmente, la evaluación se ha centrado en pruebas técnicas y de rendimiento. Sería necesario realizar pruebas con usuarios reales del sector agrícola para valorar la usabilidad de la aplicación, la claridad 
+de los formularios y la adecuación de los flujos de trabajo a situaciones reales.
 
 \section{Trabajo futuro}
 
-Después de todo lo desarrollado, hay caminos que se han quedado abiertos para una posible ampliación de cara al futuro. Entre las funcionalidades que se podrían añadir a partir de este
-punto se encuentran:
+A partir de las limitaciones identificadas, se plantean varias líneas de trabajo futuro.
 
-\begin{itemize}
-    \item Ampliar el uso de la aplicación al entorno web, consiguiendo que sea multiplataforma en su totalidad. El uso de una aplicación web en vez de móvil ayudaría sobre todo a los 
-    administradores de entidad, ya que su trabajo será realizado desde la oficina con alta probabilidad.
+Una de las más relevantes sería avanzar en la integración con el marco SIEX/REA/CUE, estudiando los formatos de intercambio de información, los requisitos técnicos y los mecanismos de autenticación necesarios 
+para una futura conexión con servicios oficiales.
 
-    \item Introducir la persistencia de datos en la aplicación, permitiendo almacenar los datos desde ubicaciones donde no disponga el usuario de cobertura. De esta manera, siempre 
-    podrá realizar la gestión que estime oportuna sin la preocupación del acceso a Internet.
+También resultaría importante incorporar funcionamiento offline y sincronización posterior, de forma que el usuario pueda registrar actividades en campo aunque no disponga de conexión en ese momento.
 
-    \item Conseguir el certificado que permite el acceso a la API del SIEX, con la finalidad de poder integrar totalmente la aplicación desarrollada (CUE Comercial) con los servicios
-    del REA y CUE Digital. Esto conllevaría adaptaciones en el sistema a nivel de arquitectura y de base de datos, ya que muchas de las funcionalidades que han sido desarrolladas serían
-    tratadas directamente por los propios servicios que facilita la API. 
+Otra línea de mejora sería ampliar la generación de informes, permitiendo filtrar y exportar información por parcela, campaña, producto aplicado, tipo de actividad o intervalo temporal. Esta funcionalidad aumentaría 
+notablemente el valor práctico de la plataforma.
 
-    \item Mejorar el apartado de accesibilidad de la aplicación. Actualmente, la aplicación tiene colores claros que permiten a todo tipo de usuarios usarla correctamente sin
-    notar distracciones, sin embargo, hay que introducir más funcionalidades que permitan a todo tipo de usuarios el disfrute de la aplicación (como por ejemplo, texto en el mapa o en
-    los botones que permitan escuchar que se está viendo en la pantalla).
-\end{itemize}
+Además, sería conveniente desarrollar una interfaz web que complemente a la aplicación móvil. Esto permitiría ofrecer una experiencia más cómoda para tareas de revisión, administración, generación de informes y gestión 
+de grandes volúmenes de información.
+
+Por último, sería recomendable realizar pruebas de usabilidad con agricultores, técnicos agrícolas o personal de cooperativas. Esta validación permitiría detectar problemas reales de uso, simplificar formularios y priorizar 
+mejor las funcionalidades futuras.
+
+\section{Conclusión final}
+
+Olivaris ha permitido demostrar la viabilidad de una plataforma digital para la gestión colaborativa del olivar, integrando en una misma solución la gestión de usuarios, entidades, parcelas, recintos, actividades agrícolas, 
+información geoespacial y control de permisos.
+
+Aunque el sistema presenta limitaciones y todavía existen funcionalidades por desarrollar, el trabajo realizado constituye una base sólida y extensible. En este sentido, el TFG cumple su objetivo principal: construir un prototipo 
+funcional y técnicamente coherente que contribuye a la digitalización de la gestión agrícola y que puede servir como punto de partida para futuras evoluciones hacia una herramienta más completa y cercana a las necesidades del sector.
