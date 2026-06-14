@@ -35,21 +35,15 @@ lugar un ecosistema único que facilite el día a día del campo y que esté act
 De forma general, Olivaris propone una plataforma digital para:
 
 \begin{itemize}
-    \item \textbf{Gestionar parcelas y recintos de forma unificada:} permite al usuario tener un inventario de forma visual de sus terrenos, centralizando la información geográfica para saber con precisión sobre qué 
-    superficies se trabaja en cada momento.
+    \item \textbf{Gestionar parcelas y recintos de forma unificada}
 
-    \item \textbf{Registrar las actividades agrícolas diarias:} facilita la anotación rápida y ordenada de las labores del campo, transformando lo que antes eran hojas de Excels en un registro digital limpio y sin p
-    pérdida de información.
+    \item \textbf{Registrar las actividades agrícolas diarias} 
 
-    \item \textbf{Gestionar usuarios y entidades habilitadas:} crea un espacio común de trabajo que permite conectar directamente al agricultor con las cooperativas.
+    \item \textbf{Gestionar usuarios y entidades habilitadas} 
     
-    \item \textbf{Definir roles y permisos seguros:} resuelve el problema de la privacidad permitiendo al agricultor decidir con total control qué información comparte con cada entidad.
-    
-    \item \textbf{Facilitar la consulta y trazabilidad de la información:} permite acceder al instante al histórico de la finca, haciendo que revisar lo que se hizo en campañas anteriores o justificar cualquier tratamiento 
-    sea un proceso ágil y transparente.
+    \item \textbf{Definir roles y permisos} 
 
-    \item \textbf{Mantener un diseño compatible con el marco SIEX/REA/CUE:} la estructura del sistema se plantea alineada con las exigencias de la administración, garantizando que los datos queden ordenados de forma coherente 
-    para facilitar la adaptación a las normativas actuales y asegurar posibles integraciones oficiales en el futuro.
+    \item \textbf{Mantener un diseño compatible con el marco SIEX/REA/CUE} 
 \end{itemize}
 
 
@@ -78,10 +72,9 @@ Para alcanzar el objetivo general, se establecen los siguientes objetivos espec�
     según el rol asignado.
 
     \item \textbf{Autorización y gestión de roles:} desarrollar la lógica de negocio que permita la coexistencia de tres perfiles bien definidos (administrador, entidad habilitada y agricultor). La funcionalidad clave de este 
-    módulo será la delegación segura, permitiendo que las cooperativas gestionen las actividades de los agricultores que previamente les hayan otorgado su autorización.
+    módulo será la delegación segura, permitiendo que las entidades habilitadas gestionen las actividades de los agricultores (bajo previa autorización).
 
-    \item \textbf{Módulo de cumplimiento y exportación normativa:} asegurar que toda la información almacenada en el sistema pueda ser explotada de cara a la administración. La funcionalidad principal de este bloque consistirá en la capacidad
-    de poder generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos oficiales exigidos por el marco normativo actual.
+    \item \textbf{Módulo de cumplimiento y exportación normativa:} capacidad de poder generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos oficiales exigidos por el marco normativo actual.
 \end{itemize}
 
 \subsection{Alcance y limitaciones}
@@ -96,17 +89,17 @@ El desarrollo se centrará en construir un producto mínimo viable (MVP) complet
 \begin{itemize}
     \item \textbf{Arquitectura móvil completa:} se implementará una aplicación móvil funcional (frontend y backend) que centraliza el flujo de trabajo comercial del cuaderno digital.
     
-    \item \textbf{Estructura de catos normalizada:} se diseñará y desplegará una base de datos relacional modelada bajo los estándares de información del CUE y el SIEX, asegurando la 
+    \item \textbf{Estructura de datos normalizada:} se diseñará y desplegará una base de datos relacional modelada bajo los estándares de información del CUE y el SIEX, asegurando la 
     integridad de los registros agrícolas y fitosanitarios.
 
-    \item \textbf{Capa de integración visual:} la aplicación se conectará con los servicios de mapas e interacción con las geometrías oficiales del SIGPAC a nivel de interfaz de usuario.
+    \item \textbf{Capa de integración visual:} la aplicación se conectará con los servicios oficiales de SIGPAC y mostrará en la intefaz de usuario las geometrías través de mapas.
     
     \item \textbf{Capa de seguridad:} se utilizarán mecanismos que permitan controlar el acceso a los datos entre agricultores y gestión de las acciones delegadas a las entidades habilitadas.
 \end{itemize}
 
 \subsubsection{Limitaciones}
 
-Por motivos de viabilidad técnica, temporal y de recursos, quedan excluidos del desarrollo los siguientes bloques:
+Por motivos de viabilidad temporal y de recursos, quedan excluidos del desarrollo los siguientes bloques:
 
 \begin{itemize}
     \item \textbf{Sincronización directa con el SIEX/REA:} no se incluirá la conexión en tiempo real ni el envío directo de datos a las APIs de los servicios oficiales de la administración pública por falta de recursos que permitan la conexión
