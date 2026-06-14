@@ -1,59 +1,129 @@
-\chapter{Objetivos y alcance del proyecto}
+\chapter{Descripción del problema y alcance del proyecto}
 
-\section{Objetivo general}
+\section{Contexto y motivación}
 
-El objetivo del presente proyecto consiste en la implementación de un Cuaderno de Explotación Comercial digital para agricultores y entidades habilitadas que centralice el registro y gestión de actividades
-agrícolas, destacando los tratamientos fitosanitarios, debido a su obligatoriedad a partir del 1 de enero de 2027.
+La gestión agrícola se encuentra inmersa en un proceso progresivo de digitalización que afecta tanto a la organización interna de las explotaciones como a la forma en que estas recopilan, consultan y comunican 
+su información. En este contexto, la necesidad de registrar de manera ordenada parcelas, recintos y actividades no responde únicamente a una cuestión de eficiencia operativa, sino también a la exigencia de disponer 
+de datos trazables, actualizados y fácilmente reutilizables a lo largo de todo el ciclo de explotación.
 
-\section{Objetivos específicos}
+En la práctica, este tipo de información sigue gestionándose con frecuencia mediante cuadernos en papel, hojas de cálculo o herramientas dispersas que no están conectadas entre sí. Aunque estos métodos pueden ser 
+suficientes para explotaciones pequeñas o para un uso puntual, su falta de centralización dificulta la consulta histórica, incrementa la probabilidad de errores y complica la coordinación entre el agricultor y posibles 
+entidades colaboradoras. Esta limitación resulta especialmente relevante en el caso del olivar, un cultivo de gran peso económico y territorial en el que la planificación de labores, el seguimiento de tratamientos y la 
+gestión precisa de la superficie cultivada tienen un valor estratégico.
 
-Entrando en más detalle, los objetivos que se van a buscar lograr serán los siguientes:
+Además, este problema se enmarca en un contexto normativo cada vez más exigente, relacionado con el Sistema de Información de Explotaciones Agrícolas, Ganaderas y de la Producción Agraria (SIEX), el Registro Autonómico de 
+Explotaciones Agrícolas (REA) y el Cuaderno Digital de Explotación Agrícola (CUE). La evolución de este marco refuerza la necesidad de contar con soluciones capaces de estructurar la información agraria de forma coherente 
+con los requisitos administrativos, facilitando tanto el cumplimiento de las obligaciones como la preparación de futuras integraciones con sistemas oficiales.
+
+\section{Descripción del problema}
+
+Como se ha comentado anteriormente, la evolución tecnológica junto con las nuevas normativas está dificultando el trabajo tanto de productores como de cooperativas. Por un lado, los agricultores necesitan llevar un control 
+estricto de una gran cantidad de datos (como la delimitación de parcelas o los tratamientos aplicados). Al combinar esta exigencia con métodos tradicionales, como las hojas de Excel o las anotaciones en papel, es habitual 
+que se pierda información o se cometan errores al registrar datos de manera incorrecta o mezclada. Como consecuencia, cuando la entidad habilitada necesita recabar estos datos, debe invertir demasiado tiempo en descifrar 
+información desordenada, incompleta o en formatos incompatibles, lo que ralentiza el proceso y lo vuelve mucho más complejo de lo que debería ser.
+
+Además de lo anterior, los agricultores se enfrentan a un obstáculo puramente burocrático: la obligación de implantar el Cuaderno Digital de Explotación. Esto fuerza un cambio radical en su método de trabajo, ya que deben 
+sustituir sus herramientas tradicionales por una plataforma que agilice el registro de sus actividades cotidianas y que, al mismo tiempo, sea capaz de conectarse directamente con los servicios ofrecidos por el Registro 
+Autonómico de Explotaciones Agrícolas (REA) para poder generar ese Cuaderno Digital.
+
+\section{Solución propuesta}
+
+Para dar respuesta a los problemas analizados, este proyecto plantea el desarrollo de Olivaris, una plataforma digital diseñada específicamente para centralizar, simplificar y asegurar la gestión de la información en el 
+sector agrícola, con un enfoque especial en el cultivo del olivar. El propósito de esta herramienta es transformar el modelo tradicional de trabajo basado en el papel y las hojas de cálculo dispersas, ofreciendo en su 
+lugar un ecosistema único que facilite el día a día del campo y que esté actualizado de acuerdo a lo que exige la normativa.
+
+De forma general, Olivaris propone una plataforma digital para:
 
 \begin{itemize}
-    \item \textbf{Cumplimiento normativo:} garantizar que el sistema permita generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos exigidos, facilitando el cumplimiento de 
-    la normativa (por ejemplo, para el tratamiento de productos fitosanitarios).
+    \item \textbf{Gestionar parcelas y recintos de forma unificada:} permite al usuario tener un inventario de forma visual de sus terrenos, centralizando la información geográfica para saber con precisión sobre qué 
+    superficies se trabaja en cada momento.
 
-    \item \textbf{Autenticación y control de acceso:} proveer autenticación segura a través de Json Web Token y control de permisos por roles (adminsitrador, entidad habilitada y agricultor), asegurando que 
-    usuarios autorizados accedan y manipulen datos según criterios definidos.
+    \item \textbf{Registrar las actividades agrícolas diarias:} facilita la anotación rápida y ordenada de las labores del campo, transformando lo que antes eran hojas de Excels en un registro digital limpio y sin p
+    pérdida de información.
 
-    \item \textbf{Gestión espacial de parcelas:} permitir registrar, almacenar y visualizar parcelas así como recintos con sus geometrías, usando para ello la integración con los servicios de la API de SIGPAC
-    cuando sea posible. Además, se ofrecerá un mapa con el cual se podrá interactuar.
-
-    \item \textbf{Registro y validación de actividades:} facilitar el registro, modificación y eliminación de actividades (planificadas y completadas) con validaciones específicas (fechas, campos obligatorios, etc)
-    y registros especiales para actividades de tipo fitosanitario (como tipo de producto, dosis y aplicador).
+    \item \textbf{Gestionar usuarios y entidades habilitadas:} crea un espacio común de trabajo que permite conectar directamente al agricultor con las cooperativas.
     
-    \item \textbf{Soporte para entidades y delegación:} permitir la creación y gestión de entidades habilitadas (cooperativas), gestión de usuarios asociados y delegación de permisos para que administradores de 
-    entidad puedan gestionar actividades de agricultores autorizados.
+    \item \textbf{Definir roles y permisos seguros:} resuelve el problema de la privacidad permitiendo al agricultor decidir con total control qué información comparte con cada entidad.
+    
+    \item \textbf{Facilitar la consulta y trazabilidad de la información:} permite acceder al instante al histórico de la finca, haciendo que revisar lo que se hizo en campañas anteriores o justificar cualquier tratamiento 
+    sea un proceso ágil y transparente.
+
+    \item \textbf{Mantener un diseño compatible con el marco SIEX/REA/CUE:} la estructura del sistema se plantea alineada con las exigencias de la administración, garantizando que los datos queden ordenados de forma coherente 
+    para facilitar la adaptación a las normativas actuales y asegurar posibles integraciones oficiales en el futuro.
 \end{itemize}
 
-\section{Alcance y limitaciones}
 
-\subsection{¿Qué sí se va a realizar?}
+\section{Objetivos y alcance}
 
-Entre las funcionalidades que se esperan implementar y que se priorizarán están las siguientes:
+Una vez definida la solución conceptual que plantea Olivaris para resolver los problemas del sector, es necesario concretar los objetivos técnicos y funcionales que guiarán el desarrollo de la plataforma, asegurando que cada 
+necesidad detectada se traduzca en una característica real del sistema.
+
+\subsection{Objetivo general}
+
+El objetivo principal de este proyecto consiste en diseñar e implementar una aplicación móvil que funcione como un \textbf{Cuaderno de Explotación Comercial digital}. Esta herramienta centralizará el registro y la gestión de actividades 
+agrícolas para agricultores y entidades habilitadas, poniendo especial énfasis en el control de los tratamientos fitosanitarios debido a su obligatoriedad normativa.
+
+\subsection{Objetivos específicos}
+
+Para alcanzar el objetivo general, se establecen los siguientes objetivos específicos, los cuales delimitan las funcionalidades que serán implementadas en el sistema:
 
 \begin{itemize}
-    \item Implementar un Cuaderno de Explotación Comercial digital que permita principalmente registrar, modificar y eliminar actividades tanto planificadas como completadas.
-    \item Registrar y visualizar parcelas junto con sus recintos, mostrando sus geometrías en un mapa interactivo.
-    \item Soportar registro específico de actividades fitosanitarias.
-    \item Autenticación segura con JWT y control por roles.
-    \item Almacenar datos según lo requerido por el CUE, exportarlos y dejarlo preparado para una integración futura con el REA.
+    \item \textbf{Gestión y visualización de parcelas:} desarrollar un módulo encargado de registrar, almacenar y visualizar las parcelas y recintos de las explotaciones con sus respectivas geometrías. Para ello, el alcance 
+    incluye la integración con la API pública de SIGPAC para automatizar la carga de datos y el despliegue de un mapa interactivo en la interfaz que facilite la localización visual de los terrenos.
+
+    \item \textbf{Registro de actividades:} implementar un sistema dinámico para la creación, modificación y eliminación de tareas agrícolas (tanto planificadas como completadas). Esta funcionalidad contará con 
+    validaciones automáticas de datos (fechas coherentes, campos obligatorios) y un formulario especial para tratamientos fitosanitarios
+
+    \item \textbf{Autenticación:} configurar un sistema de seguridad robusto basado en el estándar JSON Web Token (JWT) para gestionar el acceso a la plataforma. Esto permitirá proteger la privacidad de la información 
+    según el rol asignado.
+
+    \item \textbf{Autorización y gestión de roles:} desarrollar la lógica de negocio que permita la coexistencia de tres perfiles bien definidos (administrador, entidad habilitada y agricultor). La funcionalidad clave de este 
+    módulo será la delegación segura, permitiendo que las cooperativas gestionen las actividades de los agricultores que previamente les hayan otorgado su autorización.
+
+    \item \textbf{Módulo de cumplimiento y exportación normativa:} asegurar que toda la información almacenada en el sistema pueda ser explotada de cara a la administración. La funcionalidad principal de este bloque consistirá en la capacidad
+    de poder generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos oficiales exigidos por el marco normativo actual.
 \end{itemize}
 
-\subsection{¿Qué no entra en el alcance?}
+\subsection{Alcance y limitaciones}
 
-Entre las funcionalidades que no se implementarán por falta de tiempo y recursos se encuentran las siguientes:
+El alcance de este proyecto define las fronteras funcionales de la plataforma Olivaris, delimitando las capacidades que serán desarrolladas y aquellas que, por criterios de viabilidad o restricciones externas, quedan fuera del 
+proyecto.
+
+\subsubsection{Alcance del sistema desarrollado}
+
+El desarrollo se centrará en construir un producto mínimo viable (MVP) completamente operativo que cubra el núcleo central de la gestión agrícola. El alcance técnico incluye:
 
 \begin{itemize}
-    \item Obtención del certificado digital oficial para poder acceder al SIEX, así como la publicación en los servicios oficiales del REA, dejando la integración con la API oficial por falta de certificado.
-    \item Módulos de contabilidiad, como el control avanzado de costes y nóminas, obteniendo de esta manera un ERP más completo.
-    \item Soporte \textit{offline} o sincronización compleja entre múltiples dispositivos, permitiendo que el agricultor pueda almacenar sus actividades en ubicaciones donde no haya cobertura, para 
-    posteriormente guardar esos datos en la base de datos.
-    \item Aplicación multiplataforma con un cliente web.
+    \item \textbf{Arquitectura móvil completa:} se implementará una aplicación móvil funcional (frontend y backend) que centraliza el flujo de trabajo comercial del cuaderno digital.
+    
+    \item \textbf{Estructura de catos normalizada:} se diseñará y desplegará una base de datos relacional modelada bajo los estándares de información del CUE y el SIEX, asegurando la 
+    integridad de los registros agrícolas y fitosanitarios.
+
+    \item \textbf{Capa de integración visual:} la aplicación se conectará con los servicios de mapas e interacción con las geometrías oficiales del SIGPAC a nivel de interfaz de usuario.
+    
+    \item \textbf{Capa de seguridad:} se utilizarán mecanismos que permitan controlar el acceso a los datos entre agricultores y gestión de las acciones delegadas a las entidades habilitadas.
+\end{itemize}
+
+\subsubsection{Limitaciones}
+
+Por motivos de viabilidad técnica, temporal y de recursos, quedan excluidos del desarrollo los siguientes bloques:
+
+\begin{itemize}
+    \item \textbf{Sincronización directa con el SIEX/REA:} no se incluirá la conexión en tiempo real ni el envío directo de datos a las APIs de los servicios oficiales de la administración pública por falta de recursos que permitan la conexión
+    con dichos servicios.
+
+    \item \textbf{Módulos de gestión empresarial avanzada:} no se contemplarán herramientas de contabilidad analítica, control de costes financieros, facturación ni gestión de nóminas de trabajadores.
+    
+    \item \textbf{Persistencia en modo desconectado (\textit{offline}):} el sistema requiere una conexión activa a internet para operar, quedando fuera del alcance la sincronización compleja de datos en zonas sin cobertura de red.
+     
+    \item \textbf{Ecosistema multiplataforma:} el desarrollo se limita a un único cliente accesible a través de un dispositivo móvil, excluyendo la creación de aplicaciones web.
 \end{itemize}
 
 \subsection{Justificación de las decisiones}
 
-Las decisiones han sido tomadas teniendo en cuenta el tiempo disponible, buscando priorizar las funcionalidades \textit{core} de la aplicación para entregar un prototipo funcional, y por otro lado la falta de recursos, 
-ya que la integración con la API oficial del SIEX requiere de un certificado específico para su acceso y es necesario tener constituida una empresa. Por esta razón, se ha implementado una base de datos local y se ha intentado
-ajustar lo máximo posible para una integración futura.
+Las decisiones de diseño y la acotación del alcance responden a una estrategia de desarrollo orientada a la viabilidad y eficiencia del proyecto. Por un lado, las limitaciones temporales propias de un Trabajo de Fin de Grado obligan a priorizar 
+las funcionalidades \textit{core} de la aplicación (el registro de actividades y la lógica de permisos) para garantizar la entrega de un prototipo sólido, estable y testeado.
+
+Por otro lado, la exclusión de la integración directa con la API oficial del SIEX/REA responde a una barrera burocrática y falta de recursos para este proyecto. El acceso a los entornos de pruebas y producción de la administración requiere 
+obligatoriamente la posesión de un certificado digital de entidad habilitada o la constitución de una empresa del sector tecnológico. Al no disponer de este marco legal e institucional, se ha optado por la solución más viable: modelar localmente 
+la base de datos de Olivaris de la forma más parecida a los requisitos de la normativa vigente. De este modo, el sistema queda preparado para que la exportación de sus datos sea compatible con las futuras integraciones oficiales de la administración.
