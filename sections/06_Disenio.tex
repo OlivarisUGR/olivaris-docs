@@ -27,6 +27,17 @@ Por ejemplo, al crear una actividad es necesario tener en cuenta su relación co
 además de aplicar validaciones según los roles del usuario. Esta situación, en una arquitectura basada en microservicios, sería mucho más costosa de gestionar, mientras que en un monolito resulta más sencilla al
 disponer de acceso directo a todos los componentes del sistema.
 
+Además de esto, se ha elegido un \textbf{modelo cliente - servidor}. Gracias a este modelo se consigue garantizar las siguientes propiedades:
+
+\begin{itemize}
+    \item \textbf{Desacoplamiento}, permitiendo que la parte del cliente esté centrada exclusivamente en la interfaz y la experiencia de usuario, mientras que el servidor gestiona la lógica de negocio y la persistencia
+    de datos.
+
+    \item \textbf{Soporte multiplataforma}, permitiendo que distintos tipos de clientes (móvil o web) puedan servir de forma simultánea, facilitando la expansión del ecosistema Olivaris.
+    
+    \item \textbf{Eficiencia de red}, permitiendo intercambiar la información de forma organizada a través de peticiones puntuales, optimizando el uso de recursos. 
+\end{itemize}
+
 \subsection{Componentes principales}
 
 Los componentes principales de la arquitectura son:
@@ -82,6 +93,16 @@ A través de este enfoque se consiguen ventajas significativas en el sistema com
     \item \textbf{Arquitectura sin estado (\textit{stateless}):} el servidor no almacena información de la sesión del usuario entre peticiones. Cada consulta contiene toda la información necesaria para ser procesada, lo que facilita el escalado y mejora la fiabilidad.
     \item \textbf{Intercambio de datos:} la comunicación se realiza de forma ligera y estandarizada mediante objetos \textbf{JSON}, que es el formato de intercambio de datos más extendido.
 \end{itemize}
+
+\subsubsection{Autenticación y autorización}
+
+Para garantizar un intercambio seguro de información entre los componentes a través de la API, se ha implementado un mecanismo basado en \textbf{JSON Web Token (JWT)}. Esta tecnología se ha seleccionado por ser la más adecuada para arquitecturas desacopladas y aplicaciones 
+móviles; al tratarse de un mecanismo \textit{stateless}, el token transporta en su interior toda la información necesaria y está firmado digitalmente, lo que elimina la necesidad de almacenar sesiones activas en el servidor para validar al usuario. Al decodificar el token 
+y verificar su firma, el sistema puede identificar de forma correctamente al usuario en cada petición, protegiendo los recursos de la API contra accesos no autorizados.
+
+Más allá de la identidad, el token es la pieza fundamental para la autorización y gestión de permisos mediante un control de acceso basado en roles. Gracias a la información contenida en el JWT, el backend puede determinar el perfil del usuario (administrador, agricultor o 
+entidad habilitada) y restringir el acceso a funcionalidades específicas. Este control permite modelar con precisión la lógica de negocio de Olivaris: un agricultor puede gestionar exclusivamente sus propias explotaciones, mientras que un administrador de una entidad 
+habilitada, tras recibir la delegación de permisos correspondiente, puede actuar en nombre de terceros y supervisar múltiples explotaciones, garantizando así la trazabilidad y el cumplimiento normativo del Cuaderno Digital de Explotación.
 
 \section{Modelos de datos}
 
