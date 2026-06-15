@@ -1,55 +1,60 @@
 \chapter{Estado del arte}\label{cap:estado}
 
 En esta sección se va a proceder a realizar un estudio del estado del arte en el ámbito de la planificación de 
-recursos empresariales (Enterprise Resource Planning o ERP) para el sector de la oliva.Se analizarán cuáles 
+recursos empresariales (Enterprise Resource Planning o ERP) para el sector de la oliva. Se analizarán cuáles 
 son sus funcionalidades y limitaciones, así como las tecnologías utilizadas para su desarrollo.
 
-\section{Contexto}
+Posteriormente, se expondrán qué tipos de arquitecturas y tecnologías pueden ser utilizadas para desarrollar el presente proyecto.
 
-El desarrollo de software ERP para el sector de la oliva surge de la necesidad de integrar y controlar procesos 
-muy específicos propios de una cadena agroindustrial compleja, caracterizada por una elevada regulación legislativa 
-y por unos costes de producción y transformación significativos. La correcta gestión de la información se convierte 
-en un factor clave para garantizar la eficiencia operativa, el cumplimiento normativo y la rentabilidad económica de 
-las explotaciones, cooperativas y empresas del sector.
+\section{Contexto del olivar y necesidad de digitalización}
 
-En este contexto, España se posiciona como líder mundial en la producción de aceite de oliva, concentrando de media en 
-los últimos años más del 40\% de la producción mundial. A gran distancia le siguen otros países productores como Italia, 
-con aproximadamente un 9,7\%, Grecia con un 8,2\% y Túnez con un 6,1\%, lo que pone de manifiesto la relevancia 
-estratégica del sector oleícola español tanto a nivel económico como tecnológico \cite{principalesProductoresAceiteOliva}.
-Esta posición de liderazgo implica, además, una mayor exigencia en términos de control, trazabilidad y calidad del 
-producto final.
+El sector del olivar en España tiene una importancia estratégica fundamental, siendo el líder mundial con más del 40\% de la producción total \cite{principalesProductoresAceiteOliva}. Esta posición no solo implica 
+una gran relevancia económica, sino también una responsabilidad muy alta en cuanto a la calidad y la trazabilidad del producto. Sin embargo, la gestión diaria en el campo 
+todavía presenta un contraste importante: mientras que las almazaras se han modernizado, el registro de lo que ocurre en las parcelas sigue dependiendo en gran medida de 
+métodos tradicionales.
 
-El proceso de producción de la oliva no puede considerarse lineal ni estándar, ya que intervienen múltiples fases 
-interconectadas y con un alto grado de variabilidad. Desde la gestión de parcelas agrícolas y la recolección de la 
-aceituna, pasando por la recepción, el almacenamiento en depósitos o bodegas, la molturación, el envasado y finalmente 
-la comercialización, cada etapa genera información crítica que debe ser registrada y relacionada con el resto del 
-proceso. Asimismo, en este sector conviven distintas entidades, como agricultores, cooperativas, almazaras, envasadoras
-y comercializadoras, cada una con funciones específicas pero dependientes entre sí, lo que incrementa la complejidad de 
-la gestión de los datos.
+Actualmente, gran parte de la información sobre tratamientos o recolección se anota en cuadernos de papel o archivos de Excel. Aunque esto puede funcionar en casos muy pequeños, 
+genera problemas graves cuando la explotación crece o cuando hay que coordinarse con otros. El uso de estos métodos manuales provoca con frecuencia pérdida de información y 
+errores al registrar datos de forma desordenada.
 
-A esta complejidad productiva se suma una regulación especialmente estricta, orientada a garantizar la seguridad 
-alimentaria, la trazabilidad y la calidad del aceite de oliva. Normativas como el Reglamento CE 178/2002 obligan a 
-disponer de sistemas que permitan identificar el origen del producto y reconstruir su recorrido en cualquier punto de 
-la cadena. Además, los consejos reguladores, las denominaciones de origen, los criterios de clasificación del aceite 
-según su categoría y los análisis físico-químicos y organolépticos, así como las certificaciones de calidad y producción 
-ecológica, imponen requisitos adicionales que deben ser gestionados de forma precisa y documentada.
+Además, cuando un agricultor necesita que su cooperativa o entidad habilitada gestione sus datos, estos agentes invierten mucho tiempo interpretando los datos, anotaciones incompletas 
+o formatos que no son compatibles entre sí. El software genérico tampoco es una solución ideal, ya que no suele contemplar aspectos específicos de nuestro sector como la gestión por 
+campañas agrícolas. 
 
-Las soluciones ERP generalistas presentan importantes limitaciones a la hora de adaptarse a este contexto, ya que no 
-contemplan de forma nativa conceptos fundamentales del sector oleícola como la gestión por campañas agrícolas, los 
-rendimientos grasos, los lotes dinámicos, las mezclas de calidades, los trasiegos entre depósitos o el control de mermas.
-Esto provoca que su implantación requiera un elevado nivel de personalización, incrementando los costes, los plazos y el 
-riesgo de fracaso del proyecto.
+A esta necesidad de eficiencia operativa se le suma ahora una exigencia legal. Con la entrada del Real Decreto 1054/2022, se ha creado el Sistema de Información de Explotaciones Agrarias 
+(SIEX) y el Cuaderno Digital de Explotación (CUE). Esta normativa obliga a los agricultores a dar un salto digital, ya que el uso del cuaderno de campo en papel dejará de ser válido, 
+siendo obligatorio el formato digital para tratamientos fitosanitarios a partir de enero de 2027.
 
-Como consecuencia de estas necesidades específicas, se hace imprescindible el desarrollo de software ERP diseñado 
-específicamente para el sector de la producción de oliva. (Estos sistemas se caracterizan por estar orientados a modelos 
-de gestión por campañas, permitir un control exhaustivo de la trazabilidad desde la parcela hasta el producto final, 
-gestionar lotes de forma dinámica y automatizar la generación de informes oficiales exigidos por las administraciones y 
-organismos reguladores. Además, facilitan el control de costes, la gestión de la calidad y la integración de todos los 
-agentes implicados en la cadena productiva, permitiendo a cooperativas, agricultores y empresas maximizar el valor de su 
-producción y mejorar su competitividad en el mercado. QUITAR ??) A continuación, se va a proceder a analizar los softwares
-que realizan esta labor para ver cómo resuelven la problemática mencionada anteriormente.
+Esta situación genera una barrera burocrática para muchos productores que no cuentan con herramientas sencillas para adaptarse. Por tanto, la digitalización ya no es solo una opción para 
+mejorar la rentabilidad, sino una obligación legal.
 
-\section{Análisis de Softwares ERP para la producción del aceite de oliva}
+\section{Marco normativo: SIEX, REA y CUE}
+
+El desarrollo de Olivaris no solo responde a una necesidad técnica, sino que se enmarca en una transformación legal del sector agrario en España, impulsada principalmente por el \textbf{Real 
+Decreto 1054/2022} \cite{rdBoe}. Este decreto busca digitalizar la relación entre los agricultores y la administración a través de tres pilares fundamentales \cite{anexosSIEX}:
+
+\begin{itemize}
+    \item \textbf{SIEX (Sistema de Información de Explotaciones Agrarias):} se define como una infraestructura de bases de datos y registros administrativos interconectados. Su objetivo es centralizar toda la 
+    información de las explotaciones para facilitar su gestión y seguimiento por parte de las autoridades.
+
+    \item \textbf{REA (Registro Autonómico de Explotaciones Agrícolas):} es el registro donde se recoge la información general de cada explotación. Funciona como la base de datos oficial de la que se extraen los 
+    datos de parcelas y cultivos que luego deben ser gestionados.
+
+    \item \textbf{CUE (Cuaderno Digital de Explotación Agrícola):} es la herramienta electrónica destinada a que los agricultores registren actividades específicas como los tratamientos fitosanitarios, riegos o 
+    fertilización. Su uso será obligatorio para el registro de fitosanitarios a partir de enero de 2027.
+\end{itemize}
+
+Dada la complejidad de estos registros digitales, la normativa contempla la figura de las entidades habilitadas (como cooperativas o empresas de servicios). Estas entidades pueden actuar en nombre de los 
+agricultores mediante una delegación de permisos. Esto permite que personal técnico de la cooperativa gestione directamente el REA y el CUE del titular de la explotación, garantizando que la información se registre 
+correctamente y a tiempo.
+
+Este escenario normativo es lo que justifica la creación de una plataforma como Olivaris. Olivaris nace para simplificar este proceso burocrático, ofreciendo un entorno intuitivo donde agricultores y cooperativas 
+puedan colaborar de forma sencilla.
+
+Es importante aclarar que, aunque Olivaris no está integrada de forma oficial con los servicios del SIEX o la REA en esta fase del proyecto, su base de datos y lógica de negocio se han diseñado siguiendo la estructura 
+conceptual y los requisitos de información de este marco legal. De este modo, el sistema queda preparado para facilitar una posible integración futura con las APIs oficiales de la administración.
+
+\section{Soluciones software existentes para la gestión agrícola}
 
 Actualmente, podemos encontrar diversos softwares ERP que están directamente relacionados con la producción de oliva,
 otros que no se relacionan directamente pero se ubican dentro del sector agrícola y otros que son genéricos pero se 
@@ -94,38 +99,6 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
         \item Generación de un cuaderno de campo digital, facilitando la gestión y el seguimiento de las actividades
         agrícolas de forma eficiente y precisa.
     \end{itemize} 
-
-    Como hemos comentado, AgriCloud está pensada para poder satisfacer las necesidades de varios sectores:
-    \begin{itemize}
-        \item Agricultores individuales: podrán registrar en cuestión de segundos sus tareas pendientes o realizadas,
-        llevarán un control de costes e ingresos por cultivo (sabiendo cuánto cuesta y cuánto produce por cada parcela)
-        y podrán generar informes de forma automática.
-        \item Cooperativas y asociaciones: destaca por aportar funcionales como el registro y consulta de la información
-        de cada miembro y su producción, supervisión en tiempo real de cada tarea y de los resultados de la campaña,
-        generación de informes globales o por socio en PDF o Excel, permite la comunicación y coordinación entre el 
-        personal a través de un entorno digital único.
-        \item Empresas de servicios agrícolas: las empresas podrán gestionar partes digitales por cliente o finca, 
-        convertir dichos partes en facturas electrónicas al instante, control de maquinaria y materiales (horas y costes
-        asociados a cada servicio o cliente), ayuda en la toma decisión gracias a la consulta de resultados por tipo de 
-        trabajo y campañas.
-        \item Trabajadores por campaña: AgriCloud ofrece una gestión de las ``cuadrillas`` de trabajadores a través de un 
-        fichaje y control del horario digital, asignación por tareas por finca o cultivo, accesos personalizados (cada perfil
-        está adaptado al rol del empleado) y ofrece un seguimiento en la nube, consiguiendo que toda la información se 
-        sincronice automáticamente.
-    \end{itemize}
-
-    \item \textbf{TuOlivar - Relación directa (https://www.tuolivar.com)}
-    \newline
-    TuOlivar es un Software de gestión agrícola para la producción del olivar. Se destacan principalmente por ofrecer las
-    siguientes funcionalidades:
-    \begin{itemize}
-        \item Gestión de la explotación: permiten el control de fincas, parcelas, maquinaria, herramientas, mantenimiento
-        de la maquinaria, trabajadores y campañas.
-        \item Alta organización y uso desde cualquier ubicación: permite llevar un control de los trabajos realizados, control
-        de gastos e ingresos y de la cosecha realizada, pudiendo agrupar la información por campañas, fincas y categorías.
-        \item Gestión total: permite dar de alta a los clientes, almazaras, proveedores, notas, documentos o avisos, así como
-        generar distintos informes para su control de costes y cosechas.
-    \end{itemize}
     
     \item \textbf{Agroex (https://agroex.es)}
     \newline
@@ -134,48 +107,9 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
     agrícola específica como a lo largo del año), gracias a la administración y gestión tanto de los cultivos como del 
     personal. Además, cuenta con integraciones como AEMET o MAGRAMA, permitiendo el acceso a datos en tiempo real que 
     permite ayudar en la toma de decisiones.
-    \newline
+
     Agroex ofrece soluciones para distintos sectores, desde un enfoque en la explotación agrícola y consultoría agraria
     a otros como bodegas, viñedos y viveros.
-    \newline
-    Si analizamos las funcionalidades que ofrece este Software, Agroex destaca por:
-    \begin{itemize}
-        \item Administración y gestión de explotaciones agrícolas y agroindustriales: permite la gestión de cultivos y 
-        administración de explotaciones a través de cuadernos de campo, gestión de plazos, riegos y recursos hídricos.
-        \item Conectividad con entidades como MAGRAMA o AEMET para obtener información meteorológica precisa y en tiempo real.
-        \item Gestión de costes.
-        \item Gestión contable, generando de manera automática los apuntes contables para cada movimiento realizado.
-        \item Gestión de almacén, controlando el stock y gestión de mercancías.
-        \item Gestión documental, incluyendo la gestión de maquinaria, productos fitosanitarios y gestión de personal.
-        \item Gestión económica y tesorería, generando informes completos y exactos de la liquidez y resultados económicos.
-        \item Gestión de producción, a través del control de las actividades de fabricación, producción y manufactura.
-        \item Gestión eficiente de los recursos hídricos.
-        \item Recursos humanos, gracias a una conexión con la Seguridad Social.
-        \item Facturación, ofreciendo herramientas para gestionar presupuestos, seguimiento comercial y factura electrónica.
-    \end{itemize}
-
-    \item \textbf{Galdón Software (Enfoque en Cooperativas) (https://www.galdon.com/erp-almazaras-envasadoras-aceite)}
-    \newline
-    Galdón Software es una empresa de ingeniería que ofrece soluciones software de gestión integrales para todo tipo de
-    empresas e instituciones. Ofrecen servicios de consultoría y soluciones centralizadas para áreas de distintos
-    negocios: ERP y CRM, Contabilidad y Finanzas, SGA, Apps, E-commerce y Recursos Humanos (RRHH).
-
-    Dentro de los sectores en los que operan, desarrolladn Software ERP para almazaras y envasadoras de aceite. Con este
-    ERP permiten llevar un control de la trazabilidad, producción y distribución del aceite y está pensado para cubrir
-    las necesidades de cualquier empresa de aceite (oliva, girasol, soja, etc), almazara y envasadora.
-
-    Entre sus características destacan:
-
-    \begin{itemize}
-        \item Planning de entrada y salida de mercancías.
-        \item Control de necesidades de materias primas.
-        \item Generación automática de partes de envasado y planificación asistida.
-        \item Businnes Intelligence: cuentan con herramientas que permiten mostrar comparativas gráficas de ventas y 
-        beneficios y análisis de ventas.
-        \item Gesitón de cosecheros y puestos de compra.
-    \end{itemize}
-
-    Empresas reconocidas en el sector como Maeva (Granada) y Aceites Vallejo trabajan con este Software.
 
     \item \textbf{Campogest (https://www.campogest.com)}
     \newline
@@ -209,49 +143,13 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
         \item Gestión del Cuaderno de Campo Digital SIEX (de acuerdo a la normativa).
         \item Generación de informes de sostenibilidad.
     \end{itemize}
-
-    Además de las funcionalidades anteriores, también ofrecen otras más centradas en la ayuda de toma de decisión al
-    agricultor. Entre estas funcionalidades destacan:
-
-    \begin{itemize}
-        \item Informes de ayuda a la decisión basados en el análisis de datos del negocio y actividades realizadas 
-        en campo.
-        \item Análisis de la finca / parcela para ayudar en la toma de decisiones estratégicas sobre qué cultivar.
-        \item Herramienta de IA que predice las necesidades de riego del cultivo y ofrece recomendaciones para una
-        gestión del agua eficiente.
-    \end{itemize}
-
-    \item \textbf{AM System (https://amsystem.es)} 
-    \newline
-    AM System es una empresa que desarrolla software de gestión empresarial que ayuda a las empresas tanto en la 
-    gestión como en la toma de decisiones. Dentro de las soluciones que ofrecen, cuentan con un software de gestión
-    para las almazaras.
-
-    Este software se basa en facilitar el trabajo diario en una almazara a través de la automatización de las tareas
-    administrativas y de gestión. Entre sus características destacan: seguimiento del producto (entrada aceituna
-    hasta su comercialización), gestión de fincas, control de depósitos y almacenes, liquidaciones y generación
-    automática de cargos (entre otras).
-
-    \item \textbf{BlueAiOlive}
-    \newline 
-    ``BlueAiOlive es un software de gestión para almazaras y envasadoras de aceite, diseñado para cubrir todas
-    las necesidades de gestión del sector agrícola``. Así es como la empresa BlueAiCor define su ERP, destacando que a parte de cubrir
-    las funcionalidades básicas de un ERP, tales como control y administración empresarial, también cuentan con módulos
-    avanzados para la producción, envasado y comercialización del aceite de oliva.
-
-    Para poder satisfacer dichas funcionalidades, cuentan con una herramienta integral que centraliza procesos, optimiza
-    recursos y ofrece una visión global del negocio. De esta forma las empresas pueden tener un control total de cada etapa
-    del proceso productivo.
-
-    Entrando en el apartado del propio software, BlueAiOlive ofrece una app para oleicultores, donde se encontrará toda la
-    información centralizada y disponible para el cliente a través de una interfaz sencilla e intuitiva. A través de ella,
-    la empresa podrá llevar un control de la contabilidad, control del stock del almacén, facturación y liquidaciones, gestión
-    de salidas de aceite, gestión de rendimiento de laboratorio (entre otras más).
 \end{itemize}
 
-\section{Comparativa con el estado del arte}
+\section{Comparativa de soluciones y posicionamiento de Olivaris}
 
-Rellenar con la información de qué ofrece mi producto en comparación con lo que se ha analizado que hay en el mercado
+
+
+
 
 \section{Desarrollo de Software enfocado en Servicios Web}
 
