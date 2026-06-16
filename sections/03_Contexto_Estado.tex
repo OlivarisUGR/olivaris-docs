@@ -77,7 +77,7 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
         Entre esta información se destaca: trabajadores, maquinaria, horas trabajadas y productos.
         \item Toda actividad realizada y anotada quedará en el sistema y servirá para mejorar la toma de decisiones y 
         aumentar la rentabilidad de la gestión de la finca. 
-        \item Las fincas o cultivos se podrán importar en la aplicación con un archivo Excel o Shapes, permitiendo visualizar
+        \item Las fincas o cultivos se podrán importar en la aplicación con un archivo Excel, permitiendo visualizar
         las parcelas coloreadas según el tipo de cultivo y su superficie total.
         \item Gestión de roles, permitiendo que el usuario pueda gestionar aquellas actividades relacionadas con el.
     \end{itemize}
@@ -92,8 +92,7 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
     \begin{itemize}
         \item Un cuaderno de campo digital según la normativa (muy importante como hemos mencionado anteriormente).
         \item Control horario y partes de trabajo desde el móvil.
-        \item Facturación electrónica conectada con Hacienda, permitiendo llevar un control del personal y ver la
-        rentabilidad real por finca o cultivo.
+        \item Facturación electrónica conectada con Hacienda.
         \item Costes ingresos e informes automáticos en un solo lugar.
         \item Acceso desde cualquier dispositivo, tanto para móvil como tablet u ordenador.
         \item Generación de un cuaderno de campo digital, facilitando la gestión y el seguimiento de las actividades
@@ -123,9 +122,7 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
         a través del móvil.
         \item Generación de un cuaderno de campo teniendo en cuenta las recomendaciones en materia de Normativa Legal y 
         Protocolos de Calidad.
-        \item Generación de planes de abonado y notificaciones a través del correo electrónico al agricultor.
         \item Posibilidad de generar la finca o parcela a través de la cartografía SIGPAC, pudiendo asignar un propietario.
-        Gracias a esta funcionalidad los agricultores pueden dar de alta sus fincas y cultivos desde el mapa.
     \end{itemize}
 
     \item \textbf{Visual NACERT (https://visualnacert.com)}
@@ -139,7 +136,6 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
     \begin{itemize}
         \item Gestión de costes insumos, mano de obra y maquinaria, generando gráficos a partir de estos datos e 
         informes por parcela.
-        \item Gestión del equipo de trabajo y control de stock.
         \item Gestión del Cuaderno de Campo Digital SIEX (de acuerdo a la normativa).
         \item Generación de informes de sostenibilidad.
     \end{itemize}
@@ -147,11 +143,62 @@ pueden adaptar al sector. Vamos a proceder a comentar algunos de ellos:
 
 \section{Comparativa de soluciones y posicionamiento de Olivaris}
 
+Una vez analizados los sistemas anteriores, es necesario contrastar sus capacidades con la propuesta técnica de Olivaris. Mientras 
+que la mayoría de herramientas comerciales buscan cubrir todo el espectro agrícola de forma general, Olivaris busca 
+resolver el problema específico de la comunicación y gestión compartida entre el agricultor y las entidades habilitadas de acuerdo al 
+marco normativo.
 
+Para comparar la propuesta de Olivaris con respecto a otras plataformas se presenta la siguiente tabla:
 
+\begin{table}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Criterios de comparación} & \textbf{Agroptima} & \textbf{AgriCloud} & \textbf{Agroex} & \textbf{Campogest} & \textbf{Visual Nacert} & \textbf{Olivaris} \\ \hline
+Gestión de parcelas & Sí & Sí & Sí & Sí & Sí & \textbf{Sí} \\ \hline
+Uso de SIGPAC / Geoespacial & Sí & Sí & Sí & Sí & Sí & \textbf{Sí} \\ \hline
+Registro actividades agrícolas & Sí & Sí & Sí & Sí & Sí & \textbf{Sí} \\ \hline
+Gestión fitosanitarios & Sí & Sí & Sí & Sí & Sí & \textbf{Sí} \\ \hline
+Acceso móvil & App & Web/App & Parcial & App & App & \textbf{App} \\ \hline
+Acceso web & Sí & Sí & Sí & No & Sí & \textbf{No} \\ \hline
+Funcionamiento offline & Sí & No & No & Sí & Sí & \textbf{No} \\ \hline
+Generación de informes & Sí & Sí & Sí & Sí & Sí & \textbf{Inicial} \\ \hline
+Gestión colaborativa & Media & Media & Industrial & Técnica & Media & \textbf{Alta} \\ \hline
+Roles y permisos & Básicos & Sí & Complejos & Sí & Sí & \textbf{Avanzados} \\ \hline
+Orientación específica olivar & No & No & No & No & No & \textbf{Sí} \\ \hline
+Marco SIEX/REA/CUE & Parcial & Sí & Parcial & Sí & Sí & \textbf{Diseño} \\ \hline
+\end{tabular}%
+}
+\caption{Comparativa de Olivaris frente a otras soluciones de gestión agrícola.}
+\label{tab:comparativa-software}
+\end{table}
 
+\subsection{Análisis del puesto que ocupa Olivaris}
 
-\section{Desarrollo de Software enfocado en Servicios Web}
+Tras realizar la comparativa, se observa que Olivaris ocupa un nicho estratégico que las soluciones actuales no cubren de forma equilibrada. El
+sistema a desarrollar destaca por las siguientes características:
+
+\begin{itemize}
+    \item \textbf{Especialización funcional:} a diferencia de Agroptima o AgriCloud, que son herramientas multicultivo, Olivaris está diseñada pensando 
+    en los ciclos y necesidades del olivar, simplificando la interfaz y priorizando la usabilidad.
+
+    \item \textbf{Modelo de delegación de permisos:} anilizando otras plataformas, la gran diferencia de Olivaris radica en su sistema de roles y permisos. 
+    Mientras otras aplicaciones se centran en el uso individual, Olivaris modela la relación entre agricultor y entidad habilitada. Esto permite que una 
+    cooperativa gestione las actividades fitosanitarias en nombre de sus socios con una alta trazabilidad y siguiendo la normativa SIEX.
+
+    \item \textbf{Simplicidad:} frente a ERPs complejos como Agroex, orientados a la gran empresa y con altos costes, Olivaris ofrece un Producto Mínimo Viable (MVP) 
+    enfocado en la agilidad móvil, rápida adaptación y sencillez.
+
+    \item \textbf{Preparación para la integración administrativa:} aunque herramientas como Visual Nacert ya están integradas oficialmente, Olivaris se presenta como una
+    una alternativa de código abierto y extensible cuyo modelo de datos es altamente compatible con la estructura de la administración, facilitando que pequeños 
+    desarrolladores o cooperativas locales puedan tener su propia tecnología sin depender de grandes licencias comerciales.
+\end{itemize}
+
+En conclusión, Olivaris pretende ser una herramienta de código abierto, ágil y colaborativa para el día a día del agricultor y su asesor técnico, con una base para 
+una futura integración con los servicios del REA y CUE digital.
+
+\section{Tecnologías para el desarrollo de plataformas web y móviles}
 
 Históricamente, el desarrollo de servicios web se fundamentó en la Arquitectura Orientada a Servicios (SOA). Como 
 indicaban Ortiz y Riestra (2009) \cite{evolucionDinamicaSistemasSoftware}, el reto principal era lograr la 
@@ -843,3 +890,11 @@ buscando un equilibrio entre rendimiento, seguridad y mantenibilidad.
         incluso ante fallos del sistema.
     \end{itemize}
 \end{itemize}
+
+\section{Conclusiones del estado del arte}
+
+El análisis realizado muestra que existen soluciones consolidadas para la gestión agrícola y oleícola, muchas de ellas orientadas al cuaderno de campo, la gestión de 
+parcelas, la generación de informes o el control económico de explotaciones. Sin embargo, también se observa la oportunidad de desarrollar una plataforma centrada en 
+la gestión colaborativa del olivar, con un modelo de permisos entre agricultores y entidades habilitadas y con un diseño alineado con el marco SIEX/REA/CUE. En este 
+contexto, Olivaris se plantea como un prototipo funcional y extensible que permite explorar estas necesidades desde una arquitectura propia basada en servicios web, 
+gestión geoespacial y control de acceso por roles.
