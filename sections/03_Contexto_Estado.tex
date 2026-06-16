@@ -287,15 +287,6 @@ Dentro de este tipo de arquitectura se pueden encontrar los siguientes tipos:
     son componentes independientes que realizan una tarea específica de procesamiento o transformación de los datos que reciben 
     del \textit{pipe}. Además, éstos son autónomos y no deben conocer la existencia de otros filtros en la cadena.
 
-    Continuando con los filtros, éstos se pueden clasificar en distintos tipos según su rol funcional dentro de la topología:
-
-    \begin{itemize}
-        \item \textit{Producer (source)}: es el punto de inicio que genera los datos o los lee.
-        \item \textit{Transformer}: es el encargado de realizar transformaciones de datos.
-        \item \textit{Tester}: valida o filtra los datos baśandose en criterios específicos.
-        \item \textit{Consumer (Sink)}: destino final donde terminan los datos.
-    \end{itemize}
-
     En cuanto a sus características, esta arquitectura destaca por un alto desacoplamiento, ya que al ser los filtros
     independientes, es fácil intercambiar, añadir o modificar etapas en el pipeline sin afectar al resto del sistema. 
     Además, este estilo es ``\textit{stateless}'' entre filtros, es decir, cada filtro procesa lo que recibe y lo pasa 
@@ -329,18 +320,6 @@ Dentro de este tipo de arquitectura se pueden encontrar los siguientes tipos:
     un registro o catálogo que contiene información sobre el plug-in, cómo acceder a él y qué protocolos utiliza. Por
     parte del \textit{plug-in}, para que este funcione debe cumplir con un contrato (interfaz) estándar definido por 
     el sistema central. 
-
-    Valorando sus características arquitectónicas más relevantes, se clasifican en:
-
-    \begin{itemize}
-        \item Costo y simplicidad: es relativamente sencillo de implementar y muy eficiente en términos de costo para 
-        productos que requieren extensibilidad.
-        \item Evolutividad: es su mayor fortaleza ya que permite añadir funcionalidades de forma aislada y rápida a través 
-        de plug-ins.
-        \item Facilidad de prueba (testability): los plug-ins se pueden probar de forma aislada del sistema central.
-        \item Escalabilidad y tolerancia a fallos: depende de la implementación, pero al ser frecuentemente monolítico, 
-        no escala tan bien como los sistemas microservicios.
-    \end{itemize}
 
     Como conclusión, es una arquitectura ideal para aplicaciones que necesitan evolucionar constantemente añadiendo nuevas 
     funciones o lógica según el cliente o el caso de uso, sin tener que reescribir el núcleo del sistema.
@@ -392,13 +371,13 @@ Entre sus tipos, se pueden destacar los siguientes:
     Se van a distinguir dos formas fundamentales de implementar este estilo:
 
     \begin{itemize}
-        \item Topología de Broker (intermediario)
+        \item Topología de Broker (intermediario):
         \newline
         Esta topología está caracterizada por no tener un orquestador central, siendo el flujo de mensajes distrbuido
         gracias a un \textit{broker} ligero. Funciona mediante una cadena de eventos: un componente procesa un evento 
         iniciador, publica lo que hizo como un "evento de procesamiento", y otros componentes interesados reaccionan a él.
 
-        \item Topología de Mediador
+        \item Topología de Mediador:
         \newline
         Esta topología se utiliza cuando se requiere un control sobre el flujo de trabajo. Para ello, se cuenta con un
         ``Mediador de Eventos'' que será el encargado, conociendo toda la lógica de negocio, de coordinar los pasos 
@@ -410,23 +389,12 @@ Entre sus tipos, se pueden destacar los siguientes:
     de técnicas (como colas de errores) que permitan gestionar fallos sin detener el sistema y que garanticen que los mensajes
     no se pierdan.
 
-    Según el libro, la calificación general que se da para este estilo es la siguiente:
-
-    \begin{itemize}
-        \item Escalabilidad y rendimiento: son sus mayores fortaleza, ya que al ser asíncrona y desacoplada permite procesar 
-        volúmenes masivos de datos.
-        \item Agilidad y desplegabilidad: al estar desacoplados, los componentes pueden cambiar y desplegarse con facilidad.
-        \item Simplicidad y facilidad de prueba: es un estilo muy complejo de diseñar, implementar y, sobre todo, de probar 
-        debido a su naturaleza no determinista y distribuida.
-    \end{itemize}
-
     Como conclusión, su uso es recomendado en aplicaciones que necesitan reaccionar en tiempo real a grandes flujos de información, 
     como en sistemas de procesamiento de datos de telemetría.
 
     \item \textbf{Arquitectura de microservicios}
-    \newline
 
-    Richards y Ford la definen como la "estrella brillante" del ecosistema actual, diseñada específicamente para abordar los problemas 
+    Richards y Ford la definen como la ``estrella brillante'' del ecosistema actual, diseñada específicamente para abordar los problemas 
     de escalabilidad y agilidad de los sistemas monolíticos.
 
     Esta arquitectura se basa en el concepto de desacoplamiento extremo, tanto a nivel técnico como de dominio. A diferencia de otros 
@@ -828,10 +796,56 @@ constituyendo la primera barrera de defensa. A continuación, se detallan los me
     segundo factor; sin embargo, Puede degradar la experiencia de usuario (UX) al añadir fricción y lentitud al proceso de entrada.
 \end{itemize}
 
-\subsection{Elección de tecnologías}
+\subsection{Elección de arquitectura y tecnologías}
 
-Tras el análisis de las opciones disponibles, se han seleccionado las siguientes tecnologías para el desarrollo del proyecto Olivaris, 
-buscando un equilibrio entre rendimiento, seguridad y mantenibilidad.
+Tras el análisis de las opciones disponibles en cuanto a arquitectura, las decisiones tomadas para la creación del sistema son las 
+siguientes:
+
+\subsubsection{Arquitectura de alto nivel y comunicación}
+
+La elección de una arquitectura \textbf{cliente-servidor} es el punto de partida para garantizar el desacoplamiento entre la interfaz de 
+usuario y la lógica de negocio. Este modelo permite que el cliente móvil se centre exclusivamente en la experiencia del agricultor a pie 
+de campo, mientras que el servidor gestiona de forma centralizada la persistencia de datos y las reglas de validación. Además, esta estructura 
+facilita un soporte multiplataforma, permitiendo que en el futuro se puedan añadir otros clientes, como una versión web, sin modificar la 
+lógica interna del sistema.
+
+Para la comunicación entre estos componentes, se ha implementado una \textbf{API REST}, consolidada como el estándar ``de facto'' por su simplicidad y 
+facilidad de integración con dispositivos móviles. Al tratarse de una arquitectura \textit{stateless}, el servidor no almacena información de la sesión 
+entre peticiones, lo que mejora significativamente la escalabilidad y la independencia de cada consulta. El intercambio de información se realiza mediante 
+\textbf{JSON}, un formato de texto ligero, rápido de procesar y fácil de leer tanto por humanos como por los motores de desarrollo modernos.
+
+\subsubsection{Elección de arquitectura monolítica}
+
+A pesar del auge de los microservicios, para este proyecto se ha seleccionado una \textbf{arquitectura monolítica}. Esta decisión responde principalmente al 
+alto acoplamiento existente entre las entidades del dominio de Olivaris, como las actividades, parcelas y recintos. Centralizar la lógica en una única unidad 
+de despliegue simplifica en gran medida la gestión de la coherencia de datos y las validaciones de negocio, evitando la complejidad técnica que supondría 
+coordinar múltiples servicios distribuidos.
+
+Además, a diferencia de una arquitectura distribuida, las transacciones realizadas con un monolito sobre la base de datos son más rápidas y el desarrollo es más ágil, permitiendo evolucionar el 
+sistema sin romper contratos entre servicios independientes y evitando gestionar fallos distribuidos, lo cual resultaría costoso y complejo para el alcance de este proyecto.
+
+\subsubsection{Autenticación, autorización y control de roles}
+
+La seguridad será gestionada en Olivaris mediante \textbf{JSON Web Token (JWT)}. Este mecanismo es ideal para aplicaciones móviles porque permite identificar al 
+usuario de forma fehaciente en cada petición mediante un token firmado digitalmente, eliminando la necesidad de sesiones activas en el servidor.
+
+Gracias a la información contenida en el JWT, el backend puede restringir el acceso a funcionalidades específicas según el perfil o rol que tiene el usuario. Este 
+control es relevante porque permite validar legalmente la delegación de permisos y qué acciones puede realizar cada usuario sobre el sistema.
+
+\subsubsection{Persistencia y despliegue}
+
+Para la gestión de los datos, el servidor utiliza un \textbf{ORM (JPA e Hibernate)}, lo que permite mapear los objetos de Java directamente a una base de datos 
+relacional de forma automática. Esta práctica optimiza el trabajo con la base de datos, reduce errores y agiliza el desarrollo al ocultar la complejidad de las 
+operaciones SQL manuales.
+
+Finalmente, el despliegue se ha realizado mediante tecnologías de contenerización como \textbf{Docker}. El uso de contenedores garantiza que la aplicación se ejecute 
+de la misma forma en cualquier entorno, ya sea en local o en el servidor final, empaquetando el código junto con sus bibliotecas y dependencias. Además, se utiliza \textbf{Nginx} 
+como proxy inverso para centralizar el tráfico web, manejar certificados SSL y mejorar la seguridad general del sistema sin exponer la aplicación directamente al exterior.
+
+\subsubsection{Lenguajes de programación}
+
+En cuanto a los lenguajes de programación para el desarrollo del sistema, se han seleccionado los siguientes, buscando un equilibrio 
+entre rendimiento, seguridad y mantenibilidad.
 
 \begin{itemize}
     \item \textbf{Frontend: React Native}
