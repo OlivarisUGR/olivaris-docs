@@ -878,17 +878,19 @@ entre rendimiento, seguridad y mantenibilidad.
         \item Spring Boot ofrece una estructura de proyecto coherente y estandarizada. La gestión de acceso a datos y seguridad se realiza bajo patrones conocidos, 
         facilitando que cualquier desarrollador se integre rápidamente en cualquier proyecto.
         \item Cuenta con \textit{Spring Security}, uno de los marcos de seguridad más avanzados y granulares del mercado.
-        \item El sistema está preparado para manejar transacciones ACID complejas. Además, la facilidad de Java para generar reportes en PDF y su compatibilidad 
-        con sensores IoT aseguran que el proyecto pueda crecer sin limitaciones técnicas.
+        \item El sistema está preparado para manejar transacciones ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad) complejas. Además, la facilidad de Java 
+        para generar reportes en PDF y su compatibilidad con sensores IoT aseguran que el proyecto pueda crecer sin limitaciones técnicas.
     \end{itemize}
 
-    Teniendo en cuenta lo anterior, aunque inicialmente la carga de procesamiento no sea muy alta, SpringBoot permite manejar las transacciones ACID de forma
-    impecable y este proyecto, con una sola acción se van a desencadenar diferentes acciones ``por debajo''. Además, Java cuenta con librerías muy potentes
-    para generar PDFs y si en un futuro se deciden añadir funcionalidades extras, la escalabilidad es muy buena (integración con sensore IoT).
+    Teniendo en cuenta lo anterior, aunque inicialmente la carga de procesamiento no sea elevada, Spring Boot permite gestionar transacciones ACID de forma fiable. 
+    Además, en este proyecto una única acción desencadenará varios procesos internos, por lo que resulta una opción adecuada.
 
-    También lo he decidido así porque Java con SpringBoot es una tecnología muy demandada en el mercado laboral actualmente, por lo que considero que es un buen
-    punto para empezar a aprenderlo.
+    Por otro lado, Java dispone de bibliotecas muy completas para la generación de PDF y, si en el futuro se incorporan nuevas funcionalidades, ofrece una buena 
+    capacidad de escalado, por ejemplo mediante la integración con sensores IoT.
 
+    También he elegido esta tecnología porque Java y Spring Boot siguen teniendo una alta demanda en el mercado laboral, por lo que considero que este proyecto es 
+    una buena oportunidad para comenzar a profundizar en su aprendizaje.
+    
     \item \textbf{Base de datos: PostgreSQL}
     \newline
     Se ha optado por un modelo relacional (SQL) debido a la complejidad de las asociaciones y dependencias jerárquicas entre las entidades del dominio de Olivaris.
@@ -900,7 +902,7 @@ entre rendimiento, seguridad y mantenibilidad.
         tablas interconectadas.
         \item PostgreSQL destaca sobre otros motores SQL por su soporte avanzado de tipos no estructurados (\hyperlink{jsonb}{JSONB}), permitiendo lo mejor de los dos 
         mundos: la rigidez del SQL y la flexibilidad de NoSQL en campos específicos.
-        \item Su estricto cumplimiento de los principios ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad) garantiza que la información nunca se corrompa, 
+        \item Su estricto cumplimiento de los principios ACID garantiza que la información nunca se corrompa, 
         incluso ante fallos del sistema.
     \end{itemize}
 \end{itemize}
