@@ -71,7 +71,7 @@ Para alcanzar el objetivo general, se establecen los siguientes objetivos espec�
     \item \textbf{Autenticación:} configurar un sistema de seguridad robusto basado en el estándar JSON Web Token (JWT) para gestionar el acceso a la plataforma. Esto permitirá proteger la privacidad de la información 
     según el rol asignado.
 
-    \item \textbf{Autorización y gestión de roles:} desarrollar la lógica de negocio que permita la coexistencia de tres perfiles bien definidos (administrador, entidad habilitada y agricultor). La funcionalidad clave de este 
+    \item \textbf{Autorización y gestión de roles:} desarrollar la lógica de negocio que permita la coexistencia de perfiles bien definidos (administrador, entidad habilitada y agricultor). La funcionalidad clave de este 
     módulo será la delegación segura, permitiendo que las entidades habilitadas gestionen las actividades de los agricultores (bajo previa autorización).
 
     \item \textbf{Módulo de cumplimiento y exportación normativa:} capacidad de poder generar y exportar el Cuaderno Digital de Explotación (CUE) con los campos y formatos oficiales exigidos por el marco normativo actual.
@@ -87,7 +87,7 @@ proyecto.
 El desarrollo se centrará en construir un producto mínimo viable (MVP) completamente operativo que cubra el núcleo central de la gestión agrícola. El alcance técnico incluye:
 
 \begin{itemize}
-    \item \textbf{Arquitectura móvil completa:} se implementará una aplicación móvil funcional (frontend y backend) que centraliza el flujo de trabajo comercial del cuaderno digital.
+    \item \textbf{Arquitectura móvi:} se implementará una aplicación móvil funcional (frontend y backend) que centraliza el flujo de trabajo comercial del cuaderno digital.
     
     \item \textbf{Estructura de datos normalizada:} se diseñará y desplegará una base de datos relacional modelada bajo los estándares de información del CUE y el SIEX, asegurando la 
     integridad de los registros agrícolas y fitosanitarios.
@@ -109,7 +109,7 @@ Por motivos de viabilidad temporal y de recursos, quedan excluidos del desarroll
     
     \item \textbf{Persistencia en modo desconectado (\textit{offline}):} el sistema requiere una conexión activa a internet para operar, quedando fuera del alcance la sincronización compleja de datos en zonas sin cobertura de red.
      
-    \item \textbf{Ecosistema multiplataforma:} el desarrollo se limita a un único cliente accesible a través de un dispositivo móvil, excluyendo la creación de aplicaciones web.
+    \item \textbf{Ecosistema multiplataforma:} el desarrollo se limita a un solo tipo de cliente accesible a través de un dispositivo móvil, excluyendo la creación de aplicaciones web.
 \end{itemize}
 
 \subsection{Justificación de las decisiones}

@@ -1,8 +1,8 @@
 \chapter{Análisis y requisitos}\label{cap:especificación}
 
-Antes de empezar con el desarrollo e implementación del sistema es necesario realizar una fase previa. En esta fase se 
-van a extraer los requisitos que va a tener el sistema junto con las funcionalidades que tendrá. A 
-continuación se va a explicar el proceso que se ha seguido.
+Antes de comenzar con el desarrollo y la implementación del sistema, es necesario llevar a cabo una fase previa de análisis. 
+En esta etapa se identificarán y definirán los requisitos que deberá cumplir el sistema, así como las funcionalidades que 
+ofrecerá. A continuación, se describe el proceso seguido para realizar esta fase.
 
 \section{Recopilación de información}
 
@@ -124,7 +124,7 @@ tomó la decisión de elaborar un sistema con una base de datos propia, que teng
 rellenar los datos del CUE digital. De esta manera, el sistema también estaría adaptado a una posible integración futura de la API, ya que sería añadir
 el cliente de esta y que los datos sean enviados directamente a los servidores del REA y CUE que maneja el ministerio en vez de almacenarlos en las tablas.
 
-Para obtener información sobre el CUE, se han accedido a los siguientes anexos principalmente:
+Para obtener información sobre el CUE, se han accedido a los siguientes anexos del SIEX:
 
 \begin{itemize}
     \item \textbf{Anexo IX - Modelo de autorización de acceso a la información del REA y CUE:} este anexo se ha utilizado para saber qué permisos son
@@ -138,7 +138,7 @@ Para obtener información sobre el CUE, se han accedido a los siguientes anexos 
     van a interactuar con la aplicación y entre ellos, pudiendo distinguir entre tres: empresa desarrollador del software, entidad habilitada y titular de la
     explotación.
 
-    \item \textbf{Anexo III - Registros de los tratamientos fitosanitarios y de fertilización:} este anexo se ha utilizado para investigar sobre qué datos de una
+    \item \textbf{Anexo III - Registros de los tratamientos fitosanitarios y de fertilización (BOE):} este anexo se ha utilizado para investigar sobre qué datos de una
     explotación así como de una actividad fitosanitaria son utilizados para el cuaderno de explotación.
 \end{itemize}
 
@@ -239,7 +239,7 @@ Para la realización de las Historias de Usuario del presente proyecto, la estru
 \textit{\textbf{Como} [tipo de usuario que realiza la acción], \textbf{quiero} [la acción que se quiere realizar] \textbf{para} 
 [resultado obtenido].}
 
-Además de la historia de usuario, se ha añadido el identificador de esa historia de usuario y un título identificativo.
+Además de la historia de usuario, se ha añadido el identificador de esa historia de usuario y un título.
 
 Según los análisis realizados y la información obtenida, se han establecido las siguientes historias de usuario:
 
@@ -595,7 +595,7 @@ completada. Los criterios de aceptación para cada historia de usuario son los s
     \item \textbf{HU-12}
     \begin{itemize}
         \item Dado que elimino una actividad, si esta existe, entonces desaparece.
-        \item Dado que la actividad contenía datos en tablas específicas, entonces los datos asociados se eliminan o recalculan.
+        \item Dado que la actividad contenía datos en tablas específicas, entonces los datos asociados se eliminan.
     \end{itemize}
 \end{itemize}
 
@@ -724,7 +724,7 @@ La estructura es del tipo \textit{RF-[ID de HU].XX}.
         usuarios de su entidad con permisos.
         \item \textbf{RF-08.10.2)} Un usuario que pertenece a una entidad con rol ``agricultor'' solo puede registrar actividades para sí mismo, salvo que 
         pertenezca a una entidad con permisos delegados, en cuyo caso esta función la hará un admin de la entidad.
-        \item \textbf{RF-08.10.3)} Un usuario con rol de ``administrador'' podrá registrar actividades para sí mismo.
+        \item \textbf{RF-08.10.3)} Un usuario con rol de ``administrador'' podrá registrar actividades para sí mismo en caso de no pertenecer a una entidad como agricultor.
     \end{itemize}
     \item \textbf{RF-09.1)} El sistema debe permitir registrar actividades de tipo ``Fitosanitaria''.
     \item \textbf{RF-09.2)} El sistema debe solicitar los campos específicos: producto, cantidad, nif del usuario que lo realiza y tipo cultivo.
@@ -772,7 +772,7 @@ escalabilidad, etc. Los requisitos no funcionales planteados son los siguientes:
     \item \textbf{RNF1.1)} Interfaz de usuario fácil de manejar, con accesos rápidos a las funciones más importantes y con 
     una navegación justa.
     \item \textbf{RNF1.2)} El sistema tiene que ser compatible con cualquier dispositivo móvil, independientemente del 
-    sistema operativo utilizado (Android o iOS).
+    sistema operativo.
 \end{itemize}
 
 \subsection{Seguridad}
@@ -792,7 +792,7 @@ escalabilidad, etc. Los requisitos no funcionales planteados son los siguientes:
 \begin{itemize}
     \item \textbf{RNF3.1)} El sistema debe estar diseñado de forma que pueda facilitar la escalabilidad añadiendo nuevas
     funcionalidades, su mantenimiento y actualización de los datos.
-    \item \textbf{RNF3.2)} El sistema debe estar documentado de forma adecuada y suficiente, de manera que pueda permitir
+    \item \textbf{RNF3.2)} El sistema debe estar documentado de forma adecuada, de manera que pueda permitir
     a otros usuarios entender el código.
     \item \textbf{RNF3.3)} El sistema está sometido a pruebas y test (unitarios, integración, etc), que permiten validar
     su correcto funcionamiento.
