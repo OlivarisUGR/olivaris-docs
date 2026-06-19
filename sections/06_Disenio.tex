@@ -23,7 +23,7 @@ Para el diseño del sistema se ha elegido una \textbf{arquitectura monolítica} 
 Elegir otro tipo de arquitectura como una basada en microservicios, implicaría dividir servicios que están altamente relacionados, introduciendo una ``frontera'' entre ellos. Esto provocaría 
 posibles fallos distribuidos, llamadas entre servicios a través de APIs, autenticación entre servicios, despliegues independientes y una mayor complejidad al realizar operaciones entre entidades. 
 
-Por ejemplo, al crear una actividad es necesario tener en cuenta su relación con un recinto, la parcela a la pertenece dicho recinto, el usuario que la realiza y la entidad a la que pertenece (en caso de existir),
+Por ejemplo, al crear una actividad es necesario tener en cuenta su relación con un recinto, la parcela a la que pertenece dicho recinto, el usuario que la realiza y la entidad a la que pertenece (en caso de existir),
 además de aplicar validaciones según los roles del usuario. Esta situación, en una arquitectura basada en microservicios, sería mucho más costosa de gestionar, mientras que en un monolito resulta más sencilla al
 disponer de acceso directo a todos los componentes del sistema.
 
@@ -107,7 +107,7 @@ habilitada, tras recibir la delegación de permisos correspondiente, puede actua
 \section{Modelos de datos}
 
 El modelo de datos se representará principalmente mediante dos esquemas: el \textbf{esquema de base de datos} y el \textbf{diagrama de clases}. El primero es una representación gráfica de las entidades y sus relaciones dentro de la base de datos; el segundo ofrece una 
-visión de las clases del sistema, detallando sus atributos, métodos y las conexiones entre ellas.
+visión general de las clases del sistema, detallando las conexiones entre ellas.
 
 \subsection{Esquema de Base de Datos}
 
@@ -115,7 +115,7 @@ El esquema de bases de datos del sistema es el siguiente:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/schema_db_s3.png}
+    \includegraphics[width=0.8\textwidth]{figures/schema_db_s3.png}
     \caption{Diagrama E/R de la base de datos}
     \label{fig:er_diagram}
 \end{figure}
@@ -323,7 +323,7 @@ El diagrama de clases del sistema es el siguiente:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/class-diagram.png}
+    \includegraphics[width=0.8\textwidth]{figures/class-diagram.png}
     \caption{Diagrama de clases}
     \label{fig:class-diagram}
 \end{figure}
@@ -426,7 +426,7 @@ sigue siendo válido y, si no lo es, se intenta renovar la sesión antes de envi
 A nivel de sincronización, la aplicación sincroniza con el backend los elementos que forman parte del funcionamiento real del sistema: autenticación, información del usuario, entidades, parcelas, actividades y listado de usuarios del 
 sistema. En estas pantallas se hacen peticiones al servidor cuando son abiertas o cuando se realiza alguna operación de alta, edición o borrado, para asegurar que la información mostrada esté actualizada. 
 
-La elección de este enfoque responde sobre todo a dos motivos. El primero es el rendimiento: al no depender de una capa global pesada, la aplicación carga más rápido y solo pide al servidor los datos necesarios en cada momento. El 
+La elección de este enfoque responde sobre todo a dos motivos. El primero es el rendimiento: la aplicación carga más rápido y solo pide al servidor los datos necesarios en cada momento. El 
 segundo es la experiencia de uso: el usuario percibe una interfaz más estable, con menos esperas y con una sesión que se conserva entre aperturas. También ayuda a mantener el código más claro, porque cada pantalla gestiona su propio 
 ciclo de carga sin acoplarse al resto de la aplicación. En conjunto, este modelo resulta suficiente para el tipo de aplicación desarrollada y encaja bien con una interfaz móvil en la que se prioriza la sencillez, la rapidez y la 
 continuidad de sesión.
