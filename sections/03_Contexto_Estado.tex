@@ -775,7 +775,7 @@ de campo, mientras que el servidor gestiona de forma centralizada la persistenci
 facilita un soporte multiplataforma, permitiendo que en el futuro se puedan añadir otros clientes, como una versión web, sin modificar la 
 lógica interna del sistema.
 
-Para la comunicación entre estos componentes, se ha implementado una \textbf{API REST}, consolidada como el estándar ``de facto'' por su simplicidad y 
+Para la comunicación entre estos componentes, se implementará una \textbf{API REST}, consolidada como el estándar ``de facto'' por su simplicidad y 
 facilidad de integración con dispositivos móviles. Al tratarse de una arquitectura \textit{stateless}, el servidor no almacena información de la sesión 
 entre peticiones, lo que mejora significativamente la escalabilidad y la independencia de cada consulta. El intercambio de información se realiza mediante 
 \textbf{JSON}, un formato de texto ligero, rápido de procesar y fácil de leer tanto por humanos como por los motores de desarrollo modernos.
@@ -787,8 +787,10 @@ alto acoplamiento existente entre las entidades del dominio de Olivaris, como la
 de despliegue simplifica en gran medida la gestión de la coherencia de datos y las validaciones de negocio, evitando la complejidad técnica que supondría 
 coordinar múltiples servicios distribuidos.
 
-Además, a diferencia de una arquitectura distribuida, las transacciones realizadas con un monolito sobre la base de datos son más rápidas y el desarrollo es más ágil, permitiendo evolucionar el 
-sistema sin romper contratos entre servicios independientes y evitando gestionar fallos distribuidos, lo cual resultaría costoso y complejo para el alcance de este proyecto.
+Además, frente a una arquitectura distribuida, una arquitectura monolítica permite realizar transacciones sobre la base de datos de forma más eficiente, simplificando
+el desarrollo y el mantenimiento del sistema. Al tratarse de una única aplicación, los cambios pueden realizarse sin preocuparse por la compatibilidad entre las 
+interfaces de comunicación de distintos servicios, evitando también la complejidad asociada a la gestión de fallos distribuidos. Estas ventajas hacen que esta 
+arquitectura sea la opción más adecuada para el alcance del presente proyecto.
 
 \subsubsection{Autenticación, autorización y control de roles}
 
