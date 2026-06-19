@@ -700,41 +700,7 @@ según la estrategia que se quiera seguir.
 
 Según la infraestructura, el despliegue se puede realizar en servidores físicos propios (\textit{on-premise}), a través 
 de proveedores en la nube (como \textit{AWS}), o ejecutándose a través de eventos, sin gestión directa de servidores 
-(\textit{serverless}). Por otro lado, según la estrategia de liberación que se siga, se encuentran los siguientes 
-tipos: \cite{tiposDespliegue} 
-
-\begin{itemize}
-    \item \textit{Rolling upgrade}
-    \newline
-    Se realiza una actualización secuencial del servicio, actualizando uno a uno los componentes. Este tipo de despliegue 
-    tiende a ser lento tanto en su ejecución como en su capacidad de volver atrás (\textit{rollback}) y generalmente se emplea en 
-    combinación con otras estrategias.
-
-    \item \textit{Blue/Green}
-    \newline
-    Estrategia muy común que implica el uso de dos versiones del servicio: la versión nueva (\textit{blue}) y la versión estable 
-    existente (\textit{green}). Los usuarios continúan utilizando la versión verde mientras se prueba y evalúa la versión azul. 
-    Cuando se considera lista, los usuarios cambian a la versión azul. Si se detecta algún problema, es posible regresar a la 
-    versión verde.
-
-    \item \textit{ Red/Black}
-    \newline
-    Similar a la estrategia blue/green, con la diferencia de que se desvía una pequeña porción del tráfico desde la 
-    versión negra (estable) hacia la nueva versión. Luego de evaluar su rendimiento, se realiza un desvío aún más grande 
-    del tráfico y, finalmente, se redirecciona todo el tráfico hacia la nueva versión. Se mantiene la versión negra en 
-    línea para permitir un \textit{rollback} rápido si es necesario.
-
-    \item \textit{Dark Launcher}
-    \newline
-    Se implementa una nueva versión en paralelo a la versión estable existente. La particularidad aquí es que se duplica 
-    una parte del tráfico para observar cómo se comporta la nueva versión bajo una carga duplicada. Luego, se realiza un 
-    redireccionamiento parcial del tráfico hacia la nueva versión.
-
-    \item \textit{Canary Release}
-    \newline
-    Esta estrategia implica un despliegue parcial basado en el tiempo y el rendimiento de la nueva versión, consiguiendo
-    de esta manera una implementación gradual y controlada.
-\end{itemize}
+(\textit{serverless}).
 
 En cuanto a las tecnologías y herramientas que se pueden utilizar para realizar el despliegue y gestionar una aplicación,
 se pueden clasificar en:
@@ -743,7 +709,7 @@ se pueden clasificar en:
     \item Herramientas de contenerización, siendo las más utilizadas son Dokcer y Kubernetes. Por un lado, Docker 
     \cite{docker} empaqueta software en unidades estandarizadas llamadas contenedores que incluyen todo lo necesario 
     para que el software se ejecute, incluidas bibliotecas y herramientas de sistema, pudiendo ejecutar aplicaciones 
-    en cualquier entorno. Por otro lado, Kuberntes \cite{kubernetes} facilita la automatización y la configuración 
+    en cualquier entorno. Por otro lado, Kubernetes \cite{kubernetes} facilita la automatización y la configuración 
     declarativa, además de administrar contenedores, orquestando la infraestructura de cómputo, redes y almacenamiento 
     para que las cargas de trabajo de los usuarios no tengan que hacerlo.
     \item Herramientas de automatización, como GitHub Actions o Jenkins que ejecutan los flujos de trabajo de forma automática.
@@ -885,10 +851,7 @@ entre rendimiento, seguridad y mantenibilidad.
     Teniendo en cuenta lo anterior, aunque inicialmente la carga de procesamiento no sea elevada, Spring Boot permite gestionar transacciones ACID de forma fiable. 
     Además, en este proyecto una única acción desencadenará varios procesos internos, por lo que resulta una opción adecuada.
 
-    Por otro lado, Java dispone de bibliotecas muy completas para la generación de PDF y, si en el futuro se incorporan nuevas funcionalidades, ofrece una buena 
-    capacidad de escalado, por ejemplo mediante la integración con sensores IoT.
-
-    También he elegido esta tecnología porque Java y Spring Boot siguen teniendo una alta demanda en el mercado laboral, por lo que considero que este proyecto es 
+    Añadiendo a lo anterior, he elegido esta tecnología porque Java y Spring Boot siguen teniendo una alta demanda en el mercado laboral, por lo que considero que este proyecto es 
     una buena oportunidad para comenzar a profundizar en su aprendizaje.
     
     \item \textbf{Base de datos: PostgreSQL}
