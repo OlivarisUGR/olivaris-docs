@@ -26,7 +26,7 @@ Las pruebas de carga se han diseñado para medir y analizar las siguientes métr
 \textbf{Locust} es una herramienta de código abierto que permite realizar tests sobre una aplicación. El comportamiento es definido a través de un script en Python que
 permite evaluar cómo rinde el sistema ante muchas peticiones de usuarios simultáneos.
 
-Para poder usarlo, se ha tenido que instalar la dependencia de locust en un entorno virutal en Python y, además, se han creado dos archivos. Estos archivos son los
+Para poder usarlo, se ha tenido que instalar la dependencia de locust en un entorno virtual en Python y, además, se han creado dos archivos. Estos archivos son los
 siguientes:
 
 \begin{itemize}
@@ -59,7 +59,7 @@ La siguiente tabla presenta un resumen de todas las pruebas de carga ejecutadas:
     \hline
     On-premise & /auth/login & 1000 & 100\,s & 2\,s & 0 & Degradación; aproximación a saturación \\
     \hline
-    On-premise & /plots & 1000 & 10\,s & Elevado & 0 & Operación compleja; congestión en cola \\
+    On-premise & .../plots & 1000 & 10\,s & Elevado & 0 & Operación compleja; congestión en cola \\
     \hline
     \end{tabular}
     \caption{Resumen de pruebas de carga con Locust}
@@ -134,7 +134,7 @@ Ejecutando el mismo script con los mismo datos de usuarios y ramp up pero en loc
 En esta imagen se pueden apreciar resultados más lógicos para un login. Es cierto que es sobre mi PC en local, por lo que no hay una gran latencia pero los resultados se acercan más a
 la realidad.
 
-Una vez comprobado que los tiempos son más razonables en local, se hizo la misma prueba pero desplegando el sistema en otro servidor \textit{on-premise} proporcionado por el Juan Luis Laredo,
+Una vez comprobado que los tiempos son más razonables en local, se hizo la misma prueba pero desplegando el sistema en otro servidor \textit{on-premise} proporcionado por Juan Luis Laredo,
 tutor del presente Trabajo de Fin de Grado. Al ejecutar en este servidor el script con los mismos parámetros se obtuvieron los siguientes resultados:
 
 \begin{figure}[H]
